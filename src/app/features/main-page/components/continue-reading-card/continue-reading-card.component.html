@@ -1,0 +1,46 @@
+<div class="card">
+    <header class="header">Продолжить чтение</header>
+
+    <div class="list">
+        @for (item of articleItems; track item.title) {
+            <div class="item">
+                <div
+                    class="avatar"
+                    [tuiAvatar]="item.avatar"
+                    appearance="info"
+                    size="l"
+                ></div>
+
+                <div class="content">
+                    <div class="title">{{ item.title }}</div>
+
+                    <div class="description">
+                        {{ item.description }}
+                    </div>
+                </div>
+
+                <div class="tag" tuiBadge appearance="negative">
+                    {{ item.tag }}
+                </div>
+
+                <div class="updated">
+                    <div class="updated-label">Обновлено</div>
+
+                    <div class="updated-value">
+                        {{ item.lastUpdate }}
+                    </div>
+                </div>
+
+                <button
+                    tuiIconButton
+                    class="action"
+                    type="button"
+                    appearance="flat"
+                    size="s"
+                    iconStart="@tui.chevron-right"
+                    [attr.aria-label]="'Открыть статью «' + item.title + '»'"
+                ></button>
+            </div>
+        }
+    </div>
+</div>

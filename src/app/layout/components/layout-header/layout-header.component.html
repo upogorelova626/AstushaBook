@@ -1,0 +1,46 @@
+<header class="header">
+    <div class="header-left">
+        <span class="header-eyebrow"> Aккаунт Astusha </span>
+
+        <h1 class="title"> Единый аккаунт для сервисов Astusha </h1>
+    </div>
+
+    <div class="header-right">
+        <button
+            tuiButton
+            class="notification"
+            type="button"
+            appearance="flat"
+            size="m"
+            iconStart="@tui.bell"
+            aria-label="Уведомления"
+            tuiHint="Скоро"
+            tuiHintDirection="start"
+            disabled
+        ></button>
+
+        @let user = currentUser$ | async;
+
+        <div class="profile">
+            @if (user?.avatarUrl) {
+                <img
+                    class="avatar"
+                    [src]="user?.avatarUrl"
+                    alt="Фото профиля"
+                />
+            } @else {
+                <div class="avatar" tuiAvatar="@tui.user"></div>
+            }
+
+            <div class="user-info">
+                <span class="user-name">
+                    {{ user?.firstName || user?.login }}
+                </span>
+
+                <span class="user-login">
+                    {{ user?.email }}
+                </span>
+            </div>
+        </div>
+    </div>
+</header>

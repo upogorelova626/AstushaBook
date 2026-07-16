@@ -1,0 +1,42 @@
+<div class="card">
+    <header class="header">
+        <h1 class="title">Добро пожаловать в AstushaBook</h1>
+
+        <p class="description">
+            База знаний, инструкции и справочные данные для экосистемы Astusha
+        </p>
+    </header>
+
+    <main class="content">
+        <tui-textfield iconStart="@tui.search">
+            <label tuiLabel for="search">Поиск</label>
+
+            <input
+                id="search"
+                tuiInput
+                type="search"
+                placeholder="Найти статью или справочник"
+            />
+        </tui-textfield>
+
+        <div class="buttons">
+            <button
+                tuiButton
+                type="button"
+                appearance="outline"
+                iconStart="@tui.scroll-text"
+            >
+                Создать статью
+            </button>
+
+            <button
+                tuiButton
+                type="button"
+                appearance="outline"
+                iconStart="@tui.sheet"
+            >
+                Создать справочник
+            </button>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,29 @@
+<div class="card">
+    <header class="header">
+        <h2 class="title">Популярные справочники</h2>
+    </header>
+
+    <main class="list">
+        @for (item of handbookItems; track item.name) {
+            <div class="item">
+                <div class="info">
+                    <tui-icon class="icon" icon="@tui.sheet" />
+
+                    <span class="name">{{ item.name }}</span>
+                </div>
+
+                <span class="count">{{ item.count }}</span>
+
+                <button
+                    tuiIconButton
+                    class="action"
+                    type="button"
+                    appearance="flat"
+                    size="s"
+                    iconStart="@tui.chevron-right"
+                    [attr.aria-label]="'Открыть справочник «' + item.name + '»'"
+                ></button>
+            </div>
+        }
+    </main>
+</div>

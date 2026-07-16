@@ -1,48 +1,36 @@
 import {Routes} from '@angular/router';
+import {authGuard} from './shared/guards/auth.guard';
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'auth/login',
+        redirectTo: 'astusha',
         pathMatch: 'full'
     },
     {
-        path: 'auth',
+        path: 'astusha',
+        canActivate: [authGuard],
         loadComponent: () =>
-            import('./layout/auth-layout/auth-layout/auth-layout.component').then(
-                component => component.AuthLayoutComponent
+            import('./layout/app-layout/app-layout/app-layout.component').then(
+                component => component.AppLayoutComponent
             ),
         children: [
             {
                 path: '',
-                redirectTo: 'login',
+                redirectTo: 'main-page',
                 pathMatch: 'full'
             },
             {
-                path: 'login',
+                path: 'main-page',
                 loadComponent: () =>
-                    import('./features/auth/pages/login-page/login-page.component').then(
-                        component => component.LoginPageComponent
-                    )
-            },
-            {
-                path: 'create-account',
-                loadComponent: () =>
-                    import('./features/auth/pages/create-account/create-account.component').then(
-                        component => component.CreateAccountComponent
-                    )
-            },
-            {
-                path: 'reset-password',
-                loadComponent: () =>
-                    import('./features/auth/pages/reset-password/reset-password.component').then(
-                        component => component.ResetPasswordComponent
+                    import('./features/main-page/main-page/main-page.component').then(
+                        component => component.MainPageComponent
                     )
             }
         ]
     },
     {
         path: '**',
-        redirectTo: 'auth/login'
+        redirectTo: 'astusha'
     }
 ];

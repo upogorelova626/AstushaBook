@@ -1,0 +1,68 @@
+<div class="sidebar">
+    <div class="sidebar__header">
+        <div class="sidebar__logo">
+            <div class="sidebar__logo-icon">
+                <tui-icon icon="@tui.book-open-text" />
+            </div>
+
+            <span class="sidebar__logo-text">Astusha Book</span>
+        </div>
+    </div>
+
+    <nav class="sidebar__nav">
+        @for (item of sidebarItems; track $index) {
+            <a
+                tuiButton
+                class="sidebar__nav-item"
+                [routerLink]="item.link"
+                appearance="flat"
+                size="m"
+            >
+                <tui-icon class="sidebar__nav-icon" [icon]="item.icon" />
+                <span class="sidebar__nav-text">{{ item.text }}</span>
+            </a>
+        }
+    </nav>
+
+    <div class="sidebar__footer">
+        <button
+            tuiButton
+            class="sidebar__logout"
+            type="button"
+            appearance="flat"
+            size="m"
+            (click)="logout()"
+        >
+            <tui-icon class="sidebar__logout-icon" icon="@tui.log-out" />
+            <span class="sidebar__logout-text">Выйти</span>
+        </button>
+
+        <div class="sidebar__help">
+            <div class="sidebar__help-header">
+                <div class="sidebar__help-icon">
+                    <tui-icon icon="@tui.circle-help" />
+                </div>
+
+                <span class="sidebar__help-title">Нужна помощь?</span>
+            </div>
+
+            <p class="sidebar__help-text"> Перейдите в наш центр помощи </p>
+
+            <button
+                tuiButton
+                class="sidebar__help-button"
+                type="button"
+                appearance="outline"
+                size="s"
+                (click)="openHelpDialog()"
+            >
+                Открыть помощь
+            </button>
+        </div>
+
+        <div class="sidebar__copyright">
+            <span class="sidebar__copyright-text">© 2026 Astusha Book</span>
+            <span class="sidebar__copyright-text">Все права защищены</span>
+        </div>
+    </div>
+</div>
