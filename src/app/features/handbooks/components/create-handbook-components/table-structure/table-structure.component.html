@@ -1,0 +1,67 @@
+<div class="card">
+    <header class="header">
+        <h2 class="title">Структура таблицы</h2>
+
+        <p class="description"> Настройте столбцы, их типы и обязательность </p>
+    </header>
+
+    <main class="content">
+        <div class="column">
+            <button
+                tuiIconButton
+                class="drag"
+                type="button"
+                appearance="flat"
+                iconStart="@tui.grip-vertical"
+                aria-label="Переместить столбец"
+            ></button>
+
+            <form class="form">
+                <label class="field">
+                    <span class="label">Столбец</span>
+
+                    <tui-textfield class="input">
+                        <input
+                            tuiInput
+                            type="text"
+                            placeholder="Например, Код"
+                        />
+                    </tui-textfield>
+                </label>
+
+                <label class="field">
+                    <span class="label">Тип данных</span>
+
+                    <tui-textfield class="input">
+                        <input
+                            tuiInput
+                            type="text"
+                            placeholder="Выберите тип данных"
+                        />
+                    </tui-textfield>
+                </label>
+            </form>
+
+            <button
+                tuiIconButton
+                class="delete"
+                type="button"
+                appearance="flat"
+                iconStart="@tui.trash-2"
+                aria-label="Удалить столбец"
+            ></button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <button
+            tuiButton
+            class="add"
+            type="button"
+            appearance="outline"
+            iconStart="@tui.plus"
+        >
+            Добавить столбец
+        </button>
+    </footer>
+</div>

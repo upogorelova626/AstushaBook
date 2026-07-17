@@ -1,0 +1,29 @@
+<div class="card">
+    <header class="header">Настройки</header>
+    <main class="form">
+        <label tuiLabel>
+            Видимость
+            <tui-textfield tuiChevron
+                ><input tuiSelect [(ngModel)]="value1" />
+                <tui-data-list-wrapper *tuiDropdown [items]="visibilityItems"
+            /></tui-textfield>
+        </label>
+        <label tuiLabel>
+            Разрешить редактирование
+            <tui-textfield tuiChevron
+                ><input tuiSelect [(ngModel)]="value2" />
+                <tui-data-list-wrapper *tuiDropdown [items]="editingItems"
+            /></tui-textfield>
+        </label>
+        <div class="switches">
+            <div class="switch">
+                <div>Показывать историю изменений</div>
+                <input type="checkbox" tuiSwitch />
+            </div>
+            <div class="switch">
+                <div>Разрешить экспорт</div>
+                <input type="checkbox" tuiSwitch />
+            </div>
+        </div>
+    </main>
+</div>

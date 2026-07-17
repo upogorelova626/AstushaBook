@@ -1,1 +1,35 @@
-<p>recently-updated-card works!</p>
+<div class="card">
+    <header class="header">
+        <h2 class="title">Недавно обновлено</h2>
+    </header>
+
+    <main class="list">
+        @for (item of recentlyUpdatedItems; track item.name) {
+            <div class="item">
+                <div class="info">
+                    <div
+                        class="avatar"
+                        tuiAvatar="@tui.scroll-text"
+                        appearance="info"
+                        size="l"
+                    ></div>
+
+                    <div class="content">
+                        <div class="name">{{ item.name }}</div>
+                        <div class="updated">{{ item.updatedAt }}</div>
+                    </div>
+                </div>
+
+                <button
+                    tuiIconButton
+                    class="action"
+                    type="button"
+                    appearance="flat"
+                    size="s"
+                    iconStart="@tui.chevron-right"
+                    [attr.aria-label]="'Открыть материал «' + item.name + '»'"
+                ></button>
+            </div>
+        }
+    </main>
+</div>

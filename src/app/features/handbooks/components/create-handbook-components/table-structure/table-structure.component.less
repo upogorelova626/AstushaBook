@@ -19,81 +19,93 @@
 
 .header {
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .title {
+    overflow: hidden;
     margin: 0;
     color: var(--color-text-primary);
     font: var(--tui-typography-heading-h6);
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.list {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.item {
-    width: 100%;
-    min-width: 0;
-    min-height: 64px;
-    padding: 8px 10px 8px 12px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 36px;
-    align-items: center;
-    gap: 12px;
-    box-sizing: border-box;
-    border: 1px solid var(--color-card-border);
-    border-radius: 5px;
-    background: var(--color-card-background);
-}
-
-.info {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    align-items: center;
-    gap: 10px;
-}
-
-.avatar {
-    width: 44px;
-    height: 44px;
-    flex-shrink: 0;
+.description {
+    overflow: hidden;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-l);
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .content {
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 10px;
 }
 
-.name {
-    overflow: hidden;
-    color: var(--color-text-primary);
-    font: var(--tui-typography-body-m);
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.column {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    align-items: flex-end;
+    gap: 20px;
+    box-sizing: border-box;
+    background: var(--color-card-background);
 }
 
-.updated {
-    overflow: hidden;
-    color: var(--color-text-muted);
-    font: var(--tui-typography-body-s);
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.form {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
 }
 
-.action {
-    flex-shrink: 0;
+.field {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.label {
     color: var(--color-text-secondary);
+    font: var(--tui-typography-body-m);
+}
+
+.input {
+    width: 100%;
+    min-width: 0;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+}
+
+.add {
+    width: fit-content;
 }
 
 @media (max-width: 768px) {
     .card {
         padding: 20px;
+    }
+
+    .column {
+        grid-template-columns: 32px minmax(0, 1fr) 32px;
+        gap: 8px;
+    }
+
+    .form {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -103,24 +115,20 @@
         gap: 16px;
     }
 
-    .list {
-        gap: 8px;
+    .description {
+        white-space: normal;
     }
 
-    .item {
-        min-height: 60px;
-        padding: 8px;
+    .column {
+        padding: 10px;
         grid-template-columns: minmax(0, 1fr) 32px;
-        gap: 8px;
     }
 
-    .info {
-        grid-template-columns: 40px minmax(0, 1fr);
-        gap: 8px;
+    .drag {
+        display: none;
     }
 
-    .avatar {
-        width: 40px;
-        height: 40px;
+    .add {
+        width: 100%;
     }
 }

@@ -26,6 +26,14 @@ export const routes: Routes = [
                     import('./features/main-page/main-page/main-page.component').then(
                         component => component.MainPageComponent
                     )
+            },
+
+            {
+                path: 'create',
+                loadComponent: () =>
+                    import('./features/handbooks/pages/create-handbook-page/create-handbook-page.component').then(
+                        component => component.CreateHandbookPageComponent
+                    )
             }
         ]
     },
