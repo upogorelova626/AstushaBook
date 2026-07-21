@@ -1,56 +1,101 @@
 <div class="card">
-    <header class="header">
+    <header class="card-header">
         <h2 class="title">Структура таблицы</h2>
 
-        <p class="description"> Настройте столбцы, их типы и обязательность </p>
+        <p class="description">Настройте атрибуты, их типы и обязательность</p>
     </header>
 
     <main class="content">
-        <div class="column">
-            <button
-                tuiIconButton
-                class="drag"
-                type="button"
-                appearance="flat"
-                iconStart="@tui.grip-vertical"
-                aria-label="Переместить столбец"
-            ></button>
+        @if (tableStructureFormService.tableStuctureValues().length === 0) {
+            <div class="empty-column">
+                <div class="empty-info">
+                    <div class="column-info">
+                        <div class="column-title">Новый атрибут</div>
 
-            <form class="form">
-                <label class="field">
-                    <span class="label">Столбец</span>
+                        <div class="column-meta">
+                            Название, тип данных и обязательность пока не
+                            заполнены
+                        </div>
+                    </div>
+                </div>
 
-                    <tui-textfield class="input">
-                        <input
-                            tuiInput
-                            type="text"
-                            placeholder="Например, Код"
-                        />
-                    </tui-textfield>
-                </label>
+                <button
+                    tuiButton
+                    type="button"
+                    appearance="outline"
+                    size="m"
+                    iconStart="@tui.pen"
+                    (click)="createAttribute($event)"
+                >
+                    Заполнить
+                </button>
+            </div>
 
-                <label class="field">
-                    <span class="label">Тип данных</span>
+            <div class="hint">
+                Добавьте хотя бы один атрибут, чтобы создать структуру
+                справочника.
+            </div>
+        } @else {
+            <div class="columns-list">
+                @for (
+                    value of tableStructureFormService.tableStuctureValues();
+                    track $index
+                ) {
+                    <div class="column">
+                        <div class="column-left">
+                            <button
+                                tuiButton
+                                type="button"
+                                appearance="flat"
+                                iconStart="@tui.grip-vertical"
+                            ></button>
 
-                    <tui-textfield class="input">
-                        <input
-                            tuiInput
-                            type="text"
-                            placeholder="Выберите тип данных"
-                        />
-                    </tui-textfield>
-                </label>
-            </form>
+                            <div class="column-info">
+                                <div class="column-title">
+                                    {{ value.name }}
+                                </div>
 
-            <button
-                tuiIconButton
-                class="delete"
-                type="button"
-                appearance="flat"
-                iconStart="@tui.trash-2"
-                aria-label="Удалить столбец"
-            ></button>
-        </div>
+                                <div class="column-meta">
+                                    <span class="badge">
+                                        {{ value.type }}
+                                    </span>
+
+                                    @if (value.required) {
+                                        <span tuiBadge appearance="primary">
+                                            Обязательный
+                                        </span>
+                                    } @else {
+                                        <span tuiBadge appearance="info">
+                                            Необязательный
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column-actions">
+                            <button
+                                tuiButton
+                                type="button"
+                                size="m"
+                                appearance="flat"
+                                iconStart="@tui.pen"
+                                (click)="editAttribute($index, $event)"
+                            ></button>
+
+                            <button
+                                tuiButton
+                                type="button"
+                                size="m"
+                                appearance="flat"
+                                iconStart="@tui.trash-2"
+                                (click)="deleteColumn($index)"
+                            ></button>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
     </main>
 
     <footer class="footer">
@@ -58,8 +103,10 @@
             tuiButton
             class="add"
             type="button"
+            size="m"
             appearance="outline"
             iconStart="@tui.plus"
+            (click)="createAttribute($event)"
         >
             Добавить столбец
         </button>

@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {TuiButton, TuiIcon} from '@taiga-ui/core';
+import {TuiButton} from '@taiga-ui/core';
 import {TuiAvatar, TuiBadge} from '@taiga-ui/kit';
 
 @Component({
     selector: 'app-continue-reading-card',
-    imports: [TuiButton, TuiBadge, TuiAvatar, TuiIcon],
+    imports: [TuiButton, TuiBadge, TuiAvatar],
     templateUrl: './continue-reading-card.component.html',
     styleUrl: './continue-reading-card.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush

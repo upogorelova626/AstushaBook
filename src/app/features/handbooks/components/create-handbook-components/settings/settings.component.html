@@ -1,29 +1,185 @@
 <div class="card">
     <header class="header">Настройки</header>
-    <main class="form">
-        <label tuiLabel>
-            Видимость
-            <tui-textfield tuiChevron
-                ><input tuiSelect [(ngModel)]="value1" />
-                <tui-data-list-wrapper *tuiDropdown [items]="visibilityItems"
-            /></tui-textfield>
-        </label>
-        <label tuiLabel>
-            Разрешить редактирование
-            <tui-textfield tuiChevron
-                ><input tuiSelect [(ngModel)]="value2" />
-                <tui-data-list-wrapper *tuiDropdown [items]="editingItems"
-            /></tui-textfield>
-        </label>
-        <div class="switches">
-            <div class="switch">
-                <div>Показывать историю изменений</div>
-                <input type="checkbox" tuiSwitch />
-            </div>
-            <div class="switch">
-                <div>Разрешить экспорт</div>
-                <input type="checkbox" tuiSwitch />
-            </div>
-        </div>
+
+    <main class="main">
+        <section class="section">
+            <h3 class="title">Кто может редактировать справочник</h3>
+
+            <form
+                class="group"
+                tuiGroup
+                [collapsed]="true"
+                [formGroup]="editingForm"
+            >
+                <label tuiBlock="l">
+                    <input
+                        tuiRadio
+                        type="radio"
+                        [value]="HandbookEditingAccess.OwnerOnly"
+                        formControlName="value"
+                    />
+                    <span>Только владелец</span>
+                </label>
+
+                <label tuiBlock>
+                    <input
+                        tuiRadio
+                        type="radio"
+                        [value]="HandbookEditingAccess.SelectedEditors"
+                        formControlName="value"
+                    />
+                    <span>Выбранные редакторы</span>
+                </label>
+
+                <label tuiBlock="l">
+                    <input
+                        tuiRadio
+                        type="radio"
+                        [value]="HandbookEditingAccess.EveryoneWithAccess"
+                        formControlName="value"
+                    />
+                    <span>Все пользователи с доступом</span>
+                </label>
+            </form>
+
+            @if (
+                editingForm.controls.value.value ===
+                HandbookEditingAccess.SelectedEditors
+            ) {
+                <app-search-users
+                    [selectedUsers]="values().editorUsers ?? []"
+                    (userSelected)="addUsersToRedactors($event)"
+                />
+
+                @if (values().editorUsers?.length) {
+                    <div class="selected-users">
+                        <h4 class="selected-title">Добавленные редакторы</h4>
+
+                        @for (editor of values().editorUsers; track editor.id) {
+                            <div class="selected-user">
+                                <div class="selected-user-info">
+                                    <div class="selected-user-name">
+                                        {{
+                                            (
+                                                (editor.firstName ?? '') +
+                                                ' ' +
+                                                (editor.lastName ?? '')
+                                            ).trim() ||
+                                                editor.login ||
+                                                'Пользователь'
+                                        }}
+                                    </div>
+
+                                    <div class="selected-user-meta">
+                                        {{ editor.login }} · {{ editor.email }}
+                                    </div>
+                                </div>
+
+                                <button
+                                    tuiButton
+                                    type="button"
+                                    appearance="flat"
+                                    iconStart="@tui.x"
+                                    (click)="removeRedactor(editor.id)"
+                                ></button>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </section>
+
+        <section class="section">
+            <h3 class="title">Кто может просматривать справочник</h3>
+
+            <form
+                class="group"
+                tuiGroup
+                [collapsed]="true"
+                [formGroup]="visibilityForm"
+            >
+                <label tuiBlock>
+                    <input
+                        tuiRadio
+                        type="radio"
+                        [value]="HandbookVisibility.Public"
+                        formControlName="value"
+                    />
+                    <span>Для всех</span>
+                </label>
+
+                <label tuiBlock>
+                    <input
+                        tuiRadio
+                        type="radio"
+                        [value]="HandbookVisibility.SelectedUsers"
+                        formControlName="value"
+                    />
+                    <span>Для выбранных пользователей</span>
+                </label>
+
+                <label tuiBlock>
+                    <input
+                        tuiRadio
+                        type="radio"
+                        [value]="HandbookVisibility.OwnerOnly"
+                        formControlName="value"
+                        [attr.disabled]="
+                            editingForm.controls.value.value !==
+                            HandbookEditingAccess.OwnerOnly
+                                ? ''
+                                : null
+                        "
+                    />
+                    <span>Только владелец</span>
+                </label>
+            </form>
+
+            @if (
+                visibilityForm.controls.value.value ===
+                HandbookVisibility.SelectedUsers
+            ) {
+                <app-search-users
+                    [selectedUsers]="values().viewerUsers ?? []"
+                    (userSelected)="addUsersToViewers($event)"
+                />
+
+                @if (values().viewerUsers?.length) {
+                    <div class="selected-users">
+                        <h4 class="selected-title">Пользователи с доступом</h4>
+
+                        @for (viewer of values().viewerUsers; track viewer.id) {
+                            <div class="selected-user">
+                                <div class="selected-user-info">
+                                    <div class="selected-user-name">
+                                        {{
+                                            (
+                                                (viewer.firstName ?? '') +
+                                                ' ' +
+                                                (viewer.lastName ?? '')
+                                            ).trim() ||
+                                                viewer.login ||
+                                                'Пользователь'
+                                        }}
+                                    </div>
+
+                                    <div class="selected-user-meta">
+                                        {{ viewer.login }} · {{ viewer.email }}
+                                    </div>
+                                </div>
+
+                                <button
+                                    tuiButton
+                                    type="button"
+                                    appearance="flat"
+                                    iconStart="@tui.x"
+                                    (click)="removeViewer(viewer.id)"
+                                ></button>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </section>
     </main>
 </div>

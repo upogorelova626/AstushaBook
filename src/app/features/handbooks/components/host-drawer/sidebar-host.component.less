@@ -1,0 +1,34 @@
+.drawer {
+    top: 0;
+    width: 800px;
+    max-width: calc(100vw - 40px);
+    border-radius: 0;
+
+    ::ng-deep > aside > tui-scrollbar {
+        display: block;
+
+        & > tui-scroll-controls {
+            display: none;
+        }
+
+        & > .t-content {
+            display: contents;
+
+            & > .t-content {
+                display: contents;
+            }
+        }
+    }
+
+    &_offset {
+        @offset: 1.25rem;
+
+        top: @offset;
+        right: @offset !important;
+        bottom: @offset;
+    }
+
+    &_rounded {
+        border-radius: 2.625rem !important;
+    }
+}

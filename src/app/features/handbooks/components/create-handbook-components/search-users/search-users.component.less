@@ -1,0 +1,73 @@
+.search {
+    width: 100%;
+    min-width: 0;
+    margin-top: 16px;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid var(--color-card-border);
+    border-radius: 5px;
+    background: var(--color-card-background);
+}
+
+.label {
+    min-width: 0;
+    color: var(--color-text-muted);
+    font: var(--tui-typography-body-m);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.textfield {
+    width: 100%;
+    min-width: 0;
+    margin-top: 8px;
+}
+
+.search tui-error {
+    display: block;
+    margin-top: 4px;
+}
+
+.search app-user-searching-results {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .search {
+        margin-top: 14px;
+        padding: 14px;
+    }
+
+    .label {
+        font: var(--tui-typography-body-s);
+    }
+
+    .search app-user-searching-results {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search {
+        margin-top: 12px;
+        padding: 12px;
+    }
+
+    .textfield {
+        margin-top: 6px;
+    }
+
+    .label {
+        line-height: 1.35;
+    }
+}
+
+@media (max-width: 360px) {
+    .search {
+        padding: 10px;
+    }
+}

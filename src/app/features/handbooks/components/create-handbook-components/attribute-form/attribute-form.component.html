@@ -1,0 +1,71 @@
+<header class="header">Атрибут</header>
+
+<form class="form" [formGroup]="form">
+    <label tuiLabel class="label">
+        Название атрибута
+
+        <tui-textfield class="textfield">
+            <input
+                tuiInput
+                type="text"
+                formControlName="name"
+                placeholder="Например, Дата рождения"
+            />
+        </tui-textfield>
+    </label>
+
+    <tui-error formControlName="name" />
+
+    <label tuiLabel class="label">
+        Тип данных
+
+        <tui-textfield
+            class="textfield"
+            tuiChevron
+            [stringify]="stringify"
+            [tuiTextfieldCleaner]="false"
+        >
+            <input
+                tuiComboBox
+                placeholder="Выберите тип данных"
+                formControlName="type"
+            />
+
+            <tui-data-list-wrapper
+                *tuiDropdown
+                [items]="items | tuiFilterByInput"
+                [itemContent]="stringify | tuiStringifyContent"
+            />
+        </tui-textfield>
+    </label>
+
+    <tui-error formControlName="type" />
+
+    <div class="wrapper">
+        <input tuiCheckbox type="checkbox" formControlName="required" />
+
+        <div class="label">Обязательный атрибут</div>
+    </div>
+
+    <div class="buttons">
+        <button
+            tuiButton
+            type="button"
+            size="l"
+            appearance="primary"
+            (click)="save()"
+        >
+            Сохранить
+        </button>
+
+        <button
+            tuiButton
+            appearance="outline"
+            type="button"
+            size="l"
+            (click)="cancel()"
+        >
+            Отмена
+        </button>
+    </div>
+</form>

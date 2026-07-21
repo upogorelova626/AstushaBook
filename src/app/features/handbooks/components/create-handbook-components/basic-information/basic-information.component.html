@@ -1,41 +1,75 @@
 <div class="card">
-    <header class="header">Основная информация</header>
+    <header class="header"> Основная информация </header>
+
     <main>
-        <form class="form">
+        <form class="form" [formGroup]="basicInfoForm">
             <label tuiLabel>
                 Название справочника
+
                 <tui-textfield>
-                    <input tuiInput placeholder="Например, HTTP-коды" />
+                    <input
+                        tuiInput
+                        placeholder="Например, HTTP-коды"
+                        formControlName="name"
+                    />
                 </tui-textfield>
+
+                <tui-error [formControl]="basicInfoForm.controls.name" />
             </label>
 
-            <label>
+            <label tuiLabel>
                 Описание
-                <tui-textfield
-                    ><input
+
+                <tui-textfield>
+                    <input
                         tuiInput
                         placeholder="Кратко опишите назначение справочника"
-                /></tui-textfield>
+                        formControlName="description"
+                    />
+                </tui-textfield>
+
+                <tui-error [formControl]="basicInfoForm.controls.description" />
             </label>
 
             <div class="footer-inputs">
-                <label tuiLabel>
-                    Раздел
-                    <tui-textfield
-                        ><input
-                            tuiInput
-                            placeholder="Добавьте системное название"
-                    /></tui-textfield>
-                </label>
+                <div class="footer-input">
+                    <label tuiLabel>
+                        Системное название
 
-                <label tuiLabel>
-                    Теги
-                    <tui-textfield
-                        ><input
-                            tuiInput
-                            placeholder="Выберите или добавьте теги"
-                    /></tui-textfield>
-                </label>
+                        <tui-textfield>
+                            <input
+                                tuiInput
+                                placeholder="Например ast_http_codes"
+                                formControlName="systemName"
+                            />
+                        </tui-textfield>
+
+                        <tui-error
+                            [formControl]="basicInfoForm.controls.systemName"
+                        />
+                    </label>
+                </div>
+
+                <div class="footer-input">
+                    <label tuiLabel>
+                        Теги
+
+                        <tui-textfield multi>
+                            <input
+                                tuiInputChip
+                                [unique]="true"
+                                placeholder="Выберите или добавьте теги"
+                                formControlName="tags"
+                            />
+
+                            <tui-input-chip *tuiItem />
+                        </tui-textfield>
+
+                        <tui-error
+                            [formControl]="basicInfoForm.controls.tags"
+                        />
+                    </label>
+                </div>
             </div>
         </form>
     </main>

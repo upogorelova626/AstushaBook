@@ -29,11 +29,31 @@ export const routes: Routes = [
             },
 
             {
-                path: 'create',
-                loadComponent: () =>
-                    import('./features/handbooks/pages/create-handbook-page/create-handbook-page.component').then(
-                        component => component.CreateHandbookPageComponent
-                    )
+                path: 'handbooks',
+                children: [
+                    {
+                        path: 'all',
+                        loadComponent: () =>
+                            import('./features/handbooks/pages/all-handbooks-page/all-handbooks-page.component').then(
+                                component => component.AllHandbooksPageComponent
+                            )
+                    },
+                    {
+                        path: 'create',
+                        loadComponent: () =>
+                            import('./features/handbooks/pages/create-handbook-page/create-handbook-page.component').then(
+                                component =>
+                                    component.CreateHandbookPageComponent
+                            )
+                    },
+                    {
+                        path: ':id',
+                        loadComponent: () =>
+                            import('./features/handbooks/pages/handbook-page/handbook-page.component').then(
+                                component => component.HandbookPageComponent
+                            )
+                    }
+                ]
             }
         ]
     },

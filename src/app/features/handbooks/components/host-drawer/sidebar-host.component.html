@@ -1,0 +1,15 @@
+@for (item of items$ | async; track $index) {
+    <tui-drawer
+        class="drawer"
+        [class.drawer_offset]="!!item.options?.offset"
+        [class.drawer_rounded]="!!item.options?.rounded"
+        [overlay]="!!item.options?.overlay"
+        (click.self)="onClickOutside(item)"
+    >
+        <div class="content">
+            <ng-container
+                *polymorpheusOutlet="item.component; context: item.context"
+            />
+        </div>
+    </tui-drawer>
+}

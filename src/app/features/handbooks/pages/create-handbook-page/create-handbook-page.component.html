@@ -9,27 +9,29 @@
         >
         <button tuiStep icon="@tui.sheet">Структура таблицы</button>
         <button tuiStep icon="@tui.settings">Настройки</button>
-        <button tuiStep icon="@tui.user-round-plus">Владелец</button>
     </tui-stepper>
     <main class="content">
         @switch (activeStep()) {
             @case (0) {
-                <app-basic-information />
+                <app-basic-information (next)="activeStep.set(1)" />
             }
             @case (1) {
                 <app-table-structure />
             }
             @case (2) {
                 <app-settings />
-            }
-            @case (3) {
-                <app-owner />
                 <footer class="footer">
-                    <button class="button" tuiButton iconStart="@tui.plus"
+                    <button
+                        class="button"
+                        tuiButton
+                        iconStart="@tui.plus"
+                        (click)="createHandbook()"
                         >Сохранить</button
                     >
                 </footer>
             }
         }
     </main>
+
+    <app-sidebar-host />
 </div>

@@ -7,10 +7,7 @@
 .card {
     width: 100%;
     min-width: 0;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    padding: clamp(16px, 2.5vw, 24px);
     box-sizing: border-box;
     border: 1px solid var(--color-card-border);
     border-radius: 5px;
@@ -19,87 +16,240 @@
 
 .header {
     margin: 0;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--color-card-border);
     color: var(--color-text-primary);
     font: var(--tui-typography-heading-h6);
 }
 
-.form {
-    width: 100%;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.main {
+    padding-top: 20px;
 }
 
-.form > label {
+.section {
+    padding: 20px;
+    border: 1px solid var(--color-card-border);
+    border-radius: 5px;
+    background: var(--color-card-background);
+}
+
+.section + .section {
+    margin-top: 20px;
+}
+
+.title {
+    margin: 0 0 14px;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-body-l);
+    font-weight: 600;
+}
+
+.group {
     width: 100%;
     min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    color: var(--color-text-secondary);
+    overflow: hidden;
+    background: var(--color-card-background);
+}
+
+.group label[tuiBlock] {
+    width: 100%;
+    min-width: 0;
+    min-height: 52px;
+    height: auto;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    color: var(--color-text-muted);
     font: var(--tui-typography-body-m);
+    background: var(--color-card-background);
 }
 
-.form tui-textfield {
-    width: 100%;
+.group label[tuiBlock]:has(input:checked) {
+    color: var(--color-text-primary);
+    background: var(--tui-background-neutral-1);
+    box-shadow: inset 3px 0 var(--tui-background-accent-1);
 }
 
-.switches {
-    width: 100%;
+.group label[tuiBlock]:has(input:disabled) {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.group span {
     min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+app-search-users {
+    display: block;
+    margin-top: 16px;
+}
+
+.selected-users {
+    margin-top: 16px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-card-border);
+    border-radius: 5px;
+    background: var(--color-background-soft);
 }
 
-.switch {
+.selected-title {
+    margin: 0 0 4px;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-body-m);
+    font-weight: 600;
+}
+
+.selected-user {
+    width: 100%;
     min-width: 0;
-    min-height: 56px;
     padding: 12px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
     box-sizing: border-box;
     border: 1px solid var(--color-card-border);
     border-radius: 5px;
-    color: var(--color-text-primary);
     background: var(--color-card-background);
-    font: var(--tui-typography-body-m);
-    cursor: pointer;
 }
 
-.switch span {
+.selected-user-info {
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.switch input {
-    flex-shrink: 0;
+.selected-user-name {
+    overflow: hidden;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-body-m);
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.selected-user-meta {
+    overflow: hidden;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-s);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.selected-user button {
+    flex: 0 0 auto;
+}
+
+@media (hover: hover) {
+    .group label[tuiBlock]:hover {
+        color: var(--color-text-primary);
+        background: var(--tui-background-neutral-1);
+    }
+
+    .group label[tuiBlock]:has(input:disabled):hover {
+        color: var(--color-text-muted);
+        background: var(--color-card-background);
+    }
 }
 
 @media (max-width: 768px) {
-    .card {
-        padding: 20px;
+    .header {
+        padding-bottom: 16px;
     }
 
-    .switches {
-        grid-template-columns: 1fr;
+    .main {
+        padding-top: 16px;
+    }
+
+    .section {
+        padding: 16px;
+    }
+
+    .section + .section {
+        margin-top: 16px;
+    }
+
+    .group label[tuiBlock] {
+        min-height: 48px;
+        padding: 11px 14px;
+    }
+
+    .selected-users {
+        padding: 12px;
     }
 }
 
 @media (max-width: 576px) {
     .card {
-        padding: 16px;
-        gap: 16px;
+        padding: 14px;
+        border-radius: 6px;
     }
 
-    .form {
-        gap: 16px;
+    .header {
+        padding-bottom: 14px;
     }
 
-    .switch {
-        min-height: 52px;
+    .main {
+        padding-top: 14px;
+    }
+
+    .section {
+        padding: 14px;
+        border-radius: 6px;
+    }
+
+    .title {
+        margin-bottom: 12px;
+        font: var(--tui-typography-body-m);
+        font-weight: 600;
+    }
+
+    .group {
+        border-radius: 6px;
+    }
+
+    .group label[tuiBlock] {
+        min-height: 46px;
         padding: 10px 12px;
+        font: var(--tui-typography-body-s);
+    }
+
+    .selected-user {
+        align-items: flex-start;
+        padding: 12px;
+    }
+
+    .selected-user-name,
+    .selected-user-meta {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 360px) {
+    .card {
+        padding: 10px;
+    }
+
+    .section {
+        padding: 12px;
+    }
+
+    .group label[tuiBlock] {
+        padding: 9px 10px;
+    }
+
+    .selected-users {
+        padding: 10px;
+    }
+
+    .selected-user {
+        gap: 8px;
+        padding: 10px;
     }
 }

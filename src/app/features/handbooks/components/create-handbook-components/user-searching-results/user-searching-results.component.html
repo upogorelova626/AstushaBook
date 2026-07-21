@@ -1,0 +1,57 @@
+<div class="results">
+    @for (foundUser of foundUsers(); track foundUser.id) {
+        <div class="result">
+            <div class="result-profile">
+                @if (foundUser.avatarUrl) {
+                    <img
+                        tuiAvatar
+                        size="l"
+                        [src]="foundUser.avatarUrl"
+                        alt="Аватар пользователя"
+                    />
+                } @else {
+                    <div tuiAvatar="@tui.user" appearance="info" size="l"></div>
+                }
+
+                <div class="details">
+                    <div class="name">
+                        {{
+                            (
+                                (foundUser.firstName ?? '') +
+                                ' ' +
+                                (foundUser.lastName ?? '')
+                            ).trim() ||
+                                foundUser.login ||
+                                'Пользователь'
+                        }}
+                    </div>
+
+                    <div class="email">
+                        {{ foundUser.email || 'Email не указан' }}
+                    </div>
+                </div>
+            </div>
+
+            @if (isSelected(foundUser.id)) {
+                <button
+                    tuiButton
+                    type="button"
+                    appearance="outline"
+                    iconStart="@tui.check"
+                    disabled
+                >
+                    Пользователь добавлен
+                </button>
+            } @else {
+                <button
+                    tuiButton
+                    type="button"
+                    iconStart="@tui.user-round-plus"
+                    (click)="addUser(foundUser)"
+                >
+                    Добавить
+                </button>
+            }
+        </div>
+    }
+</div>

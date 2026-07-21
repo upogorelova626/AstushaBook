@@ -1,0 +1,25 @@
+<div class="search">
+    <label tuiLabel class="label">
+        Добавьте пользователей, которые могут редактировать справочник
+
+        <tui-textfield iconStart="@tui.search" class="textfield">
+            <input
+                tuiInput
+                placeholder="Имя, фамилия, логин или email"
+                [formControl]="searchUserControl"
+            />
+
+            @if (foundUsers().length > 0) {
+                <div *tuiDropdown class="dropdown">
+                    <app-user-searching-results
+                        [foundUsers]="foundUsers()"
+                        [selectedUsers]="selectedUsers()"
+                        (userAdded)="addUser($event)"
+                    />
+                </div>
+            }
+        </tui-textfield>
+    </label>
+
+    <tui-error [formControl]="searchUserControl" />
+</div>

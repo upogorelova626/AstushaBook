@@ -1,0 +1,11 @@
+<div class="cards">
+    @for (item of cardItems; track $index) {
+        <div class="card">
+            <div [tuiAvatar]="item.icon" size="l" appearance="info"></div>
+            <div>
+                <div class="title">{{ item.title }}</div>
+                <div class="count">{{ item.count }}</div>
+            </div>
+        </div>
+    }
+</div>

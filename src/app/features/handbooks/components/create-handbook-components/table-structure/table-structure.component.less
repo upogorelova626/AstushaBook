@@ -10,18 +10,18 @@
     padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
     box-sizing: border-box;
     border: 1px solid var(--color-card-border);
     border-radius: 5px;
     background: var(--color-card-background);
 }
 
-.header {
+.card-header {
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
 }
 
 .title {
@@ -42,52 +42,88 @@
     white-space: nowrap;
 }
 
-.content {
+.content,
+.columns-list {
     min-width: 0;
     display: flex;
     flex-direction: column;
+}
+
+.content {
+    gap: 12px;
+}
+
+.columns-list {
     gap: 10px;
 }
 
+.empty-column,
 .column {
     width: 100%;
     min-width: 0;
-    display: grid;
-    grid-template-columns: 36px minmax(0, 1fr) 36px;
-    align-items: flex-end;
-    gap: 20px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     box-sizing: border-box;
+    border: 1px solid var(--color-card-border);
+    border-radius: 5px;
     background: var(--color-card-background);
 }
 
-.form {
-    width: 100%;
+.empty-info,
+.column-left {
     min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.field {
+.column-info {
     min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.label {
+.column-title {
+    overflow: hidden;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-body-l);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.column-meta {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
     color: var(--color-text-secondary);
     font: var(--tui-typography-body-m);
 }
 
-.input {
-    width: 100%;
-    min-width: 0;
+.column-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 6px;
+}
+
+.hint {
+    padding: 12px 14px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-card-border);
+    border-radius: 5px;
+    color: var(--color-text-secondary);
+    background: var(--color-background-soft);
+    font: var(--tui-typography-body-m);
 }
 
 .footer {
     display: flex;
-    align-items: center;
+    justify-content: flex-end;
 }
 
 .add {
@@ -99,33 +135,31 @@
         padding: 20px;
     }
 
+    .empty-column,
     .column {
-        grid-template-columns: 32px minmax(0, 1fr) 32px;
-        gap: 8px;
+        align-items: flex-start;
+        flex-direction: column;
     }
 
-    .form {
-        grid-template-columns: 1fr;
+    .column-actions {
+        width: 100%;
+        justify-content: flex-end;
     }
 }
 
 @media (max-width: 576px) {
     .card {
         padding: 16px;
-        gap: 16px;
+        gap: 18px;
     }
 
-    .description {
+    .description,
+    .column-title {
         white-space: normal;
     }
 
-    .column {
-        padding: 10px;
-        grid-template-columns: minmax(0, 1fr) 32px;
-    }
-
-    .drag {
-        display: none;
+    .footer {
+        align-items: stretch;
     }
 
     .add {

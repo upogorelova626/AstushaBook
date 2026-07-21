@@ -21,13 +21,10 @@ export class LayoutSidebarComponent {
     protected readonly sidebarItems = [
         {icon: '@tui.house', link: ['/astusha/overview'], text: 'Главная'},
         {
-            icon: '@tui.library-big',
-            link: ['/astusha/library'],
-            text: 'Библиотека'
+            icon: '@tui.sheet',
+            link: ['/astusha/handbooks/all'],
+            text: 'Справочники'
         },
-        {icon: '@tui.folder', link: ['/astusha/section'], text: 'Разделы'},
-        {icon: '@tui.scroll-text', link: ['/astusha/articles'], text: 'Статьи'},
-        {icon: '@tui.sheet', link: ['/astusha/handbooks'], text: 'Справочники'},
         {icon: '@tui.star', link: ['/astusha/favourites'], text: 'Избранное'},
         {icon: '@tui.user', link: ['/astusha/my'], text: 'Мои материалы'}
     ];
