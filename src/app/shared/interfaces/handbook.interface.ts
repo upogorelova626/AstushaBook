@@ -25,6 +25,13 @@ export interface HandbookAttribute {
     required: boolean;
 }
 
+export enum HandbookListFilter {
+    All = 'ALL',
+    Mine = 'MINE',
+    Available = 'AVAILABLE',
+    Favorites = 'FAVORITES'
+}
+
 export interface CreateHandbookRequest {
     name: string;
     description: string;
@@ -52,7 +59,7 @@ export interface CreateHandbookFormValues {
 export interface Handbook {
     id: string;
     name: string;
-    description: string | null;
+    description: string;
     systemName: string;
     tags: string[];
     ownerId: string;
@@ -77,4 +84,24 @@ export interface HandbookParticipant {
     handbookId: string;
     userId: string;
     addedAt: string;
+}
+
+export interface GetHandbooksRequest {
+    name: string;
+    tags: string[];
+    filter: HandbookListFilter;
+    offset?: number;
+}
+
+export interface HandbookPreview {
+    id: string;
+    name: string;
+    description: string;
+    tags: string[];
+    updatedAt: string;
+}
+
+export interface GetHandbooksResponse {
+    items: HandbookPreview[];
+    nextOffset: number | null;
 }

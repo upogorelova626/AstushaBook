@@ -1,4 +1,12 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
 .wrapper {
+    width: 100%;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -7,10 +15,11 @@
 .item {
     width: 100%;
     min-width: 0;
-    padding: 24px;
-    display: flex;
-    justify-content: space-between;
+    padding: 20px 18px 20px 20px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
     align-items: center;
+    gap: 24px;
     box-sizing: border-box;
     border: 1px solid var(--color-card-border);
     border-radius: 5px;
@@ -19,19 +28,103 @@
 }
 
 .info {
+    min-width: 0;
     display: flex;
-    gap: 20px;
-    align-items: center;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.avatar {
+    flex: 0 0 auto;
+}
+
+.info-content {
+    min-width: 0;
 }
 
 .name {
-    margin: 0;
+    overflow: hidden;
     color: var(--color-text-primary);
     font: var(--tui-typography-heading-h6);
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .description {
-    margin: 0;
-    color: var(--color-text-primary);
+    max-width: 720px;
+    margin-top: 4px;
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-text-muted);
     font: var(--tui-typography-body-m);
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+}
+
+.tags {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.meta {
+    min-width: 120px;
+    text-align: right;
+}
+
+.meta-label {
+    color: var(--color-text-muted);
+    font: var(--tui-typography-body-s);
+}
+
+.meta-value {
+    margin-top: 4px;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-m);
+    white-space: nowrap;
+}
+
+.action {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 900px) {
+    .item {
+        grid-template-columns: minmax(0, 1fr) max-content;
+        gap: 16px;
+    }
+
+    .meta {
+        grid-column: 1;
+        margin-left: 64px;
+        text-align: left;
+    }
+
+    .action {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .item {
+        padding: 16px;
+        grid-template-columns: 1fr;
+    }
+
+    .info {
+        gap: 12px;
+    }
+
+    .meta {
+        grid-column: auto;
+        margin-left: 0;
+    }
+
+    .action {
+        grid-column: auto;
+        grid-row: auto;
+        width: 100%;
+    }
 }

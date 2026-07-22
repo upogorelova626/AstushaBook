@@ -1,6 +1,11 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {CreateHandbookRequest, Handbook} from '../interfaces';
+import {
+    CreateHandbookRequest,
+    GetHandbooksRequest,
+    GetHandbooksResponse,
+    Handbook
+} from '../interfaces';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -15,5 +20,17 @@ export class HandbookService {
         return this.http.post<Handbook>(`${this.astushaBookApiUrl}`, payload, {
             withCredentials: true
         });
+    }
+
+    getHandbooksPreviews(
+        payload: GetHandbooksRequest
+    ): Observable<GetHandbooksResponse> {
+        return this.http.post<GetHandbooksResponse>(
+            `${this.astushaBookApiUrl}/search`,
+            payload,
+            {
+                withCredentials: true
+            }
+        );
     }
 }

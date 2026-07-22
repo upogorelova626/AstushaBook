@@ -1,23 +1,51 @@
 <div class="wrapper">
-    <div class="item">
-        <div class="info">
-            <div tuiAvatar="@tui.pyramid" size="l" appearance="info"></div>
-            <div>
-                <div class="name">Angular: основы на практике</div>
-                <div class="description"
-                    >Разбираем основы и практические примеры использования
-                    Angular в проектах</div
-                >
-            </div>
-        </div>
+    @for (handbook of handbookPreviews(); track handbook.id) {
+        <div class="item">
+            <div class="info">
+                <div
+                    class="avatar"
+                    tuiAvatar="@tui.pyramid"
+                    size="l"
+                    appearance="info"
+                ></div>
 
-        <div class="tags" tuiBadge size="xl" appearance="info">Angular</div>
-        <div class="meta">
-            <div>Обновлено</div>
-            <div>2 дня назад</div>
+                <div class="info-content">
+                    <div class="name">{{ handbook.name }}</div>
+
+                    <div class="description">
+                        {{ handbook.description }}
+                    </div>
+
+                    @if (handbook.tags.length) {
+                        <div class="tags">
+                            @for (tag of handbook.tags; track tag) {
+                                <div tuiBadge size="m" appearance="info">
+                                    {{ tag }}
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="meta">
+                <div class="meta-label">Обновлено</div>
+
+                <div class="meta-value">
+                    {{ handbook.updatedAt | date: 'd MMMM y' }}
+                </div>
+            </div>
+
+            <button
+                tuiButton
+                class="action"
+                type="button"
+                appearance="flat"
+                iconEnd="@tui.chevron-right"
+                (click)="openHandbook(handbook.id)"
+            >
+                Подробнее
+            </button>
         </div>
-        <button tuiButton iconEnd="@tui.chevron-right" appearance="flat"
-            >Подробнее</button
-        >
-    </div>
+    }
 </div>
