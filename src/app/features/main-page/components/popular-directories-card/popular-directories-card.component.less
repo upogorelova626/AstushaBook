@@ -19,12 +19,28 @@
 
 .header {
     min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.title {
+.header-content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.header-title {
     margin: 0;
     color: var(--color-text-primary);
     font: var(--tui-typography-heading-h6);
+}
+
+.header-description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-m);
 }
 
 .list {
@@ -37,54 +53,130 @@
 .item {
     width: 100%;
     min-width: 0;
-    min-height: 52px;
-    padding: 8px 10px 8px 15px;
+    min-height: 76px;
+    padding: 12px 14px;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) max-content 36px;
+    grid-template-columns:
+        44px
+        minmax(0, 1fr)
+        max-content
+        100px
+        36px;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
     box-sizing: border-box;
-    border: 1px solid var(--color-card-border);
-    border-radius: 5px;
-    background: var(--color-card-background);
+    text-align: left;
 }
 
-.info {
+.content {
     min-width: 0;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    color: var(--color-text-secondary);
-}
-
-.name {
+.title {
     overflow: hidden;
     color: var(--color-text-primary);
+    font: var(--tui-typography-body-l);
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.description {
+    overflow: hidden;
+    color: var(--color-text-secondary);
     font: var(--tui-typography-body-m);
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.count {
+.updated {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.updated-label {
     color: var(--color-text-muted);
-    font: var(--tui-typography-body-m);
+    font: var(--tui-typography-body-s);
+    white-space: nowrap;
+}
+
+.updated-value {
+    overflow: hidden;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-s);
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .action {
-    flex-shrink: 0;
+    justify-self: end;
     color: var(--color-text-secondary);
+}
+
+.footer-button {
+    width: 100%;
+}
+
+@media (hover: hover) {
+    .item:hover {
+        border-color: var(--tui-background-accent-1);
+        background: var(--color-background-soft);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        transform: translateY(-1px);
+    }
+}
+
+@media (max-width: 1200px) {
+    .item {
+        grid-template-columns:
+            44px
+            minmax(0, 1fr)
+            max-content
+            36px;
+    }
+
+    .updated {
+        display: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .item {
+        grid-template-columns:
+            44px
+            minmax(0, 1fr)
+            max-content
+            100px
+            36px;
+    }
+
+    .updated {
+        display: flex;
+    }
 }
 
 @media (max-width: 768px) {
     .card {
         padding: 20px;
+        gap: 18px;
+    }
+
+    .item {
+        grid-template-columns:
+            44px
+            minmax(0, 1fr)
+            max-content
+            36px;
+        gap: 14px;
+    }
+
+    .updated {
+        display: none;
     }
 }
 
@@ -94,12 +186,48 @@
         gap: 16px;
     }
 
-    .item {
-        grid-template-columns: minmax(0, 1fr) 36px;
+    .header {
+        align-items: flex-start;
+    }
+
+    .header-description {
+        display: none;
+    }
+
+    .list {
         gap: 8px;
     }
 
-    .count {
+    .item {
+        min-height: 64px;
+        padding: 10px;
+        grid-template-columns: 40px minmax(0, 1fr) 32px;
+        gap: 10px;
+    }
+
+    .tag,
+    .updated {
         display: none;
+    }
+
+    .description {
+        display: none;
+    }
+
+    .title {
+        font: var(--tui-typography-body-m);
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 360px) {
+    .card {
+        padding: 12px;
+    }
+
+    .item {
+        grid-template-columns: 36px minmax(0, 1fr) 32px;
+        padding: 8px;
+        gap: 8px;
     }
 }

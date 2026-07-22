@@ -1,1 +1,74 @@
-<p>favourites-card works!</p>
+<div class="card">
+    <header class="header">
+        <div
+            tuiAvatar="@tui.book-open-text"
+            appearance="warning"
+            size="l"
+        ></div>
+
+        <div class="header-content">
+            <h2 class="header-title">Избранное</h2>
+            <p class="header-description">
+                Последние открытые материалы и статьи
+            </p>
+        </div>
+    </header>
+
+    <div class="list">
+        @for (item of articleItems; track item.title) {
+            <button
+                class="item"
+                tuiButton
+                appearance="outline"
+                type="button"
+                [attr.aria-label]="'Открыть статью «' + item.title + '»'"
+            >
+                <div
+                    [tuiAvatar]="item.avatar"
+                    appearance="warning"
+                    size="l"
+                ></div>
+
+                <div class="content">
+                    <div class="title">{{ item.title }}</div>
+
+                    <div class="description">
+                        {{ item.description }}
+                    </div>
+                </div>
+
+                <div class="tag" tuiBadge appearance="warning" size="m">
+                    {{ item.tag }}
+                </div>
+
+                <div class="updated">
+                    <div class="updated-label">Обновлено</div>
+
+                    <div class="updated-value">
+                        {{ item.lastUpdate }}
+                    </div>
+                </div>
+
+                <div
+                    tuiIconButton
+                    class="action"
+                    appearance="flat"
+                    size="s"
+                    iconStart="@tui.chevron-right"
+                ></div>
+            </button>
+        }
+    </div>
+
+    <footer class="footer">
+        <button
+            tuiButton
+            class="footer-button"
+            type="button"
+            iconEnd="@tui.chevron-right"
+            appearance="outline"
+        >
+            Все справочники
+        </button>
+    </footer>
+</div>

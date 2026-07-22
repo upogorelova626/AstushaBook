@@ -1,0 +1,101 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
+.card {
+    width: 100%;
+    min-width: 0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-card-border);
+    border-radius: 5px;
+    background: var(--color-card-background);
+    box-shadow: var(--tui-shadow-small);
+}
+
+.header {
+    margin: 0;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-heading-h6);
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter {
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-m);
+    cursor: pointer;
+    transition:
+        color 150ms ease,
+        border-color 150ms ease,
+        background-color 150ms ease;
+}
+
+.filter-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.filter-count {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+.filter [tuiAvatar] {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .filter {
+        min-height: 46px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 16px;
+    }
+
+    .filter {
+        min-height: 44px;
+        gap: 8px;
+        font: var(--tui-typography-body-s);
+    }
+}
+
+@media (max-width: 360px) {
+    .card {
+        padding: 12px;
+    }
+
+    .filter [tuiAvatar] {
+        display: none;
+    }
+}

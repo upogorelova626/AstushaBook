@@ -1,15 +1,25 @@
 <div class="card">
-    <header class="header">Продолжить чтение</header>
+    <header class="header">
+        <div tuiAvatar="@tui.book-open-text" appearance="info" size="l"></div>
+
+        <div class="header-content">
+            <h2 class="header-title">Продолжить чтение</h2>
+            <p class="header-description">
+                Последние открытые материалы и статьи
+            </p>
+        </div>
+    </header>
 
     <div class="list">
         @for (item of articleItems; track item.title) {
-            <div class="item">
-                <div
-                    class="avatar"
-                    [tuiAvatar]="item.avatar"
-                    appearance="info"
-                    size="l"
-                ></div>
+            <button
+                class="item"
+                tuiButton
+                appearance="outline"
+                type="button"
+                [attr.aria-label]="'Открыть статью «' + item.title + '»'"
+            >
+                <div [tuiAvatar]="item.avatar" appearance="info" size="l"></div>
 
                 <div class="content">
                     <div class="title">{{ item.title }}</div>
@@ -19,7 +29,7 @@
                     </div>
                 </div>
 
-                <div class="tag" tuiBadge appearance="negative">
+                <div class="tag" tuiBadge appearance="info" size="m">
                     {{ item.tag }}
                 </div>
 
@@ -31,16 +41,26 @@
                     </div>
                 </div>
 
-                <button
+                <div
                     tuiIconButton
                     class="action"
-                    type="button"
                     appearance="flat"
                     size="s"
                     iconStart="@tui.chevron-right"
-                    [attr.aria-label]="'Открыть статью «' + item.title + '»'"
-                ></button>
-            </div>
+                ></div>
+            </button>
         }
     </div>
+
+    <footer class="footer">
+        <button
+            tuiButton
+            class="footer-button"
+            type="button"
+            iconEnd="@tui.chevron-right"
+            appearance="outline"
+        >
+            Все справочники
+        </button>
+    </footer>
 </div>

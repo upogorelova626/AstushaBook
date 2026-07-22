@@ -1,5 +1,19 @@
 <div class="page">
-    <app-handbooks-info />
-    <app-handbooks-toolbar />
-    <app-handbooks-list />
+    <div class="recent">
+        <app-recently-viewed-handbooks />
+    </div>
+
+    <div class="content">
+        <main class="main">
+            <app-handbook-toolbar />
+
+            <app-handbooks-list />
+        </main>
+
+        <aside class="sidebar">
+            <app-handbooks-filters />
+
+            <app-handbooks-guide-card />
+        </aside>
+    </div>
 </div>

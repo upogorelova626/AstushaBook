@@ -1,0 +1,33 @@
+<div class="card">
+    <header class="header">
+        <div class="title">Фильтры</div>
+    </header>
+
+    <div class="filters">
+        @for (filter of filters; track filter.value) {
+            <label class="filter">
+                <input
+                    tuiRadio
+                    type="radio"
+                    [value]="filter.value"
+                    [formControl]="filterControl"
+                />
+
+                <div
+                    class="filter-icon"
+                    size="s"
+                    appearance="info"
+                    [tuiAvatar]="filter.icon"
+                ></div>
+
+                <span class="filter-name">
+                    {{ filter.label }}
+                </span>
+
+                <div class="filter-count" tuiBadge appearance="neutral">
+                    {{ filter.count }}
+                </div>
+            </label>
+        }
+    </div>
+</div>

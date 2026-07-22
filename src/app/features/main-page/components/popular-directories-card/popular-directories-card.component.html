@@ -1,29 +1,70 @@
 <div class="card">
     <header class="header">
-        <h2 class="title">Популярные справочники</h2>
+        <div tuiAvatar="@tui.flame" appearance="negative" size="l"></div>
+
+        <div class="header-content">
+            <h2 class="header-title">Популярные справочники</h2>
+            <p class="header-description">
+                Справочники, которые чаще всего открывают
+            </p>
+        </div>
     </header>
 
-    <main class="list">
-        @for (item of handbookItems; track item.name) {
-            <div class="item">
-                <div class="info">
-                    <tui-icon class="icon" icon="@tui.sheet" />
+    <div class="list">
+        @for (item of articleItems; track item.title) {
+            <button
+                class="item"
+                tuiButton
+                appearance="outline"
+                type="button"
+                [attr.aria-label]="'Открыть статью «' + item.title + '»'"
+            >
+                <div
+                    [tuiAvatar]="item.avatar"
+                    appearance="negative"
+                    size="l"
+                ></div>
 
-                    <span class="name">{{ item.name }}</span>
+                <div class="content">
+                    <div class="title">{{ item.title }}</div>
+
+                    <div class="description">
+                        {{ item.description }}
+                    </div>
                 </div>
 
-                <span class="count">{{ item.count }}</span>
+                <div class="tag" tuiBadge appearance="negative" size="m">
+                    {{ item.tag }}
+                </div>
 
-                <button
+                <div class="updated">
+                    <div class="updated-label">Обновлено</div>
+
+                    <div class="updated-value">
+                        {{ item.lastUpdate }}
+                    </div>
+                </div>
+
+                <div
                     tuiIconButton
                     class="action"
-                    type="button"
                     appearance="flat"
                     size="s"
                     iconStart="@tui.chevron-right"
-                    [attr.aria-label]="'Открыть справочник «' + item.name + '»'"
-                ></button>
-            </div>
+                ></div>
+            </button>
         }
-    </main>
+    </div>
+
+    <footer class="footer">
+        <button
+            tuiButton
+            class="footer-button"
+            type="button"
+            iconEnd="@tui.chevron-right"
+            appearance="outline"
+        >
+            Все справочники
+        </button>
+    </footer>
 </div>

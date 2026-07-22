@@ -6,19 +6,6 @@
     </div>
 
     <div class="header-right">
-        <button
-            tuiButton
-            class="notification"
-            type="button"
-            appearance="flat"
-            size="m"
-            iconStart="@tui.bell"
-            aria-label="Уведомления"
-            tuiHint="Скоро"
-            tuiHintDirection="start"
-            disabled
-        ></button>
-
         @let user = currentUser$ | async;
 
         <div class="profile">

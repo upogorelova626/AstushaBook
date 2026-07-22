@@ -1,26 +1,47 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {TuiButton, TuiIcon} from '@taiga-ui/core';
+import {TuiAvatar, TuiBadge} from '@taiga-ui/kit';
 
 @Component({
     selector: 'app-popular-directories-card',
-    imports: [TuiIcon, TuiButton],
+    imports: [TuiIcon, TuiButton, TuiAvatar, TuiBadge],
     templateUrl: './popular-directories-card.component.html',
     styleUrl: './popular-directories-card.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PopularDirectoriesCardComponent {
-    protected readonly handbookItems = [
+    protected readonly articleItems = [
         {
-            name: 'HTTP-коды',
-            count: '128 записей'
+            avatar: '@tui.file-text',
+            title: 'Angular Signals на практике',
+            description:
+                'Разбираем основы и практические примеры использования сигналов в Angular.',
+            tag: 'Angular',
+            lastUpdate: '2 дня назад'
         },
         {
-            name: 'Команды Git',
-            count: '42 записи'
+            avatar: '@tui.settings',
+            title: 'Настройка CI/CD',
+            description:
+                'Пошаговая настройка конвейера сборки и деплоя с помощью GitHub Actions.',
+            tag: 'DevOps',
+            lastUpdate: '5 дней назад'
         },
         {
-            name: 'Окружения проектов',
-            count: '36 записей'
+            avatar: '@tui.container',
+            title: 'Работа с Docker Compose',
+            description:
+                'Запуск нескольких сервисов и настройка локального окружения через Docker Compose.',
+            tag: 'Docker',
+            lastUpdate: 'Неделю назад'
+        },
+        {
+            avatar: '@tui.code',
+            title: 'Основы REST API',
+            description:
+                'Разбираем базовые принципы REST, методы запросов и структуру ответов.',
+            tag: 'API',
+            lastUpdate: '3 дня назад'
         }
     ];
 }

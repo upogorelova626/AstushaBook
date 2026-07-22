@@ -1,4 +1,37 @@
-.table {
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item {
     width: 100%;
     min-width: 0;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    border: 1px solid var(--color-card-border);
+    border-radius: 5px;
+    background: var(--color-card-background);
+    box-shadow: var(--tui-shadow-small);
+}
+
+.info {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.name {
+    margin: 0;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-heading-h6);
+}
+
+.description {
+    margin: 0;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-body-m);
 }

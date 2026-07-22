@@ -20,15 +20,6 @@
         </tui-textfield>
 
         <div class="buttons">
-            <button
-                tuiButton
-                type="button"
-                appearance="outline"
-                iconStart="@tui.scroll-text"
-            >
-                Создать статью
-            </button>
-
             <a
                 tuiButton
                 type="button"
@@ -37,6 +28,16 @@
                 [routerLink]="['/astusha', 'handbooks', 'create']"
             >
                 Создать справочник
+            </a>
+
+            <a
+                tuiButton
+                type="button"
+                appearance="outline"
+                iconStart="@tui.book"
+                [routerLink]="['/astusha', 'handbooks', 'all']"
+            >
+                Все справочники
             </a>
         </div>
     </main>

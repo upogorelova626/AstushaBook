@@ -1,5 +1,100 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
 .page {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+}
+
+.recent {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    flex: 0 0 auto;
+    align-self: flex-start;
+}
+
+.recent app-recently-viewed-handbooks {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: fit-content;
+}
+
+.content {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.main {
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.sidebar {
+    width: 360px;
+    min-width: 0;
+    flex: 0 0 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: sticky;
+}
+
+.main > *,
+.sidebar > * {
+    width: 100%;
+    min-width: 0;
+}
+
+@media (max-width: 1200px) {
+    .content {
+        gap: 24px;
+    }
+
+    .sidebar {
+        width: 320px;
+        flex-basis: 320px;
+    }
+}
+
+@media (max-width: 900px) {
+    .content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .page {
+        gap: 16px;
+    }
+
+    .content {
+        gap: 16px;
+    }
+
+    .main,
+    .sidebar {
+        gap: 8px;
+    }
 }

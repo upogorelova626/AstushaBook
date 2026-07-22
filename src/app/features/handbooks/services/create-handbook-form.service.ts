@@ -46,16 +46,4 @@ export class CreateHandbookFormService {
 
         this.handbookService.createHandbook(payload).subscribe();
     }
-
-    // export interface CreateHandbookRequest {
-    //     name: string;
-    //     description: string;
-    //     systemName: string;
-    //     tags: string[];
-    //     columns: HandbookAttribute[];
-    //     visibility: HandbookVisibility;
-    //     editingPermission: HandbookEditingAccess;
-    //     editorIds: string[];
-    //     viewerIds: string[];
-    // }
 }

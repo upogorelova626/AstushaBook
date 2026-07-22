@@ -34,6 +34,14 @@ export class ContinueReadingCardComponent {
                 'Запуск нескольких сервисов и настройка локального окружения через Docker Compose.',
             tag: 'Docker',
             lastUpdate: 'Неделю назад'
+        },
+        {
+            avatar: '@tui.code',
+            title: 'Основы REST API',
+            description:
+                'Разбираем базовые принципы REST, методы запросов и структуру ответов.',
+            tag: 'API',
+            lastUpdate: '3 дня назад'
         }
     ];
 }

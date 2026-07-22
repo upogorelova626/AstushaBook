@@ -1,14 +1,18 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {HandbooksInfoComponent} from '../../components/all-handbooks-components/handbooks-info/handbooks-info.component';
-import {HandbooksToolbarComponent} from '../../components/all-handbooks-components/handbooks-toolbar/handbooks-toolbar.component';
+import {HandbooksFiltersComponent} from '../../components/all-handbooks-components/handbooks-filters/handbooks-filters.component';
+import {HandbookToolbarComponent} from '../../components/all-handbooks-components/handbook-toolbar/handbook-toolbar.component';
+import {HandbooksGuideCardComponent} from '../../components/all-handbooks-components/handbooks-guide-card/handbooks-guide-card.component';
 import {HandbooksListComponent} from '../../components/all-handbooks-components/handbooks-list/handbooks-list.component';
+import {RecentlyViewedHandbooksComponent} from '../../components/all-handbooks-components/recently-viewed-handbooks/recently-viewed-handbooks.component';
 
 @Component({
     selector: 'app-all-handbooks-page',
     imports: [
-        HandbooksInfoComponent,
-        HandbooksToolbarComponent,
-        HandbooksListComponent
+        HandbooksFiltersComponent,
+        HandbookToolbarComponent,
+        HandbooksGuideCardComponent,
+        HandbooksListComponent,
+        RecentlyViewedHandbooksComponent
     ],
     templateUrl: './all-handbooks-page.component.html',
     styleUrl: './all-handbooks-page.component.less',

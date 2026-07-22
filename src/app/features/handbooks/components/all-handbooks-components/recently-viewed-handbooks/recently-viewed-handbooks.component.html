@@ -1,0 +1,61 @@
+<div class="card">
+    <header class="header" [class.header_expanded]="expanded">
+        <div class="title">
+            <div tuiAvatar="@tui.clock-4" appearance="info" size="s"></div>
+
+            <div>Недавно просмотренные</div>
+        </div>
+
+        <button
+            tuiButton
+            class="toggle"
+            type="button"
+            appearance="flat"
+            iconStart="@tui.chevron-down"
+            aria-label="Показать или скрыть недавно просмотренные"
+            [class.toggle_expanded]="expanded"
+            [attr.aria-expanded]="expanded"
+            (click)="expanded = !expanded"
+        ></button>
+    </header>
+
+    <tui-expand [expanded]="expanded">
+        <main class="content">
+            @for (item of recentlyViewed; track item.title) {
+                <div class="item">
+                    <div
+                        class="item-icon"
+                        [tuiAvatar]="item.icon"
+                        appearance="info"
+                        size="l"
+                    ></div>
+
+                    <div class="item-info">
+                        <div class="meta">
+                            <div class="item-title">
+                                {{ item.title }}
+                            </div>
+
+                            <div tuiBadge appearance="info">
+                                {{ item.tag }}
+                            </div>
+                        </div>
+
+                        <div class="updated">
+                            Обновлено {{ item.updatedAt }}
+                        </div>
+                    </div>
+
+                    <button
+                        tuiButton
+                        class="open"
+                        type="button"
+                        appearance="flat"
+                        iconStart="@tui.chevron-right"
+                        aria-label="Открыть справочник"
+                    ></button>
+                </div>
+            }
+        </main>
+    </tui-expand>
+</div>
