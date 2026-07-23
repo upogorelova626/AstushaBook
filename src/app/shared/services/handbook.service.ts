@@ -33,4 +33,10 @@ export class HandbookService {
             }
         );
     }
+
+    getHandbook(id: string): Observable<Handbook> {
+        return this.http.get<Handbook>(`${this.astushaBookApiUrl}/${id}`, {
+            withCredentials: true
+        });
+    }
 }

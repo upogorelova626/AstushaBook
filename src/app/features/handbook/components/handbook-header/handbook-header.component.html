@@ -1,0 +1,15 @@
+<div class="handbook-header">
+    <a
+        class="link"
+        tuiButton
+        appearance="secondary"
+        [routerLink]="['astusha', 'handbooks', 'all']"
+        >На главную</a
+    >
+    <div class="main">
+        <div class="name">{{ handbook()?.name }}</div>
+        <button tuiButton appearance="secondary" iconEnd="@tui.chevron-down"
+            >Действия</button
+        >
+    </div>
+</div>

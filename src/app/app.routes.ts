@@ -49,7 +49,7 @@ export const routes: Routes = [
                     {
                         path: ':id',
                         loadComponent: () =>
-                            import('./features/handbooks/pages/handbook-page/handbook-page.component').then(
+                            import('./features/handbook/page/handbook-page/handbook-page.component').then(
                                 component => component.HandbookPageComponent
                             )
                     }

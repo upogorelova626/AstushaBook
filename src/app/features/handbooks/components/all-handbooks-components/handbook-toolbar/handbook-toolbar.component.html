@@ -2,14 +2,18 @@
     <tui-textfield class="textfield" iconStart="@tui.search">
         <input
             tuiInput
-            type="search"
             placeholder="Найти справочник"
             aria-label="Поиск справочника"
+            [formControl]="searchControl"
         />
     </tui-textfield>
 
     <tui-segmented class="segmented" size="l">
-        <button type="button">По названию</button>
-        <button type="button">По тегу</button>
+        <button type="button" (click)="isSearchByName.set(true)"
+            >По названию</button
+        >
+        <button type="button" (click)="isSearchByName.set(false)"
+            >По тегу</button
+        >
     </tui-segmented>
 </div>

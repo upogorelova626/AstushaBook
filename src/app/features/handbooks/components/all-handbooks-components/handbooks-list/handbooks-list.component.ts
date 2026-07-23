@@ -3,6 +3,7 @@ import {TuiButton} from '@taiga-ui/core';
 import {TuiAvatar, TuiBadge} from '@taiga-ui/kit';
 import {HandbooksListService} from '../../../services/handbooks-list.service';
 import {DatePipe} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-handbooks-list',
@@ -13,11 +14,12 @@ import {DatePipe} from '@angular/common';
 })
 export class HandbooksListComponent {
     private readonly handbooksListService = inject(HandbooksListService);
+    private readonly router = inject(Router);
 
     protected readonly handbookPreviews =
         this.handbooksListService.handbooksPreviews;
 
     protected openHandbook(id: string) {
-        return id;
+        this.router.navigate(['astusha', 'handbooks', id]);
     }
 }
