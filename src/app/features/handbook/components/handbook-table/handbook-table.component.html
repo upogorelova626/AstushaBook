@@ -30,7 +30,11 @@
     @if (strings().length === 0) {
         <div class="empty">
             <div class="empty-text">Нет строк</div>
-            <button tuiButton iconStart="@tui.plus" appearance="flat"
+            <button
+                tuiButton
+                iconStart="@tui.plus"
+                appearance="flat"
+                (click)="createAttribute($event)"
                 >Строка</button
             >
         </div>

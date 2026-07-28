@@ -12,21 +12,27 @@ import {Handbook} from '../../../../shared/interfaces';
 import {ActivatedRoute} from '@angular/router';
 import {catchError, EMPTY, finalize} from 'rxjs';
 import {TuiSkeleton} from '@taiga-ui/kit';
+import {SidebarHostComponent} from '../../../handbooks/components/host-drawer/sidebar-host.component';
+import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
 
 @Component({
     selector: 'app-handbook-page',
-    imports: [HandbookHeaderComponent, HandbookTableComponent, TuiSkeleton],
+    imports: [
+        HandbookHeaderComponent,
+        HandbookTableComponent,
+        TuiSkeleton,
+        SidebarHostComponent
+    ],
     templateUrl: './handbook-page.component.html',
     styleUrl: './handbook-page.component.less',
+    providers: [SideBarService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HandbookPageComponent implements OnInit {
     private readonly handbookService = inject(HandbookService);
-
     private readonly route = inject(ActivatedRoute);
 
     protected readonly isLoading = signal(false);
-
     protected readonly handbook = signal<Handbook | null>(null);
 
     ngOnInit(): void {

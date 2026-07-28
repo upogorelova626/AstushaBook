@@ -1,0 +1,61 @@
+<form class="form" [formGroup]="stringForm">
+    @for (column of handbook.columns; track column.id) {
+        <div class="inputs">
+            @switch (column.type) {
+                @case (HandbookColumnType.Text) {
+                    <label class="label">
+                        {{ column.name }}
+                        <tui-textfield>
+                            <input
+                                type="text"
+                                tuiInput
+                                [formControlName]="column.id"
+                            />
+                        </tui-textfield>
+                    </label>
+                }
+                @case (HandbookColumnType.Number) {
+                    <label class="label">
+                        {{ column.name }}
+                        <tui-textfield>
+                            <input
+                                type="number"
+                                tuiInput
+                                [formControlName]="column.id"
+                            />
+                        </tui-textfield>
+                    </label>
+                }
+
+                @case (HandbookColumnType.Boolean) {
+                    <label class="label">
+                        {{ column.name }}
+
+                        <input
+                            type="checkbox"
+                            tuiCheckbox
+                            [formControlName]="column.id"
+                        />
+                    </label>
+                }
+
+                @case (HandbookColumnType.Date) {
+                    <label class="label">
+                        {{ column.name }}
+                        <tui-textfield>
+                            <input tuiInputDate [formControlName]="column.id" />
+                            <tui-calendar *tuiDropdown />
+                        </tui-textfield>
+                    </label>
+                }
+            }
+        </div>
+    }
+
+    <footer class="buttons">
+        <button tuiButton appearance="flat" (click)="context.complete()"
+            >Отмена</button
+        >
+        <button tuiButton (click)="save()">Сохранить</button>
+    </footer>
+</form>

@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {
+    AddHandbookRowRequest,
     CreateHandbookRequest,
     GetHandbooksRequest,
     GetHandbooksResponse,
@@ -44,5 +45,15 @@ export class HandbookService {
         return this.http.delete(`${this.astushaBookApiUrl}/${id}`, {
             withCredentials: true
         });
+    }
+
+    addRow(handbookId: string, payload: AddHandbookRowRequest) {
+        return this.http.post(
+            `${this.astushaBookApiUrl}/${handbookId}/rows`,
+            payload,
+            {
+                withCredentials: true
+            }
+        );
     }
 }

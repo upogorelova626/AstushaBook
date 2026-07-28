@@ -105,3 +105,7 @@ export interface GetHandbooksResponse {
     items: HandbookPreview[];
     nextOffset: number | null;
 }
+
+export interface AddHandbookRowRequest {
+    values: Record<string, string | number | boolean | null>;
+}
