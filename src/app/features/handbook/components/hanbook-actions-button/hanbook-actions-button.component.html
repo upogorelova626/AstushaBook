@@ -1,0 +1,43 @@
+<button
+    tuiButton
+    tuiChevron
+    type="button"
+    [attr.aria-expanded]="open()"
+    [tuiDropdown]="dropdownContent"
+    [tuiDropdownManual]="open()"
+    [tuiObscuredEnabled]="open()"
+    (click)="onClick()"
+    (tuiActiveZoneChange)="onActiveZone($event)"
+    (tuiObscured)="onObscured($event)"
+>
+    Действия
+    <ng-template #dropdownContent>
+        <tui-data-list>
+            <tui-opt-group label="Редактировать">
+                @for (action of editingActions; track action.title) {
+                    <button
+                        tuiOption
+                        type="button"
+                        (click)="onSelect(action)"
+                        [iconStart]="action.icon"
+                    >
+                        {{ action.title }}
+                    </button>
+                }
+            </tui-opt-group>
+
+            <hr />
+
+            @for (action of anotherActions; track action.title) {
+                <button
+                    tuiOption
+                    type="button"
+                    (click)="onSelect(action)"
+                    [iconStart]="action.icon"
+                >
+                    {{ action.title }}
+                </button>
+            }
+        </tui-data-list>
+    </ng-template>
+</button>

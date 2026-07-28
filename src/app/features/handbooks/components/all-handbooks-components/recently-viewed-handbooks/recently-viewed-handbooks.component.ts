@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {TuiButton, TuiExpand, TuiIcon} from '@taiga-ui/core';
+import {TuiButton, TuiExpand} from '@taiga-ui/core';
 import {TuiAvatar, TuiBadge} from '@taiga-ui/kit';
 
 @Component({
     selector: 'app-recently-viewed-handbooks',
-    imports: [TuiButton, TuiIcon, TuiAvatar, TuiBadge, TuiExpand],
+    imports: [TuiButton, TuiAvatar, TuiBadge, TuiExpand],
     templateUrl: './recently-viewed-handbooks.component.html',
     styleUrl: './recently-viewed-handbooks.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush

@@ -8,15 +8,56 @@
     width: 100%;
     min-width: 0;
     overflow-x: auto;
+    overflow-y: hidden;
+    box-sizing: border-box;
+    background: var(--color-card-background);
 }
 
 .table {
     width: 100%;
     min-width: 100%;
     table-layout: fixed;
+    border-collapse: collapse;
 }
 
 .thead {
     width: 100%;
-    min-width: 100%;
+    background: var(--color-background-secondary);
+}
+
+.table th {
+    height: 56px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-m);
+    font-weight: 600;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.fixed {
+    width: 56px;
+    min-width: 56px;
+    max-width: 56px;
+    padding: 0 !important;
+    text-align: center !important;
+}
+
+.empty {
+    min-height: 64px;
+    margin: 0;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-sizing: border-box;
+    background: var(--color-card-background);
+}
+
+.empty-text {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-m);
 }

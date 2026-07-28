@@ -2,11 +2,19 @@
     <table class="table" tuiTable>
         <thead class="thead">
             <tr>
-                <th tuiTh></th>
+                <th tuiTh class="fixed">
+                    <input type="checkbox" tuiCheckbox />
+                </th>
                 @for (column of handbook()?.columns; track $index) {
                     <th tuiTh>{{ column.name }}</th>
                 }
-                <th tuiTh></th>
+                <th tuiTh class="fixed">
+                    <button
+                        tuiButton
+                        appearance="flat"
+                        iconStart="@tui.bolt"
+                    ></button>
+                </th>
             </tr>
         </thead>
         <!-- <tbody tuiTbody>
@@ -19,4 +27,12 @@
             </tr>
         </tbody> -->
     </table>
+    @if (strings().length === 0) {
+        <div class="empty">
+            <div class="empty-text">Нет строк</div>
+            <button tuiButton iconStart="@tui.plus" appearance="flat"
+                >Строка</button
+            >
+        </div>
+    }
 </div>
