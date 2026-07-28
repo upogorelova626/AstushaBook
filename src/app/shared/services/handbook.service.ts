@@ -39,4 +39,10 @@ export class HandbookService {
             withCredentials: true
         });
     }
+
+    deleteHandbook(id: string) {
+        return this.http.delete(`${this.astushaBookApiUrl}/${id}`, {
+            withCredentials: true
+        });
+    }
 }

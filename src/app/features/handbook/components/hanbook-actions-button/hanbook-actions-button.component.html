@@ -15,12 +15,7 @@
         <tui-data-list>
             <tui-opt-group label="Редактировать">
                 @for (action of editingActions; track action.title) {
-                    <button
-                        tuiOption
-                        type="button"
-                        (click)="onSelect(action)"
-                        [iconStart]="action.icon"
-                    >
+                    <button tuiOption type="button" [iconStart]="action.icon">
                         {{ action.title }}
                     </button>
                 }
@@ -32,7 +27,7 @@
                 <button
                     tuiOption
                     type="button"
-                    (click)="onSelect(action)"
+                    (click)="action.action()"
                     [iconStart]="action.icon"
                 >
                     {{ action.title }}
