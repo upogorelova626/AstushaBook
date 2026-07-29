@@ -17,17 +17,34 @@
                 </th>
             </tr>
         </thead>
-        <!-- <tbody tuiTbody>
-            <tr>
-                <td tuiTd></td>
-                <td tuiTd></td>
-                <td tuiTd></td>
-                <td tuiTd></td>
-                <td tuiTd></td>
-            </tr>
-        </tbody> -->
+        <tbody tuiTbody>
+            @for (row of rows(); track row.id) {
+                <tr>
+                    <td tuiTd class="fixed">
+                        <input type="checkbox" tuiCheckbox />
+                    </td>
+
+                    @for (column of handbook()?.columns; track column.id) {
+                        <td tuiTd>
+                            {{ row.values[column.id] }}
+                        </td>
+                    }
+
+                    <td tuiTd class="fixed">
+                        <button
+                            tuiButton
+                            appearance="flat"
+                            iconStart="@tui.bolt"
+                        ></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
-    @if (strings().length === 0) {
+
+    <div #loadMore></div>
+
+    @if (rows().length === 0) {
         <div class="empty">
             <div class="empty-text">Нет строк</div>
             <button

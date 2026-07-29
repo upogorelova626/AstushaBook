@@ -109,3 +109,20 @@ export interface GetHandbooksResponse {
 export interface AddHandbookRowRequest {
     values: Record<string, string | number | boolean | null>;
 }
+
+export interface GetHandbookRowsRequest {
+    offset: number;
+}
+
+export interface HandbookRow {
+    id: string;
+    values: Record<string, string | number | boolean | null>;
+    createdById: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface GetHandbookRowsResponse {
+    items: HandbookRow[];
+    nextOffset: number | null;
+}
