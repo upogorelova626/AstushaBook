@@ -9,10 +9,12 @@ import {
     Validators
 } from '@angular/forms';
 import {
+    TUI_VALIDATION_ERRORS,
     TuiButton,
     TuiCalendar,
     TuiCheckbox,
     TuiDropdown,
+    TuiError,
     TuiInput,
     TuiNotificationService,
     TuiTextfield
@@ -31,11 +33,23 @@ import {catchError, EMPTY, tap} from 'rxjs';
         TuiCheckbox,
         TuiCalendar,
         TuiInputDate,
-        TuiDropdown
+        TuiDropdown,
+        TuiError
     ],
     templateUrl: './add-handbook-string-form.component.html',
     styleUrl: './add-handbook-string-form.component.less',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        {
+            provide: TUI_VALIDATION_ERRORS,
+            useFactory: () => ({
+                required: 'Поле обязательно для заполнения',
+
+                maxlength: ({requiredLength}: {requiredLength: number}) =>
+                    `Введите не более ${requiredLength} символов`
+            })
+        }
+    ]
 })
 export class AddHandbookStringFormComponent {
     protected readonly context =
@@ -54,10 +68,15 @@ export class AddHandbookStringFormComponent {
         for (const column of this.handbook.columns) {
             this.stringForm.addControl(
                 column.id,
-                new FormControl(
-                    this.getInitialValue(column.type),
-                    column.required ? Validators.required : null
-                )
+                new FormControl(this.getInitialValue(column.type), [
+                    ...(column.required &&
+                    column.type !== HandbookColumnType.Boolean
+                        ? [Validators.required]
+                        : []),
+                    ...(column.type === HandbookColumnType.Text
+                        ? [Validators.maxLength(1000)]
+                        : [])
+                ])
             );
         }
     }

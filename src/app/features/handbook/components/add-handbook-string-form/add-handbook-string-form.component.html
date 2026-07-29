@@ -9,10 +9,13 @@
                             <input
                                 type="text"
                                 tuiInput
+                                placeholder="Введите значение"
                                 [formControlName]="column.id"
                             />
                         </tui-textfield>
                     </label>
+
+                    <tui-error [formControlName]="column.id" />
                 }
                 @case (HandbookColumnType.Number) {
                     <label class="label">
@@ -21,10 +24,13 @@
                             <input
                                 type="number"
                                 tuiInput
+                                placeholder="Введите число"
                                 [formControlName]="column.id"
                             />
                         </tui-textfield>
                     </label>
+
+                    <tui-error [formControlName]="column.id" />
                 }
 
                 @case (HandbookColumnType.Boolean) {
@@ -37,6 +43,8 @@
                             [formControlName]="column.id"
                         />
                     </label>
+
+                    <tui-error [formControlName]="column.id" />
                 }
 
                 @case (HandbookColumnType.Date) {
@@ -47,15 +55,21 @@
                             <tui-calendar *tuiDropdown />
                         </tui-textfield>
                     </label>
+
+                    <tui-error [formControlName]="column.id" />
                 }
             }
         </div>
     }
 
     <footer class="buttons">
-        <button tuiButton appearance="flat" (click)="context.complete()"
+        <button
+            type="button"
+            tuiButton
+            appearance="flat"
+            (click)="context.complete()"
             >Отмена</button
         >
-        <button tuiButton (click)="save()">Сохранить</button>
+        <button type="button" tuiButton (click)="save()">Сохранить</button>
     </footer>
 </form>

@@ -8,13 +8,10 @@
 
         <button
             tuiButton
-            class="toggle"
+            [tuiChevron]="expanded"
             type="button"
             appearance="flat"
-            iconStart="@tui.chevron-down"
             aria-label="Показать или скрыть недавно просмотренные"
-            [class.toggle_expanded]="expanded"
-            [attr.aria-expanded]="expanded"
             (click)="expanded = !expanded"
         ></button>
     </header>
