@@ -7,7 +7,8 @@ import {
     GetHandbooksResponse,
     GetHandbookRowsRequest,
     Handbook,
-    GetHandbookRowsResponse
+    GetHandbookRowsResponse,
+    HandbookRow
 } from '../interfaces';
 import {Observable} from 'rxjs';
 
@@ -49,8 +50,11 @@ export class HandbookService {
         });
     }
 
-    addRow(handbookId: string, payload: AddHandbookRowRequest) {
-        return this.http.post(
+    addRow(
+        handbookId: string,
+        payload: AddHandbookRowRequest
+    ): Observable<HandbookRow> {
+        return this.http.post<HandbookRow>(
             `${this.astushaBookApiUrl}/${handbookId}/rows`,
             payload,
             {

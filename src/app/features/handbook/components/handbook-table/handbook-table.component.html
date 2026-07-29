@@ -5,7 +5,7 @@
                 <th tuiTh class="fixed">
                     <input type="checkbox" tuiCheckbox />
                 </th>
-                @for (column of handbook()?.columns; track $index) {
+                @for (column of handbook()?.columns; track column.id) {
                     <th tuiTh>{{ column.name }}</th>
                 }
                 <th tuiTh class="fixed">
@@ -17,7 +17,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody tuiTbody>
+        <tbody tuiTbody [tuiSkeleton]="isLoading()">
             @for (row of rows(); track row.id) {
                 <tr>
                     <td tuiTd class="fixed">
@@ -25,9 +25,29 @@
                     </td>
 
                     @for (column of handbook()?.columns; track column.id) {
-                        <td tuiTd>
-                            {{ row.values[column.id] }}
-                        </td>
+                        @switch (column.type) {
+                            @case (HandbookColumnType.Date) {
+                                {{ getDateValue(row.values[column.id]) | date }}
+                            }
+
+                            @case (HandbookColumnType.Boolean) {
+                                <td tuiTd>
+                                    {{ row.values[column.id] ? 'Да' : 'Нет' }}
+                                </td>
+                            }
+
+                            @case (HandbookColumnType.Text) {
+                                <td tuiTd>
+                                    {{ row.values[column.id] }}
+                                </td>
+                            }
+
+                            @case (HandbookColumnType.Number) {
+                                <td tuiTd>
+                                    {{ row.values[column.id] }}
+                                </td>
+                            }
+                        }
                     }
 
                     <td tuiTd class="fixed">
@@ -42,11 +62,10 @@
         </tbody>
     </table>
 
-    <div #loadMore></div>
+    <div #loadMore class="loadMore"></div>
 
-    @if (rows().length === 0) {
-        <div class="empty">
-            <div class="empty-text">Нет строк</div>
+    <footer class="footer">
+        <div class="add-row__button">
             <button
                 tuiButton
                 iconStart="@tui.plus"
@@ -55,5 +74,9 @@
                 >Строка</button
             >
         </div>
-    }
+
+        @if (rows().length === 0 && !isLoading()) {
+            <div class="empty-text">Нет строк</div>
+        }
+    </footer>
 </div>

@@ -1,7 +1,11 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {BarContext} from '../../../handbooks/components/host-drawer/base-bar.service';
 import {injectContext} from '@taiga-ui/polymorpheus';
-import {Handbook, HandbookColumnType} from '../../../../shared/interfaces';
+import {
+    Handbook,
+    HandbookColumnType,
+    HandbookRow
+} from '../../../../shared/interfaces';
 import {
     ReactiveFormsModule,
     FormGroup,
@@ -53,7 +57,7 @@ import {catchError, EMPTY, tap} from 'rxjs';
 })
 export class AddHandbookStringFormComponent {
     protected readonly context =
-        injectContext<BarContext<{handbook: Handbook}, object>>();
+        injectContext<BarContext<{handbook: Handbook}, HandbookRow>>();
 
     private readonly handbookService = inject(HandbookService);
     private readonly alerts = inject(TuiNotificationService);

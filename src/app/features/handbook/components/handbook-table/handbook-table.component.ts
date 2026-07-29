@@ -1,4 +1,5 @@
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
     effect,
@@ -6,10 +7,15 @@ import {
     inject,
     Injector,
     input,
+    OnDestroy,
     signal,
     ViewChild
 } from '@angular/core';
-import {Handbook, HandbookRow} from '../../../../shared/interfaces';
+import {
+    Handbook,
+    HandbookColumnType,
+    HandbookRow
+} from '../../../../shared/interfaces';
 import {TuiTable} from '@taiga-ui/addon-table';
 import {TuiButton, TuiCheckbox} from '@taiga-ui/core';
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
@@ -17,15 +23,17 @@ import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
 import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-handbook-string-form.component';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {finalize} from 'rxjs';
+import {TuiSkeleton} from '@taiga-ui/kit';
+import {DatePipe} from '@angular/common';
 
 @Component({
     selector: 'app-handbook-table',
-    imports: [TuiTable, TuiButton, TuiCheckbox],
+    imports: [TuiTable, TuiButton, TuiCheckbox, TuiSkeleton, DatePipe],
     templateUrl: './handbook-table.component.html',
     styleUrl: './handbook-table.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HandbookTableComponent {
+export class HandbookTableComponent implements AfterViewInit, OnDestroy {
     @ViewChild('loadMore')
     private loadMore!: ElementRef<HTMLElement>;
     private observer!: IntersectionObserver;
@@ -33,7 +41,6 @@ export class HandbookTableComponent {
     readonly handbook = input<Handbook | null>(null);
 
     protected readonly rows = signal<HandbookRow[]>([]);
-    // protected readonly values = signal<boolean | string | null | number[]>(null)
     protected readonly nextOffset = signal<number | null>(0);
     protected readonly isLoading = signal(false);
 
@@ -41,41 +48,66 @@ export class HandbookTableComponent {
     private readonly handbookService = inject(HandbookService);
     private readonly injector = inject(Injector);
 
+    protected readonly HandbookColumnType = HandbookColumnType;
+
     constructor() {
         effect(() => {
-            this.isLoading.set(true);
-
             const handBookId = this.handbook()?.id;
             if (!handBookId) {
                 return;
             }
 
-            console.log(123);
-            const payload = {offset: 0};
+            this.isLoading.set(true);
 
             this.handbookService
-                .getHandbookRows(handBookId, payload)
+                .getHandbookRows(handBookId, {offset: 0})
                 .pipe(finalize(() => this.isLoading.set(false)))
-                .subscribe(result => this.rows.set(result.items));
+                .subscribe(result => {
+                    this.rows.set(result.items);
+                    this.nextOffset.set(result.nextOffset);
+                });
         });
     }
 
-    // ngAfterViewInit(): void {
-    //     this.observer = new IntersectionObserver(entries => {
-    //         const trigger = entries[0];
+    ngAfterViewInit() {
+        this.observer = new IntersectionObserver(entries => {
+            const trigger = entries[0];
 
-    //         if (trigger.isIntersecting) {
-    //             this.handbookService.getHandbookRows();
-    //         }
-    //     });
-    // }
+            if (trigger.isIntersecting) {
+                const handBookId = this.handbook()?.id;
+                const offset = this.nextOffset();
+
+                if (!handBookId || offset === null) {
+                    return;
+                }
+
+                const payload = {offset: this.nextOffset()};
+
+                this.handbookService
+                    .getHandbookRows(handBookId, payload)
+                    .subscribe(result => {
+                        this.rows.update(currentRows => [
+                            ...currentRows,
+                            ...result.items
+                        ]);
+                        this.nextOffset.set(result.nextOffset);
+                    });
+            }
+        });
+
+        this.observer.observe(this.loadMore.nativeElement);
+    }
+
+    ngOnDestroy() {
+        this.observer.disconnect();
+    }
 
     protected createAttribute(event: MouseEvent) {
         event.preventDefault();
         event.stopPropagation();
 
         this.sidebarService
-            .open$(
+            .open$<AddHandbookStringFormComponent, HandbookRow>(
                 new PolymorpheusComponent(
                     AddHandbookStringFormComponent,
                     this.injector
@@ -87,6 +119,14 @@ export class HandbookTableComponent {
                 },
                 {handbook: this.handbook()}
             )
-            .subscribe();
+            .subscribe(row => this.rows.update(rows => [...rows, row]));
+    }
+
+    protected getDateValue(
+        value: string | number | boolean | null
+    ): string | number | null {
+        return typeof value === 'string' || typeof value === 'number'
+            ? value
+            : null;
     }
 }

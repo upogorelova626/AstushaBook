@@ -111,7 +111,7 @@ export interface AddHandbookRowRequest {
 }
 
 export interface GetHandbookRowsRequest {
-    offset: number;
+    offset: number | null;
 }
 
 export interface HandbookRow {
