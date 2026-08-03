@@ -1,0 +1,37 @@
+<button
+    tuiButton
+    appearance="flat"
+    iconStart="@tui.bolt"
+    [tuiHint]="actions"
+    tuiHintAppearance="floating"
+    tuiHintDirection="end"
+></button>
+
+<ng-template #actions>
+    <div class="actions">
+        <button
+            tuiButton
+            appearance="flat"
+            iconStart="@tui.pen"
+            class="action-button"
+            (click)="openEditRowDialog($event)"
+            >Редактировать</button
+        >
+        <button
+            tuiButton
+            appearance="flat"
+            iconStart="@tui.copy"
+            class="action-button"
+            (click)="cloneRow()"
+            >Дублировать</button
+        >
+        <button
+            tuiButton
+            appearance="flat"
+            iconStart="@tui.trash-2"
+            class="action-button"
+            (click)="deleteRow()"
+            >Удалить</button
+        >
+    </div>
+</ng-template>

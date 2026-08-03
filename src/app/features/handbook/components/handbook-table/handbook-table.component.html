@@ -1,13 +1,15 @@
 <div class="wrapper">
-    <table class="table" tuiTable>
+    <table class="table" tuiTable [tuiSkeleton]="isLoading()">
         <thead class="thead">
             <tr>
                 <th tuiTh class="fixed">
                     <input type="checkbox" tuiCheckbox />
                 </th>
+
                 @for (column of handbook()?.columns; track column.id) {
                     <th tuiTh>{{ column.name }}</th>
                 }
+
                 <th tuiTh class="fixed">
                     <button
                         tuiButton
@@ -17,8 +19,9 @@
                 </th>
             </tr>
         </thead>
-        <tbody tuiTbody [tuiSkeleton]="isLoading()">
-            @for (row of rows(); track row.id) {
+
+        <tbody tuiTbody>
+            @for (row of draftRows(); track row.id) {
                 <tr>
                     <td tuiTd class="fixed">
                         <input type="checkbox" tuiCheckbox />
@@ -27,35 +30,92 @@
                     @for (column of handbook()?.columns; track column.id) {
                         @switch (column.type) {
                             @case (HandbookColumnType.Date) {
-                                {{ getDateValue(row.values[column.id]) | date }}
+                                <td
+                                    tuiTd
+                                    (dblclick)="startEditing(row.id, column.id)"
+                                >
+                                    @if (!isEditing(row.id, column.id)) {
+                                        {{
+                                            getDateValue(row.values[column.id])
+                                                | date
+                                        }}
+                                    } @else {
+                                        <tui-textfield>
+                                            <input
+                                                tuiInputDate
+                                                [formControl]="editCellControl"
+                                            />
+                                            <tui-calendar *tuiDropdown />
+                                        </tui-textfield>
+                                    }
+                                </td>
                             }
 
                             @case (HandbookColumnType.Boolean) {
-                                <td tuiTd>
-                                    {{ row.values[column.id] ? 'Да' : 'Нет' }}
+                                <td
+                                    tuiTd
+                                    (dblclick)="startEditing(row.id, column.id)"
+                                >
+                                    @if (!isEditing(row.id, column.id)) {
+                                        {{
+                                            row.values[column.id] ? 'Да' : 'Нет'
+                                        }}
+                                    } @else {
+                                        <input
+                                            tuiCheckbox
+                                            type="checkbox"
+                                            [formControl]="editCellControl"
+                                        />
+                                    }
                                 </td>
                             }
 
                             @case (HandbookColumnType.Text) {
-                                <td tuiTd>
-                                    {{ row.values[column.id] }}
+                                <td
+                                    tuiTd
+                                    (dblclick)="startEditing(row.id, column.id)"
+                                >
+                                    @if (!isEditing(row.id, column.id)) {
+                                        {{ row.values[column.id] }}
+                                    } @else {
+                                        <tui-textfield>
+                                            <input
+                                                type="text"
+                                                tuiInput
+                                                [formControl]="editCellControl"
+                                            />
+                                        </tui-textfield>
+                                    }
                                 </td>
                             }
 
                             @case (HandbookColumnType.Number) {
-                                <td tuiTd>
-                                    {{ row.values[column.id] }}
+                                <td
+                                    tuiTd
+                                    (dblclick)="startEditing(row.id, column.id)"
+                                >
+                                    @if (!isEditing(row.id, column.id)) {
+                                        {{ row.values[column.id] }}
+                                    } @else {
+                                        <tui-textfield>
+                                            <input
+                                                type="number"
+                                                tuiInput
+                                                [formControl]="editCellControl"
+                                            />
+                                        </tui-textfield>
+                                    }
                                 </td>
                             }
                         }
                     }
 
                     <td tuiTd class="fixed">
-                        <button
-                            tuiButton
-                            appearance="flat"
-                            iconStart="@tui.bolt"
-                        ></button>
+                        <app-edit-row-button
+                            [handbook]="handbook()"
+                            [row]="row"
+                            (updatedRow)="updatedRows($event)"
+                        />
                     </td>
                 </tr>
             }
@@ -65,14 +125,22 @@
     <div #loadMore class="loadMore"></div>
 
     <footer class="footer">
-        <div class="add-row__button">
+        <div class="footer-buttons">
             <button
                 tuiButton
                 iconStart="@tui.plus"
                 appearance="flat"
                 (click)="createAttribute($event)"
-                >Строка</button
             >
+                Строка
+            </button>
+
+            <div class="buttons">
+                <button tuiButton appearance="flat" (click)="cancelEditing()"
+                    >Отменить изменения</button
+                >
+                <button tuiButton (click)="saveChanges()"> Сохранить</button>
+            </div>
         </div>
 
         @if (rows().length === 0 && !isLoading()) {

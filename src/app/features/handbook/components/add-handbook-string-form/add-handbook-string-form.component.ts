@@ -1,4 +1,9 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    signal
+} from '@angular/core';
 import {BarContext} from '../../../handbooks/components/host-drawer/base-bar.service';
 import {injectContext} from '@taiga-ui/polymorpheus';
 import {
@@ -25,7 +30,7 @@ import {
 } from '@taiga-ui/core';
 import {TuiInputDate} from '@taiga-ui/kit';
 import {HandbookService} from '../../../../shared/services/handbook.service';
-import {catchError, EMPTY, tap} from 'rxjs';
+import {catchError, EMPTY, finalize, tap} from 'rxjs';
 
 @Component({
     selector: 'app-add-handbook-string-form',
@@ -57,22 +62,42 @@ import {catchError, EMPTY, tap} from 'rxjs';
 })
 export class AddHandbookStringFormComponent {
     protected readonly context =
-        injectContext<BarContext<{handbook: Handbook}, HandbookRow>>();
+        injectContext<
+            BarContext<{handbook: Handbook; editRow?: HandbookRow}, HandbookRow>
+        >();
 
     private readonly handbookService = inject(HandbookService);
     private readonly alerts = inject(TuiNotificationService);
 
     protected readonly handbook = this.context.handbook;
+    protected readonly editRow = this.context.editRow;
+
+    protected readonly isEditing = signal(false);
+    protected readonly isAdding = signal(false);
+    protected readonly isSaving = signal(false);
 
     protected readonly HandbookColumnType = HandbookColumnType;
 
     protected readonly stringForm = new FormGroup({});
 
     constructor() {
+        if (!this.editRow) {
+            this.isEditing.set(false);
+            this.isAdding.set(true);
+        } else {
+            this.isEditing.set(true);
+            this.isAdding.set(false);
+        }
+
         for (const column of this.handbook.columns) {
+            const value =
+                column.type === HandbookColumnType.Boolean
+                    ? (this.editRow?.values[column.id] ?? false)
+                    : (this.editRow?.values[column.id] ?? '');
+
             this.stringForm.addControl(
                 column.id,
-                new FormControl(this.getInitialValue(column.type), [
+                new FormControl(value, [
                     ...(column.required &&
                     column.type !== HandbookColumnType.Boolean
                         ? [Validators.required]
@@ -85,24 +110,13 @@ export class AddHandbookStringFormComponent {
         }
     }
 
-    private getInitialValue(type: HandbookColumnType) {
-        if (type === HandbookColumnType.Text) {
-            return 'Астюша';
-        }
-        if (type === HandbookColumnType.Number) {
-            return 22;
-        }
-
-        if (type === HandbookColumnType.Boolean) {
-            return false;
-        } else return '29.12.2003';
-    }
-
     protected save() {
+        this.stringForm.markAllAsTouched();
         if (this.stringForm.invalid) {
-            this.stringForm.markAllAsTouched();
             return;
         }
+
+        this.isSaving.set(true);
 
         const handbookId = this.handbook.id;
         const payload = {values: this.stringForm.getRawValue()};
@@ -126,8 +140,67 @@ export class AddHandbookStringFormComponent {
                         )
                         .subscribe();
                     return EMPTY;
+                }),
+                finalize(() => {
+                    this.isSaving.set(false);
                 })
             )
             .subscribe(row => this.context.complete(row));
+    }
+
+    protected edit() {
+        const rowId = this.editRow?.id;
+        if (!rowId) {
+            return;
+        }
+
+        this.stringForm.markAllAsTouched();
+        if (this.stringForm.invalid) {
+            return;
+        }
+
+        this.isSaving.set(true);
+
+        const handbookId = this.handbook.id;
+        const value = this.stringForm.getRawValue();
+
+        const payload = {
+            rows: [
+                {
+                    id: rowId,
+                    values: value
+                }
+            ]
+        };
+
+        this.handbookService
+            .editHandbookRows(handbookId, payload)
+            .pipe(
+                tap(() =>
+                    this.alerts
+                        .open('Строка успешно обновлена', {
+                            label: 'Готово',
+                            appearance: 'positive'
+                        })
+                        .subscribe()
+                ),
+                catchError(() => {
+                    this.alerts
+                        .open(
+                            'Не удалось обновить строку. Попробуйте еще раз',
+                            {label: 'Ошибка', appearance: 'negative'}
+                        )
+                        .subscribe();
+                    return EMPTY;
+                }),
+                finalize(() => {
+                    this.isSaving.set(false);
+                })
+            )
+            .subscribe(([row]) => {
+                if (row) {
+                    this.context.complete(row);
+                }
+            });
     }
 }

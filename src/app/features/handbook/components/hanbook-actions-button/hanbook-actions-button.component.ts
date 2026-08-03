@@ -1,4 +1,4 @@
-import {Component, inject, input, signal} from '@angular/core';
+import {Component, inject, Injector, input, signal} from '@angular/core';
 import {TuiActiveZone} from '@taiga-ui/cdk/directives/active-zone';
 import {TuiObscured} from '@taiga-ui/cdk/directives/obscured';
 import {
@@ -8,10 +8,13 @@ import {
     TuiNotificationService
 } from '@taiga-ui/core';
 import {TuiChevron} from '@taiga-ui/kit';
-import {Handbook} from '../../../../shared/interfaces';
+import {Handbook, HandbookRow} from '../../../../shared/interfaces';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, delay, EMPTY, tap} from 'rxjs';
 import {Router} from '@angular/router';
+import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-handbook-string-form.component';
+import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
+import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
 
 interface ExampleAction {
     readonly icon: string;
@@ -36,8 +39,11 @@ export class HanbookActionsButtonComponent {
     readonly handbook = input<Handbook | null>(null);
 
     private readonly handbooksService = inject(HandbookService);
+    private readonly sidebarService = inject(SideBarService);
     private readonly alerts = inject(TuiNotificationService);
+
     private readonly router = inject(Router);
+    private readonly injector = inject(Injector);
 
     protected readonly open = signal(false);
     protected readonly selected = signal<ExampleAction | null>(null);
@@ -52,7 +58,9 @@ export class HanbookActionsButtonComponent {
         {
             icon: '@tui.plus',
             title: 'Добавить строку',
-            action: () => this.addRow
+            action: () => {
+                return;
+            }
         },
         {
             icon: '@tui.trash-2',
@@ -115,7 +123,24 @@ export class HanbookActionsButtonComponent {
             )
             .subscribe();
     }
-    protected addRow() {
-        return;
+
+    protected createAttribute(event: MouseEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.sidebarService
+            .open$<AddHandbookStringFormComponent, HandbookRow>(
+                new PolymorpheusComponent(
+                    AddHandbookStringFormComponent,
+                    this.injector
+                ),
+                {
+                    overlay: true,
+                    rounded: true,
+                    offset: true
+                },
+                {handbook: this.handbook()}
+            )
+            .subscribe();
     }
 }

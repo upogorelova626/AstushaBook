@@ -126,3 +126,12 @@ export interface GetHandbookRowsResponse {
     items: HandbookRow[];
     nextOffset: number | null;
 }
+
+export interface UpdatedHandbookRow {
+    id: string;
+    values: Record<string, string | number | boolean | null>;
+}
+
+export interface UpdateHandbookRowsRequest {
+    rows: UpdatedHandbookRow[];
+}

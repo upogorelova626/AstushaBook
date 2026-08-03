@@ -1,11 +1,11 @@
 <div class="handbook-header">
     <div class="left">
         <a
-            class="link"
             tuiButton
+            iconStart="@tui.chevron-left"
             appearance="flat"
-            [routerLink]="['astusha', 'handbooks', 'all']"
-            >На главную</a
+            routerLink="/astusha/handbooks/all"
+            >Назад</a
         >
         <div class="name">{{ handbook()?.name }}</div>
     </div>

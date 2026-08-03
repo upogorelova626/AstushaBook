@@ -1,11 +1,19 @@
 <form class="form" [formGroup]="stringForm">
+    <header>
+        @if (isAdding()) {
+            <div class="header"> Добавление новой строки </div>
+        } @else {
+            <div class="header"> Редактирование строки </div>
+        }
+    </header>
+
     @for (column of handbook.columns; track column.id) {
         <div class="inputs">
             @switch (column.type) {
                 @case (HandbookColumnType.Text) {
                     <label class="label">
                         {{ column.name }}
-                        <tui-textfield>
+                        <tui-textfield class="textfield">
                             <input
                                 type="text"
                                 tuiInput
@@ -20,7 +28,7 @@
                 @case (HandbookColumnType.Number) {
                     <label class="label">
                         {{ column.name }}
-                        <tui-textfield>
+                        <tui-textfield class="textfield">
                             <input
                                 type="number"
                                 tuiInput
@@ -38,6 +46,7 @@
                         {{ column.name }}
 
                         <input
+                            class="checkbox"
                             type="checkbox"
                             tuiCheckbox
                             [formControlName]="column.id"
@@ -50,7 +59,7 @@
                 @case (HandbookColumnType.Date) {
                     <label class="label">
                         {{ column.name }}
-                        <tui-textfield>
+                        <tui-textfield class="textfield">
                             <input tuiInputDate [formControlName]="column.id" />
                             <tui-calendar *tuiDropdown />
                         </tui-textfield>
@@ -65,11 +74,32 @@
     <footer class="buttons">
         <button
             type="button"
+            size="l"
             tuiButton
             appearance="flat"
             (click)="context.complete()"
             >Отмена</button
         >
-        <button type="button" tuiButton (click)="save()">Сохранить</button>
+        @if (isAdding()) {
+            <button
+                type="button"
+                size="l"
+                appearance="primary"
+                tuiButton
+                (click)="save()"
+                [disabled]="isSaving()"
+                >Сохранить</button
+            >
+        } @else {
+            <button
+                type="button"
+                size="l"
+                appearance="primary"
+                tuiButton
+                (click)="edit()"
+                [disabled]="isSaving()"
+                >Сохранить</button
+            >
+        }
     </footer>
 </form>
