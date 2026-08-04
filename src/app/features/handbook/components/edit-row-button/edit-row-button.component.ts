@@ -19,10 +19,11 @@ export class EditRowButtonComponent {
 
     readonly updatedRow = output<HandbookRow>();
     readonly deletedRowId = output<string>();
+    readonly clonedRows = output<HandbookRow[]>();
 
     private readonly sidebarService = inject(SideBarService);
     private readonly handbookService = inject(HandbookService);
-    private alerts = inject(TuiNotificationService);
+    private readonly alerts = inject(TuiNotificationService);
 
     protected deleteRow() {
         const handbookId = this.handbook()?.id;
@@ -35,7 +36,7 @@ export class EditRowButtonComponent {
         const payload = {rowIds: [rowId]};
 
         this.handbookService
-            .deleteHandbookRow(handbookId, payload)
+            .deleteHandbookRows(handbookId, payload)
             .pipe(
                 tap(() =>
                     this.alerts
@@ -61,12 +62,54 @@ export class EditRowButtonComponent {
     }
 
     protected cloneRow() {
-        return;
+        const handbookId = this.handbook()?.id;
+        const rowId = this.row()?.id;
+
+        if (!handbookId || !rowId) {
+            return;
+        }
+
+        const payload = {rowIds: [rowId]};
+
+        this.handbookService
+            .cloneHandbookRows(handbookId, payload)
+            .pipe(
+                tap(() =>
+                    this.alerts
+                        .open('Строка успешно добавлена', {
+                            label: 'Готово',
+                            appearance: 'positive'
+                        })
+                        .subscribe()
+                ),
+                catchError(() => {
+                    this.alerts
+                        .open(
+                            'Не удалось добавить строку. Попробуйте еще раз',
+                            {
+                                label: 'Ошибка',
+                                appearance: 'negative'
+                            }
+                        )
+                        .subscribe();
+                    return EMPTY;
+                })
+            )
+            .subscribe(rows => {
+                this.clonedRows.emit(rows);
+            });
     }
 
-    protected openEditRowDialog(event: MouseEvent) {
+    protected openEditRowDialog(event: MouseEvent): void {
         event.preventDefault();
         event.stopPropagation();
+
+        const handbook = this.handbook();
+        const row = this.row();
+
+        if (!handbook || !row) {
+            return;
+        }
 
         this.sidebarService
             .open$<AddHandbookStringFormComponent, HandbookRow>(
@@ -77,8 +120,8 @@ export class EditRowButtonComponent {
                     offset: true
                 },
                 {
-                    handbook: this.handbook(),
-                    editRow: this.row()
+                    handbook,
+                    editRow: row
                 }
             )
             .subscribe(updatedRow => {

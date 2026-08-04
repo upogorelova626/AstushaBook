@@ -321,4 +321,11 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
 
         this.rows.update(rows => rows.filter(row => row.id !== deletedRowId));
     }
+
+    protected addRows(newRows: HandbookRow[]) {
+        for (const newRow of newRows) {
+            this.draftRows().push(newRow);
+            this.rows().push(newRow);
+        }
+    }
 }
