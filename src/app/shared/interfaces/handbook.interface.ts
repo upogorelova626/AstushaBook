@@ -135,3 +135,7 @@ export interface UpdatedHandbookRow {
 export interface UpdateHandbookRowsRequest {
     rows: UpdatedHandbookRow[];
 }
+
+export interface DeleteHandbookRowsRequest {
+    rowIds: string[];
+}

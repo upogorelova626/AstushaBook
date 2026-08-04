@@ -32,8 +32,10 @@ export class EditRowButtonComponent {
             return;
         }
 
+        const payload = {rowIds: [rowId]};
+
         this.handbookService
-            .deleteHandbookRow(handbookId, rowId)
+            .deleteHandbookRow(handbookId, payload)
             .pipe(
                 tap(() =>
                     this.alerts

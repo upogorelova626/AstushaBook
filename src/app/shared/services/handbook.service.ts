@@ -9,7 +9,8 @@ import {
     Handbook,
     GetHandbookRowsResponse,
     HandbookRow,
-    UpdateHandbookRowsRequest
+    UpdateHandbookRowsRequest,
+    DeleteHandbookRowsRequest
 } from '../interfaces';
 import {Observable} from 'rxjs';
 
@@ -90,10 +91,12 @@ export class HandbookService {
         );
     }
 
-    deleteHandbookRow(handbookId: string, rowId: string) {
+    deleteHandbookRow(handbookId: string, payload: DeleteHandbookRowsRequest) {
         return this.http.delete(
-            `${this.astushaBookApiUrl}/${handbookId}/rows/${rowId}`,
+            `${this.astushaBookApiUrl}/${handbookId}/rows`,
+
             {
+                body: payload,
                 withCredentials: true
             }
         );
