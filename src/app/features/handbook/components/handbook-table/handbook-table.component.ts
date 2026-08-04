@@ -305,9 +305,20 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
         );
     }
 
-    protected updatedRows(updatedRow: HandbookRow) {
+    protected updateRows(updatedRow: HandbookRow) {
         this.draftRows.update(rows =>
             rows.map(row => (row.id === updatedRow.id ? updatedRow : row))
         );
+        this.rows.update(rows =>
+            rows.map(row => (row.id === updatedRow.id ? updatedRow : row))
+        );
+    }
+
+    protected deleteRow(deletedRowId: string) {
+        this.draftRows.update(rows =>
+            rows.filter(row => row.id !== deletedRowId)
+        );
+
+        this.rows.update(rows => rows.filter(row => row.id !== deletedRowId));
     }
 }

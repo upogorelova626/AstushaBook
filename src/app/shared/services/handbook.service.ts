@@ -89,4 +89,13 @@ export class HandbookService {
             }
         );
     }
+
+    deleteHandbookRow(handbookId: string, rowId: string) {
+        return this.http.delete(
+            `${this.astushaBookApiUrl}/${handbookId}/rows/${rowId}`,
+            {
+                withCredentials: true
+            }
+        );
+    }
 }

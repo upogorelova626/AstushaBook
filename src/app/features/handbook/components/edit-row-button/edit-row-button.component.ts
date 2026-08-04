@@ -1,9 +1,11 @@
 import {Component, inject, input, output} from '@angular/core';
-import {TuiButton, TuiHint} from '@taiga-ui/core';
+import {TuiButton, TuiHint, TuiNotificationService} from '@taiga-ui/core';
 import {Handbook, HandbookRow} from '../../../../shared/interfaces';
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
 import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-handbook-string-form.component';
 import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
+import {HandbookService} from '../../../../shared/services/handbook.service';
+import {catchError, EMPTY, tap} from 'rxjs';
 
 @Component({
     selector: 'app-edit-row-button',
@@ -16,11 +18,44 @@ export class EditRowButtonComponent {
     readonly row = input<HandbookRow>();
 
     readonly updatedRow = output<HandbookRow>();
+    readonly deletedRowId = output<string>();
 
     private readonly sidebarService = inject(SideBarService);
+    private readonly handbookService = inject(HandbookService);
+    private alerts = inject(TuiNotificationService);
 
     protected deleteRow() {
-        return;
+        const handbookId = this.handbook()?.id;
+        const rowId = this.row()?.id;
+
+        if (!handbookId || !rowId) {
+            return;
+        }
+
+        this.handbookService
+            .deleteHandbookRow(handbookId, rowId)
+            .pipe(
+                tap(() =>
+                    this.alerts
+                        .open('Строка успешно удалена', {
+                            label: 'Готово',
+                            appearance: 'positive'
+                        })
+                        .subscribe()
+                ),
+                catchError(() => {
+                    this.alerts
+                        .open('Не удалось удалить строку. Попробуйте еще раз', {
+                            label: 'Ошибка',
+                            appearance: 'negative'
+                        })
+                        .subscribe();
+                    return EMPTY;
+                })
+            )
+            .subscribe(() => {
+                this.deletedRowId.emit(rowId);
+            });
     }
 
     protected cloneRow() {

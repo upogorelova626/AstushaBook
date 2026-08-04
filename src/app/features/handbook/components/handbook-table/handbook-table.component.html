@@ -114,7 +114,8 @@
                         <app-edit-row-button
                             [handbook]="handbook()"
                             [row]="row"
-                            (updatedRow)="updatedRows($event)"
+                            (updatedRow)="updateRows($event)"
+                            (deletedRowId)="deleteRow($event)"
                         />
                     </td>
                 </tr>
