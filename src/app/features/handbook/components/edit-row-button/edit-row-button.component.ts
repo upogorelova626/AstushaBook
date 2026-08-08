@@ -1,4 +1,10 @@
-import {Component, inject, input, output} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    input,
+    output
+} from '@angular/core';
 import {TuiButton, TuiHint, TuiNotificationService} from '@taiga-ui/core';
 import {Handbook, HandbookRow} from '../../../../shared/interfaces';
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
@@ -11,7 +17,8 @@ import {catchError, EMPTY, tap} from 'rxjs';
     selector: 'app-edit-row-button',
     imports: [TuiButton, TuiHint],
     templateUrl: './edit-row-button.component.html',
-    styleUrl: './edit-row-button.component.less'
+    styleUrl: './edit-row-button.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditRowButtonComponent {
     readonly handbook = input<Handbook | null>(null);

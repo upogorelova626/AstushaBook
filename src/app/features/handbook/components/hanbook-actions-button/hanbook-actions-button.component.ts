@@ -1,4 +1,11 @@
-import {Component, inject, Injector, input, signal} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    Injector,
+    input,
+    signal
+} from '@angular/core';
 import {TuiActiveZone} from '@taiga-ui/cdk/directives/active-zone';
 import {TuiObscured} from '@taiga-ui/cdk/directives/obscured';
 import {
@@ -33,7 +40,8 @@ interface ExampleAction {
         TuiDropdown
     ],
     templateUrl: './hanbook-actions-button.component.html',
-    styleUrl: './hanbook-actions-button.component.less'
+    styleUrl: './hanbook-actions-button.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HanbookActionsButtonComponent {
     readonly handbook = input<Handbook | null>(null);

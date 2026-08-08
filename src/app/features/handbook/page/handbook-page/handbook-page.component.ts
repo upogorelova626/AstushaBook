@@ -14,6 +14,7 @@ import {catchError, EMPTY, finalize} from 'rxjs';
 import {TuiSkeleton} from '@taiga-ui/kit';
 import {SidebarHostComponent} from '../../../handbooks/components/host-drawer/sidebar-host.component';
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
+import {HandbookTableService} from '../../services/handbook-table.service';
 
 @Component({
     selector: 'app-handbook-page',
@@ -25,17 +26,18 @@ import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.
     ],
     templateUrl: './handbook-page.component.html',
     styleUrl: './handbook-page.component.less',
-    providers: [SideBarService],
+    providers: [SideBarService, HandbookTableService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HandbookPageComponent implements OnInit {
     private readonly handbookService = inject(HandbookService);
+    private readonly handbookTableService = inject(HandbookTableService);
     private readonly route = inject(ActivatedRoute);
 
     protected readonly isLoading = signal(false);
     protected readonly handbook = signal<Handbook | null>(null);
 
-    ngOnInit(): void {
+    ngOnInit() {
         const handbookId = this.route.snapshot.paramMap.get('id');
 
         if (!handbookId) {
@@ -44,11 +46,12 @@ export class HandbookPageComponent implements OnInit {
 
         this.isLoading.set(true);
 
+        this.handbookTableService.getHandbookRows(handbookId);
+
         this.handbookService
             .getHandbook(handbookId)
             .pipe(
                 catchError(() => {
-                    console.log(113);
                     return EMPTY;
                 }),
                 finalize(() => {

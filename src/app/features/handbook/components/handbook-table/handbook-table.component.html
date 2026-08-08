@@ -2,21 +2,13 @@
     <table class="table" tuiTable [tuiSkeleton]="isLoading()">
         <thead class="thead">
             <tr>
-                <th tuiTh class="fixed">
-                    <input type="checkbox" tuiCheckbox />
-                </th>
+                <th tuiTh class="fixed"> </th>
 
                 @for (column of handbook()?.columns; track column.id) {
                     <th tuiTh>{{ column.name }}</th>
                 }
 
-                <th tuiTh class="fixed">
-                    <button
-                        tuiButton
-                        appearance="flat"
-                        iconStart="@tui.bolt"
-                    ></button>
-                </th>
+                <th tuiTh class="fixed"> </th>
             </tr>
         </thead>
 
@@ -34,7 +26,7 @@
                                     tuiTd
                                     (dblclick)="startEditing(row.id, column.id)"
                                 >
-                                    @if (!isEditing(row.id, column.id)) {
+                                    @if (!isCellEditing(row.id, column.id)) {
                                         {{
                                             getDateValue(row.values[column.id])
                                                 | date
@@ -56,7 +48,7 @@
                                     tuiTd
                                     (dblclick)="startEditing(row.id, column.id)"
                                 >
-                                    @if (!isEditing(row.id, column.id)) {
+                                    @if (!isCellEditing(row.id, column.id)) {
                                         {{
                                             row.values[column.id] ? 'Да' : 'Нет'
                                         }}
@@ -75,7 +67,7 @@
                                     tuiTd
                                     (dblclick)="startEditing(row.id, column.id)"
                                 >
-                                    @if (!isEditing(row.id, column.id)) {
+                                    @if (!isCellEditing(row.id, column.id)) {
                                         {{ row.values[column.id] }}
                                     } @else {
                                         <tui-textfield>
@@ -94,7 +86,7 @@
                                     tuiTd
                                     (dblclick)="startEditing(row.id, column.id)"
                                 >
-                                    @if (!isEditing(row.id, column.id)) {
+                                    @if (!isCellEditing(row.id, column.id)) {
                                         {{ row.values[column.id] }}
                                     } @else {
                                         <tui-textfield>
@@ -136,16 +128,9 @@
             >
                 Строка
             </button>
-
-            <div class="buttons">
-                <button tuiButton appearance="flat" (click)="cancelEditing()"
-                    >Отменить изменения</button
-                >
-                <button tuiButton (click)="saveChanges()"> Сохранить</button>
-            </div>
         </div>
 
-        @if (rows().length === 0 && !isLoading()) {
+        @if (draftRows().length === 0 && !isLoading()) {
             <div class="empty-text">Нет строк</div>
         }
     </footer>

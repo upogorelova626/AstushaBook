@@ -9,5 +9,8 @@
         >
         <div class="name">{{ handbook()?.name }}</div>
     </div>
-    <app-hanbook-actions-button [handbook]="handbook()" />
+    <div class="right">
+        <app-edit-cells-buttons [handbook]="handbook()" />
+        <app-hanbook-actions-button [handbook]="handbook()" />
+    </div>
 </div>
