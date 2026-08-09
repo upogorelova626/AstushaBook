@@ -11,10 +11,11 @@ import {HandbookAttribute} from '../../../../../shared/interfaces';
 import {TableStructureFormService} from '../../../services/table-structure-form.service';
 import {SideBarService} from '../../host-drawer/sidebar.service';
 import {AttributeFormComponent} from '../attribute-form/attribute-form.component';
+import {AttributeTypePipe} from '../../../../../shared/pipes/attribute-type.pipe';
 
 @Component({
     selector: 'app-table-structure',
-    imports: [TuiButton, TuiBadge],
+    imports: [TuiButton, TuiBadge, AttributeTypePipe],
     templateUrl: './table-structure.component.html',
     styleUrl: './table-structure.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -26,6 +27,9 @@ export class TableStructureComponent {
     protected readonly tableStructureFormService = inject(
         TableStructureFormService
     );
+
+    protected readonly tableStuctureValues =
+        this.tableStructureFormService.tableStuctureValues;
 
     protected createAttribute(event: MouseEvent) {
         event.preventDefault();
@@ -46,8 +50,6 @@ export class TableStructureComponent {
             .subscribe(result => {
                 if (result) {
                     this.tableStructureFormService.add(result);
-
-                    console.log(result);
                 }
             });
     }

@@ -1,25 +1,44 @@
 <div class="search">
-    <label tuiLabel class="label">
-        Добавьте пользователей, которые могут редактировать справочник
+    @if (!isRowAddingOrEditing()) {
+        <label tuiLabel class="label">
+            Добавьте пользователей, которые могут редактировать справочник
+        </label>
+    } @else {
+        <label tuiLabel class="label"> Выберите пользователя </label>
+    }
 
-        <tui-textfield iconStart="@tui.search" class="textfield">
-            <input
-                tuiInput
-                placeholder="Имя, фамилия, логин или email"
-                [formControl]="searchUserControl"
-            />
+    <tui-textfield
+        iconStart="@tui.search"
+        class="textfield"
+        tuiChevron
+        [stringify]="stringifyUser"
+    >
+        <input
+            #inputRef
+            tuiComboBox
+            placeholder="Имя, фамилия, логин или email"
+            [formControl]="searchUserControl"
+            (input)="onSearchInput(inputRef.value)"
+            (blur)="lossFocus()"
+            [invalid]="isParentInvalid()"
+        />
 
-            @if (foundUsers().length > 0) {
-                <div *tuiDropdown class="dropdown">
-                    <app-user-searching-results
-                        [foundUsers]="foundUsers()"
-                        [selectedUsers]="selectedUsers()"
-                        (userAdded)="addUser($event)"
-                    />
-                </div>
-            }
-        </tui-textfield>
-    </label>
+        <tui-data-list-wrapper
+            *tuiDropdown
+            [items]="foundUsers()"
+            [itemContent]="userContent"
+            [emptyContent]="
+                inputRef.value.length < 2
+                    ? 'Введите минимум 2 символа'
+                    : 'Ничего не найдено'
+            "
+            class="dropdown"
+        />
+    </tui-textfield>
 
     <tui-error [formControl]="searchUserControl" />
 </div>
+
+<ng-template #userContent let-user>
+    <app-user-preview [user]="user" />
+</ng-template>

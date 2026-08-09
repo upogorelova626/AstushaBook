@@ -3,6 +3,7 @@ import {
     AfterViewInit,
     ChangeDetectionStrategy,
     Component,
+    DestroyRef,
     ElementRef,
     inject,
     input,
@@ -23,6 +24,7 @@ import {TuiInputDate, TuiSkeleton} from '@taiga-ui/kit';
 import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
 
 import {
+    AstushaUserPreview,
     Handbook,
     HandbookColumnType,
     HandbookRow
@@ -31,6 +33,7 @@ import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.
 import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-handbook-string-form.component';
 import {EditRowButtonComponent} from '../edit-row-button/edit-row-button.component';
 import {HandbookTableService} from '../../services/handbook-table.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 @Component({
     selector: 'app-handbook-table',
     imports: [
@@ -59,6 +62,8 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
     private readonly sidebarService = inject(SideBarService);
     private readonly handbookTableService = inject(HandbookTableService);
 
+    private readonly destroyRef = inject(DestroyRef);
+
     private observer!: IntersectionObserver;
 
     protected readonly originalRows = this.handbookTableService.originalRows;
@@ -72,10 +77,37 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
     protected readonly editingCell = this.handbookTableService.editingCell;
 
     protected readonly editCellControl = new FormControl<
-        string | number | boolean | null
+        string | number | boolean | null | AstushaUserPreview
     >(null);
 
     protected readonly HandbookColumnType = HandbookColumnType;
+
+    constructor() {
+        this.editCellControl.valueChanges
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(value => {
+                const editingCell = this.editingCell();
+
+                if (!editingCell) {
+                    return;
+                }
+                this.draftRows.update(rows =>
+                    rows.map(row => {
+                        if (row.id !== editingCell.rowId) {
+                            return row;
+                        }
+
+                        return {
+                            ...row,
+                            values: {
+                                ...row.values,
+                                [editingCell.columnId]: value
+                            }
+                        };
+                    })
+                );
+            });
+    }
 
     ngAfterViewInit() {
         this.observer = new IntersectionObserver(entries => {
@@ -114,8 +146,6 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
             return;
         }
 
-        this.saveCurrentCellToDraft();
-
         const draftRow = this.draftRows().find(row => row.id === rowId);
 
         if (!draftRow) {
@@ -128,38 +158,6 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
         });
 
         this.editCellControl.setValue(draftRow.values[columnId] ?? null);
-    }
-
-    private saveCurrentCellToDraft() {
-        const editingCell = this.editingCell();
-
-        if (!editingCell) {
-            return;
-        }
-
-        const value = this.editCellControl.value;
-
-        this.changedRowsId.update(currentValues =>
-            currentValues.includes(editingCell.rowId)
-                ? currentValues
-                : [...currentValues, editingCell.rowId]
-        );
-
-        this.draftRows.update(rows =>
-            rows.map(row => {
-                if (row.id !== editingCell.rowId) {
-                    return row;
-                }
-
-                return {
-                    ...row,
-                    values: {
-                        ...row.values,
-                        [editingCell.columnId]: value
-                    }
-                };
-            })
-        );
     }
 
     protected updateRows(updatedRow: HandbookRow) {
@@ -215,10 +213,24 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
     }
 
     protected getDateValue(
-        value: string | number | boolean | null
+        value: string | number | boolean | null | AstushaUserPreview
     ): string | number | null {
         return typeof value === 'string' || typeof value === 'number'
             ? value
             : null;
+    }
+
+    protected getUser(
+        value: string | number | boolean | null | AstushaUserPreview
+    ): string | null {
+        if (typeof value !== 'object' || value === null) {
+            return null;
+        }
+
+        const fullName = [value.firstName, value.lastName]
+            .filter(Boolean)
+            .join(' ');
+
+        return fullName || value.login;
     }
 }

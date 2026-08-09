@@ -6,7 +6,7 @@
     </header>
 
     <main class="content">
-        @if (tableStructureFormService.tableStuctureValues().length === 0) {
+        @if (tableStuctureValues().length === 0) {
             <div class="empty-column">
                 <div class="empty-info">
                     <div class="column-info">
@@ -37,10 +37,7 @@
             </div>
         } @else {
             <div class="columns-list">
-                @for (
-                    value of tableStructureFormService.tableStuctureValues();
-                    track $index
-                ) {
+                @for (value of tableStuctureValues(); track $index) {
                     <div class="column">
                         <div class="column-left">
                             <button
@@ -57,7 +54,7 @@
 
                                 <div class="column-meta">
                                     <span class="badge">
-                                        {{ value.type }}
+                                        {{ value.type | attributeType }}
                                     </span>
 
                                     @if (value.required) {

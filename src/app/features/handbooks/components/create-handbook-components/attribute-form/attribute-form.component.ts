@@ -90,14 +90,22 @@ export class AttributeFormComponent {
         HandbookColumnType.Text,
         HandbookColumnType.Number,
         HandbookColumnType.Boolean,
-        HandbookColumnType.Date
+        HandbookColumnType.Date,
+        HandbookColumnType.List,
+        HandbookColumnType.User,
+        HandbookColumnType.Reference,
+        HandbookColumnType.FormattedString
     ];
 
     protected readonly labels: Record<HandbookColumnType, string> = {
         [HandbookColumnType.Text]: 'Текст',
         [HandbookColumnType.Number]: 'Число',
-        [HandbookColumnType.Boolean]: 'Да / нет',
-        [HandbookColumnType.Date]: 'Дата'
+        [HandbookColumnType.Boolean]: 'Логическое значение',
+        [HandbookColumnType.Date]: 'Дата',
+        [HandbookColumnType.List]: 'Список',
+        [HandbookColumnType.User]: 'Пользователь',
+        [HandbookColumnType.Reference]: 'Значение из другого справочника',
+        [HandbookColumnType.FormattedString]: 'Форматированная строка'
     };
 
     protected readonly stringify = (type: HandbookColumnType): string =>

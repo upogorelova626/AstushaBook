@@ -31,6 +31,7 @@ import {
 import {TuiInputDate} from '@taiga-ui/kit';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, finalize, tap} from 'rxjs';
+import {SearchUsersComponent} from '../../../handbooks/components/create-handbook-components/search-users/search-users.component';
 
 @Component({
     selector: 'app-add-handbook-string-form',
@@ -43,7 +44,8 @@ import {catchError, EMPTY, finalize, tap} from 'rxjs';
         TuiCalendar,
         TuiInputDate,
         TuiDropdown,
-        TuiError
+        TuiError,
+        SearchUsersComponent
     ],
     templateUrl: './add-handbook-string-form.component.html',
     styleUrl: './add-handbook-string-form.component.less',
@@ -76,6 +78,8 @@ export class AddHandbookStringFormComponent {
     protected readonly isAdding = signal(false);
     protected readonly isSaving = signal(false);
 
+    protected readonly isRowAddingOrEditing = signal(true);
+
     protected readonly HandbookColumnType = HandbookColumnType;
 
     protected readonly stringForm = new FormGroup({});
@@ -93,7 +97,9 @@ export class AddHandbookStringFormComponent {
             const value =
                 column.type === HandbookColumnType.Boolean
                     ? (this.editRow?.values[column.id] ?? false)
-                    : (this.editRow?.values[column.id] ?? '');
+                    : column.type === HandbookColumnType.User
+                      ? (this.editRow?.values[column.id] ?? null)
+                      : (this.editRow?.values[column.id] ?? '');
 
             this.stringForm.addControl(
                 column.id,
@@ -120,6 +126,8 @@ export class AddHandbookStringFormComponent {
 
         const handbookId = this.handbook.id;
         const payload = {values: this.stringForm.getRawValue()};
+
+        console.log(payload);
 
         this.handbookService
             .addRow(handbookId, payload)

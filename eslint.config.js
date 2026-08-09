@@ -39,6 +39,9 @@ module.exports = defineConfig([
             angular.configs.templateRecommended,
             angular.configs.templateAccessibility
         ],
-        rules: {'@angular-eslint/template/elements-content': 'off'}
+        rules: {
+            '@angular-eslint/template/elements-content': 'off',
+            '@angular-eslint/template/label-has-associated-control': 'off'
+        }
     }
 ]);

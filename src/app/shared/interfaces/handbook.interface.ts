@@ -16,7 +16,11 @@ export enum HandbookColumnType {
     Text = 'TEXT',
     Number = 'NUMBER',
     Boolean = 'BOOLEAN',
-    Date = 'DATE'
+    Date = 'DATE',
+    List = 'LIST',
+    User = 'USER',
+    Reference = 'REFERENCE',
+    FormattedString = 'FORMATTED_STRING'
 }
 
 export interface HandbookAttribute {
@@ -116,7 +120,10 @@ export interface GetHandbookRowsRequest {
 
 export interface HandbookRow {
     id: string;
-    values: Record<string, string | number | boolean | null>;
+    values: Record<
+        string,
+        string | number | boolean | null | AstushaUserPreview
+    >;
     createdById: string;
     createdAt: string;
     updatedAt: string;
@@ -129,7 +136,10 @@ export interface GetHandbookRowsResponse {
 
 export interface UpdatedHandbookRow {
     id: string;
-    values: Record<string, string | number | boolean | null>;
+    values: Record<
+        string,
+        string | number | boolean | null | AstushaUserPreview
+    >;
 }
 
 export interface UpdateHandbookRowsRequest {

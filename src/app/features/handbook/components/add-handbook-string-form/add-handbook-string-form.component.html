@@ -67,6 +67,17 @@
 
                     <tui-error [formControlName]="column.id" />
                 }
+                @case (HandbookColumnType.User) {
+                    <label class="label">
+                        {{ column.name }}
+                        <app-search-users
+                            [isRowAddingOrEditing]="isRowAddingOrEditing()"
+                            [formControlName]="column.id"
+                        />
+                    </label>
+
+                    <tui-error [formControlName]="column.id" />
+                }
             }
         </div>
     }

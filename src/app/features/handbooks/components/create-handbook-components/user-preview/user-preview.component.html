@@ -1,0 +1,30 @@
+<div class="result-profile">
+    @if (user().avatarUrl) {
+        <img
+            tuiAvatar
+            size="l"
+            [src]="user().avatarUrl"
+            alt="Аватар пользователя"
+        />
+    } @else {
+        <div tuiAvatar="@tui.user" appearance="info" size="l"></div>
+    }
+
+    <div class="details">
+        <div class="name">
+            {{
+                (
+                    (user().firstName ?? '') +
+                    ' ' +
+                    (user().lastName ?? '')
+                ).trim() ||
+                    user().login ||
+                    'Пользователь'
+            }}
+        </div>
+
+        <div class="email">
+            {{ user().email || 'Email не указан' }}
+        </div>
+    </div>
+</div>
