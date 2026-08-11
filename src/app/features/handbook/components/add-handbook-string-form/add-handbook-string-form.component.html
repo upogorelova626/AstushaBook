@@ -78,6 +78,15 @@
 
                     <tui-error [formControlName]="column.id" />
                 }
+
+                @case (HandbookColumnType.List) {
+                    <label class="label">
+                        {{ column.name }}
+                        <app-list-column-options />
+                    </label>
+
+                    <tui-error [formControlName]="column.id" />
+                }
             }
         </div>
     }

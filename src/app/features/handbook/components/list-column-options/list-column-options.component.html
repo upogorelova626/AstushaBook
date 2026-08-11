@@ -1,0 +1,38 @@
+<div class="list">
+    <form class="form">
+        @for (option of options().controls; track option; let index = $index) {
+            <div class="option">
+                <tui-textfield class="textfield">
+                    <input
+                        type="text"
+                        tuiInput
+                        placeholder="Введите значение"
+                        [formControl]="option"
+                    />
+                </tui-textfield>
+
+                <tui-error [formControl]="option" />
+
+                <button
+                    tuiButton
+                    type="button"
+                    iconStart="@tui.trash-2"
+                    appearance="flat"
+                    size="m"
+                    (click)="deleteOption(index)"
+                ></button>
+            </div>
+        }
+    </form>
+
+    <div class="button">
+        <button
+            tuiButton
+            type="button"
+            iconEnd="@tui.plus"
+            appearance="outline"
+            (click)="addOption()"
+            >Добавить значение</button
+        >
+    </div>
+</div>

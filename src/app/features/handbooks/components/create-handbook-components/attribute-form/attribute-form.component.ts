@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {
+    FormArray,
     FormControl,
     FormGroup,
     ReactiveFormsModule,
@@ -26,6 +27,7 @@ import {
     TuiDataListWrapper,
     TuiStringifyContentPipe
 } from '@taiga-ui/kit';
+import {ListColumnOptionsComponent} from '../../../../handbook/components/list-column-options/list-column-options.component';
 
 interface AttributeFormContext {
     data?: HandbookAttribute;
@@ -44,7 +46,8 @@ interface AttributeFormContext {
         TuiDataListWrapper,
         TuiFilterByInputPipe,
         TuiStringifyContentPipe,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ListColumnOptionsComponent
     ],
     templateUrl: './attribute-form.component.html',
     styleUrl: './attribute-form.component.less',
@@ -70,6 +73,8 @@ export class AttributeFormComponent {
             BarContext<AttributeFormContext, HandbookAttribute | null>
         >();
 
+    protected readonly HandbookColumnType = HandbookColumnType;
+
     protected readonly form = new FormGroup({
         name: new FormControl(this.context.data?.name ?? '', {
             nonNullable: true,
@@ -83,7 +88,20 @@ export class AttributeFormComponent {
         ),
         required: new FormControl(this.context.data?.required ?? false, {
             nonNullable: true
-        })
+        }),
+
+        options: new FormArray<FormControl<string>>(
+            (this.context.data?.options ?? []).map(
+                option =>
+                    new FormControl(option, {
+                        nonNullable: true,
+                        validators: [
+                            Validators.required,
+                            Validators.maxLength(100)
+                        ]
+                    })
+            )
+        )
     });
 
     protected readonly items = [

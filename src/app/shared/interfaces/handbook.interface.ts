@@ -27,6 +27,7 @@ export interface HandbookAttribute {
     name: string;
     type: HandbookColumnType;
     required: boolean;
+    options: string[];
 }
 
 export enum HandbookListFilter {

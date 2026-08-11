@@ -32,6 +32,7 @@ import {TuiInputDate} from '@taiga-ui/kit';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, finalize, tap} from 'rxjs';
 import {SearchUsersComponent} from '../../../handbooks/components/create-handbook-components/search-users/search-users.component';
+import {ListColumnOptionsComponent} from '../list-column-options/list-column-options.component';
 
 @Component({
     selector: 'app-add-handbook-string-form',
@@ -45,7 +46,8 @@ import {SearchUsersComponent} from '../../../handbooks/components/create-handboo
         TuiInputDate,
         TuiDropdown,
         TuiError,
-        SearchUsersComponent
+        SearchUsersComponent,
+        ListColumnOptionsComponent
     ],
     templateUrl: './add-handbook-string-form.component.html',
     styleUrl: './add-handbook-string-form.component.less',
