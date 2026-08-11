@@ -134,6 +134,7 @@ export class EditRowButtonComponent {
             .subscribe(updatedRow => {
                 if (updatedRow) {
                     this.updatedRow.emit(updatedRow);
+                    console.log(updatedRow);
                 }
             });
     }

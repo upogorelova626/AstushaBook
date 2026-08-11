@@ -71,6 +71,8 @@ export class AddHandbookStringFormComponent {
     private readonly handbookService = inject(HandbookService);
     private readonly alerts = inject(TuiNotificationService);
 
+    private readonly value = signal({});
+
     protected readonly handbook = this.context.handbook;
     protected readonly editRow = this.context.editRow;
 
@@ -127,8 +129,6 @@ export class AddHandbookStringFormComponent {
         const handbookId = this.handbook.id;
         const payload = {values: this.stringForm.getRawValue()};
 
-        console.log(payload);
-
         this.handbookService
             .addRow(handbookId, payload)
             .pipe(
@@ -170,13 +170,13 @@ export class AddHandbookStringFormComponent {
         this.isSaving.set(true);
 
         const handbookId = this.handbook.id;
-        const value = this.stringForm.getRawValue();
+        const formValues = this.stringForm.getRawValue();
 
         const payload = {
             rows: [
                 {
                     id: rowId,
-                    values: value
+                    values: formValues
                 }
             ]
         };
@@ -209,6 +209,8 @@ export class AddHandbookStringFormComponent {
                 if (row) {
                     this.context.complete(row);
                 }
+
+                console.log(row);
             });
     }
 }

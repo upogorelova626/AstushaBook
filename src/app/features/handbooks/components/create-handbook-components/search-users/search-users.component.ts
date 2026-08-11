@@ -81,7 +81,8 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
 
     private readonly selectedUser = signal<AstushaUserPreview | null>(null);
 
-    private onChange: (value: string | null) => void = () => undefined;
+    private onChange: (value: AstushaUserPreview | null) => void = () =>
+        undefined;
     private onTouched: () => void = () => undefined;
 
     protected readonly search$ = new Subject<string>();
@@ -163,14 +164,14 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
     writeValue(user: AstushaUserPreview | null) {
         this.selectedUser.set(user);
 
-        this.searchUserControl.setValue(user ? this.stringifyUser(user) : '', {
+        this.searchUserControl.setValue(user ? user : '', {
             emitEvent: false
         });
 
         this.foundUsers.set([]);
     }
 
-    registerOnChange(fn: (value: string | null) => void) {
+    registerOnChange(fn: (value: AstushaUserPreview | null) => void) {
         this.onChange = fn;
     }
 
@@ -188,18 +189,23 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
         this.searchUserControl.enable({emitEvent: false});
     }
 
-    protected onSearchInput(query: string) {
+    protected onSearchInput(query: string): void {
         const inputValue = query.trim();
-        if (inputValue === '') {
-            this.selectedUser.set(null);
-            this.foundUsers.set([]);
-            this.onChange(null);
-            this.search$.next('');
+        const selectedUser = this.selectedUser();
+
+        if (selectedUser && inputValue === this.stringifyUser(selectedUser)) {
             return;
         }
 
         this.selectedUser.set(null);
         this.onChange(null);
+
+        if (!inputValue) {
+            this.foundUsers.set([]);
+            this.search$.next('');
+
+            return;
+        }
 
         this.search$.next(inputValue);
     }
@@ -225,13 +231,13 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
 
         this.selectedUser.set(user);
 
-        this.searchUserControl.setValue(this.stringifyUser(user), {
+        this.searchUserControl.setValue(user, {
             emitEvent: false
         });
 
         this.foundUsers.set([]);
 
-        this.onChange(user.id);
+        this.onChange(user);
         this.onTouched();
 
         this.userSelected.emit(user);
