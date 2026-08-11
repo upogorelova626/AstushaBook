@@ -82,8 +82,20 @@
                 @case (HandbookColumnType.List) {
                     <label class="label">
                         {{ column.name }}
-                        <app-list-column-options />
                     </label>
+
+                    <tui-textfield class="textfield" tuiChevron>
+                        <input
+                            tuiComboBox
+                            placeholder="Выберите значение из списка"
+                            [formControlName]="column.id"
+                        />
+
+                        <tui-data-list-wrapper
+                            *tuiDropdown
+                            [items]="column.options"
+                        />
+                    </tui-textfield>
 
                     <tui-error [formControlName]="column.id" />
                 }

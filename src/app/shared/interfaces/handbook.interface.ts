@@ -81,6 +81,7 @@ export interface HandbookColumnResponse extends HandbookAttribute {
     id: string;
     handbookId: string;
     position: number;
+    options: string[];
     createdAt: string;
     updatedAt: string;
 }

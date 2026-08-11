@@ -118,6 +118,25 @@
                                     }
                                 </td>
                             }
+
+                            @case (HandbookColumnType.List) {
+                                <td
+                                    tuiTd
+                                    (click)="startEditing(row.id, column.id)"
+                                >
+                                    @if (!isCellEditing(row.id, column.id)) {
+                                        {{ row.values[column.id] }}
+                                    } @else {
+                                        <tui-textfield>
+                                            <input
+                                                type="text"
+                                                tuiInput
+                                                [formControl]="editCellControl"
+                                            />
+                                        </tui-textfield>
+                                    }
+                                </td>
+                            }
                         }
                     }
 

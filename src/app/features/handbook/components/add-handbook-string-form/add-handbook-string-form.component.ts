@@ -28,11 +28,15 @@ import {
     TuiNotificationService,
     TuiTextfield
 } from '@taiga-ui/core';
-import {TuiInputDate} from '@taiga-ui/kit';
+import {
+    TuiInputDate,
+    TuiComboBox,
+    TuiDataListWrapper,
+    TuiChevron
+} from '@taiga-ui/kit';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, finalize, tap} from 'rxjs';
 import {SearchUsersComponent} from '../../../handbooks/components/create-handbook-components/search-users/search-users.component';
-import {ListColumnOptionsComponent} from '../list-column-options/list-column-options.component';
 
 @Component({
     selector: 'app-add-handbook-string-form',
@@ -47,7 +51,9 @@ import {ListColumnOptionsComponent} from '../list-column-options/list-column-opt
         TuiDropdown,
         TuiError,
         SearchUsersComponent,
-        ListColumnOptionsComponent
+        TuiComboBox,
+        TuiDataListWrapper,
+        TuiChevron
     ],
     templateUrl: './add-handbook-string-form.component.html',
     styleUrl: './add-handbook-string-form.component.less',
@@ -72,8 +78,6 @@ export class AddHandbookStringFormComponent {
 
     private readonly handbookService = inject(HandbookService);
     private readonly alerts = inject(TuiNotificationService);
-
-    private readonly value = signal({});
 
     protected readonly handbook = this.context.handbook;
     protected readonly editRow = this.context.editRow;
