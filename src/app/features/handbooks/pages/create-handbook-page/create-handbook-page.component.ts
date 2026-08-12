@@ -29,11 +29,11 @@ import {CreateHandbookFormService} from '../../services/create-handbook-form.ser
     providers: [SideBarService]
 })
 export class CreateHandbookPageComponent {
-    protected readonly activeStep = signal(0);
-
     private readonly createHandbookFormService = inject(
         CreateHandbookFormService
     );
+
+    protected readonly activeStep = signal(0);
 
     protected createHandbook() {
         this.createHandbookFormService.createHandbook();

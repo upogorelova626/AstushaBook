@@ -1,0 +1,35 @@
+<div class="page">
+    <div class="image-wrapper">
+        <img
+            src="./images/handbook-creating-success.png"
+            alt=""
+            class="image"
+        />
+    </div>
+
+    <div class="title"> Справочник создан! </div>
+
+    <div class="description">
+        «{{ handbookName }}» успешно создан и готов к работе
+    </div>
+
+    <div class="buttons">
+        <a tuiButton [routerLink]="['/astusha', 'handbooks', handbookId]">
+            Открыть справочник
+        </a>
+
+        <a
+            tuiButton
+            appearance="outline"
+            [routerLink]="['/astusha', 'handbooks', 'all']"
+        >
+            Перейти ко всем справочникам
+        </a>
+    </div>
+
+    <div class="footer-button">
+        <a tuiButton appearance="flat" [routerLink]="['/astusha', 'main-page']">
+            Вернуться на главную
+        </a>
+    </div>
+</div>

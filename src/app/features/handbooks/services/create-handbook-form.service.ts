@@ -6,6 +6,8 @@ import {
 } from '../../../shared/interfaces';
 import {HandbookService} from '../../../shared/services/handbook.service';
 import {TableStructureFormService} from './table-structure-form.service';
+import {TuiNotificationService} from '@taiga-ui/core';
+import {Router} from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +18,9 @@ export class CreateHandbookFormService {
     private readonly tableStructureFormService = inject(
         TableStructureFormService
     );
+
+    private readonly alert = inject(TuiNotificationService);
+    private readonly router = inject(Router);
 
     readonly values = signal<Partial<CreateHandbookFormValues>>({});
 
@@ -44,6 +49,14 @@ export class CreateHandbookFormService {
             viewerIds: values.viewerUsers?.map(user => user.id) ?? []
         };
 
-        this.handbookService.createHandbook(payload).subscribe();
+        this.handbookService
+            .createHandbook(payload)
+            .pipe()
+            .subscribe(handbook =>
+                this.router.navigate(
+                    ['astusha', 'handbooks', 'create', 'success'],
+                    {queryParams: {id: handbook.id, name: handbook.name}}
+                )
+            );
     }
 }

@@ -39,6 +39,15 @@ export const routes: Routes = [
                             )
                     },
                     {
+                        path: 'create/success',
+                        loadComponent: () =>
+                            import('./features/handbooks/pages/success-handbook-create-page/success-handbook-create-page.component').then(
+                                component =>
+                                    component.SuccessHandbookCreatePageComponent
+                            )
+                    },
+
+                    {
                         path: 'create',
                         loadComponent: () =>
                             import('./features/handbooks/pages/create-handbook-page/create-handbook-page.component').then(
