@@ -151,3 +151,7 @@ export interface UpdateHandbookRowsRequest {
 export interface DeleteOrCloneHandbookRowsRequest {
     rowIds: string[];
 }
+
+export interface EditHandbookDescriptionRequest {
+    description: string;
+}

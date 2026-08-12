@@ -1,0 +1,27 @@
+<form class="form">
+    <tui-textfield>
+        <textarea
+            tuiTextarea
+            placeholder="Кратко опишите назначение справочника"
+            [formControl]="control"
+            [min]="2"
+            [max]="8"
+            [limit]="1000"
+        ></textarea>
+
+        <tui-error [formControl]="control" />
+    </tui-textfield>
+
+    <div class="buttons">
+        <button type="button" tuiButton (click)="editHandbookDescription()"
+            >Сохранить</button
+        >
+        <button
+            type="button"
+            appearance="flat"
+            tuiButton
+            (click)="context.$implicit.complete()"
+            >Отмена</button
+        >
+    </div>
+</form>

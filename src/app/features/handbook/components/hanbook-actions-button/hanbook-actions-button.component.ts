@@ -11,6 +11,7 @@ import {TuiObscured} from '@taiga-ui/cdk/directives/obscured';
 import {
     TuiButton,
     TuiDataList,
+    TuiDialogService,
     TuiDropdown,
     TuiNotificationService
 } from '@taiga-ui/core';
@@ -22,6 +23,7 @@ import {Router} from '@angular/router';
 import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-handbook-string-form.component';
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
 import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
+import {EditHanbdookDesccriptionDialogComponent} from '../edit-hanbdook-desccription-dialog/edit-hanbdook-desccription-dialog.component';
 
 interface ExampleAction {
     readonly icon: string;
@@ -44,22 +46,38 @@ interface ExampleAction {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HanbookActionsButtonComponent {
-    readonly handbook = input<Handbook | null>(null);
-
     private readonly handbooksService = inject(HandbookService);
     private readonly sidebarService = inject(SideBarService);
     private readonly alerts = inject(TuiNotificationService);
-
+    private readonly dialogs = inject(TuiDialogService);
     private readonly router = inject(Router);
     private readonly injector = inject(Injector);
 
     protected readonly open = signal(false);
     protected readonly selected = signal<ExampleAction | null>(null);
 
+    readonly handbook = input<Handbook | null>(null);
+
     protected readonly editingActions = [
-        {icon: '@tui.scroll-text', title: 'Описание'},
-        {icon: '@tui.table-of-contents', title: 'Атрибуты'},
-        {icon: '@tui.lock-keyhole', title: 'Доступы'}
+        {
+            icon: '@tui.scroll-text',
+            title: 'Описание',
+            action: () => this.openEditDesсriptionDialog()
+        },
+        {
+            icon: '@tui.table-of-contents',
+            title: 'Атрибуты',
+            action: () => {
+                return;
+            }
+        },
+        {
+            icon: '@tui.lock-keyhole',
+            title: 'Доступы',
+            action: () => {
+                return;
+            }
+        }
     ];
 
     protected readonly anotherActions = [
@@ -96,6 +114,8 @@ export class HanbookActionsButtonComponent {
     protected onSelect(action: ExampleAction) {
         this.selected.set(action);
         this.open.set(false);
+
+        action.action();
     }
 
     protected deleteHandbook() {
@@ -114,7 +134,7 @@ export class HanbookActionsButtonComponent {
                         })
                         .subscribe();
                 }),
-                delay(1000),
+                delay(500),
                 tap(() => {
                     this.router.navigate(['astusha', 'handbooks', 'all']);
                 }),
@@ -148,6 +168,28 @@ export class HanbookActionsButtonComponent {
                     offset: true
                 },
                 {handbook: this.handbook()}
+            )
+            .subscribe();
+    }
+
+    protected openEditDesсriptionDialog() {
+        const handbook = this.handbook();
+
+        if (!handbook) {
+            return;
+        }
+
+        this.dialogs
+            .open<void>(
+                new PolymorpheusComponent(
+                    EditHanbdookDesccriptionDialogComponent,
+                    this.injector
+                ),
+                {
+                    label: 'Редактирование описания',
+                    size: 'm',
+                    data: handbook
+                }
             )
             .subscribe();
     }
