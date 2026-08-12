@@ -4,6 +4,7 @@ import {provideEventPlugins} from '@taiga-ui/event-plugins';
 import {provideTaiga} from '@taiga-ui/core';
 import {routes} from './app.routes';
 import {provideHttpClient} from '@angular/common/http';
+import {provideTuiEditor} from '@taiga-ui/editor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -11,6 +12,7 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideEventPlugins(),
         provideTaiga(),
-        provideHttpClient()
+        provideHttpClient(),
+        provideTuiEditor()
     ]
 };

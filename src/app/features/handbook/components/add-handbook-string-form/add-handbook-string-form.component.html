@@ -99,6 +99,14 @@
 
                     <tui-error [formControlName]="column.id" />
                 }
+
+                @case (HandbookColumnType.FormattedString) {
+                    <div class="label">
+                        <span>{{ column.name }}</span>
+
+                        <tui-editor [formControlName]="column.id" />
+                    </div>
+                }
             }
         </div>
     }

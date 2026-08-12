@@ -34,6 +34,8 @@ import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-ha
 import {EditRowButtonComponent} from '../edit-row-button/edit-row-button.component';
 import {HandbookTableService} from '../../services/handbook-table.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TuiEditorSocket} from '@taiga-ui/editor';
+
 @Component({
     selector: 'app-handbook-table',
     imports: [
@@ -47,6 +49,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
         TuiInput,
         TuiInputDate,
         TuiCalendar,
+        TuiEditorSocket,
         EditRowButtonComponent
     ],
     templateUrl: './handbook-table.component.html',
@@ -232,5 +235,11 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
             .join(' ');
 
         return fullName || value.login;
+    }
+
+    protected getValue(
+        value: string | number | boolean | null | AstushaUserPreview
+    ): string | null {
+        return typeof value === 'string' ? value : null;
     }
 }

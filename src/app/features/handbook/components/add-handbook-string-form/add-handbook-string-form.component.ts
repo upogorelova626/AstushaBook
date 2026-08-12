@@ -37,6 +37,7 @@ import {
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, finalize, tap} from 'rxjs';
 import {SearchUsersComponent} from '../../../handbooks/components/create-handbook-components/search-users/search-users.component';
+import {TuiEditor} from '@taiga-ui/editor';
 
 @Component({
     selector: 'app-add-handbook-string-form',
@@ -53,7 +54,8 @@ import {SearchUsersComponent} from '../../../handbooks/components/create-handboo
         SearchUsersComponent,
         TuiComboBox,
         TuiDataListWrapper,
-        TuiChevron
+        TuiChevron,
+        TuiEditor
     ],
     templateUrl: './add-handbook-string-form.component.html',
     styleUrl: './add-handbook-string-form.component.less',
