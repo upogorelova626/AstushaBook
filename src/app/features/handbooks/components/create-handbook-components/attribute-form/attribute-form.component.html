@@ -39,7 +39,7 @@
         </tui-textfield>
     </label>
 
-    @if (this.form.controls.type.value === HandbookColumnType.List) {
+    @if (form.controls.type.value === HandbookColumnType.List) {
         <app-list-column-options [options]="form.controls.options" />
     }
 

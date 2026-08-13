@@ -9,7 +9,7 @@ export class AttributeTypePipe implements PipeTransform {
         const labels: Record<HandbookColumnType, string> = {
             [HandbookColumnType.Text]: 'Текст',
             [HandbookColumnType.Number]: 'Число',
-            [HandbookColumnType.Boolean]: 'Да / Нет',
+            [HandbookColumnType.Boolean]: 'Логическое',
             [HandbookColumnType.Date]: 'Дата',
             [HandbookColumnType.List]: 'Список',
             [HandbookColumnType.User]: 'Сотрудник',

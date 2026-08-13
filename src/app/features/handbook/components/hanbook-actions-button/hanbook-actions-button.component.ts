@@ -3,7 +3,7 @@ import {
     Component,
     inject,
     Injector,
-    input,
+    model,
     signal
 } from '@angular/core';
 import {TuiActiveZone} from '@taiga-ui/cdk/directives/active-zone';
@@ -24,11 +24,12 @@ import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-ha
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
 import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
 import {EditHanbdookDesccriptionDialogComponent} from '../edit-hanbdook-desccription-dialog/edit-hanbdook-desccription-dialog.component';
+import {EditHandbookAttributesComponent} from '../edit-handbook-attributes/edit-handbook-attributes.component';
 
 interface ExampleAction {
     readonly icon: string;
     readonly title: string;
-    action: () => void;
+    readonly action: () => void;
 }
 
 @Component({
@@ -56,20 +57,18 @@ export class HanbookActionsButtonComponent {
     protected readonly open = signal(false);
     protected readonly selected = signal<ExampleAction | null>(null);
 
-    readonly handbook = input<Handbook | null>(null);
+    readonly handbook = model<Handbook | null>(null);
 
-    protected readonly editingActions = [
+    protected readonly editingActions: readonly ExampleAction[] = [
         {
             icon: '@tui.scroll-text',
             title: 'Описание',
-            action: () => this.openEditDesсriptionDialog()
+            action: () => this.openEditDescriptionDialog()
         },
         {
             icon: '@tui.table-of-contents',
             title: 'Атрибуты',
-            action: () => {
-                return;
-            }
+            action: () => this.editAttributes()
         },
         {
             icon: '@tui.lock-keyhole',
@@ -77,21 +76,6 @@ export class HanbookActionsButtonComponent {
             action: () => {
                 return;
             }
-        }
-    ];
-
-    protected readonly anotherActions = [
-        {
-            icon: '@tui.plus',
-            title: 'Добавить строку',
-            action: () => {
-                return;
-            }
-        },
-        {
-            icon: '@tui.trash-2',
-            title: 'Удалить справочник',
-            action: () => this.deleteHandbook()
         }
     ];
 
@@ -111,11 +95,70 @@ export class HanbookActionsButtonComponent {
         }
     }
 
-    protected onSelect(action: ExampleAction) {
-        this.selected.set(action);
-        this.open.set(false);
+    protected onSelect(action: ExampleAction, event: MouseEvent) {
+        event.preventDefault();
+        event.stopPropagation();
 
+        this.open.set(false);
         action.action();
+    }
+    protected openEditDescriptionDialog() {
+        const handbook = this.handbook();
+
+        if (!handbook) {
+            return;
+        }
+
+        this.dialogs
+            .open<Handbook>(
+                new PolymorpheusComponent(
+                    EditHanbdookDesccriptionDialogComponent,
+                    this.injector
+                ),
+                {
+                    label: 'Редактирование описания',
+                    size: 'm',
+                    data: handbook
+                }
+            )
+            .subscribe(updatedHandbook => this.handbook.set(updatedHandbook));
+    }
+
+    protected createAttribute(event: MouseEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.sidebarService
+            .open$<AddHandbookStringFormComponent, HandbookRow>(
+                new PolymorpheusComponent(
+                    AddHandbookStringFormComponent,
+                    this.injector
+                ),
+                {
+                    overlay: true,
+                    rounded: true,
+                    offset: true
+                },
+                {handbook: this.handbook()}
+            )
+            .subscribe();
+    }
+
+    protected editAttributes() {
+        this.sidebarService
+            .open$<EditHandbookAttributesComponent, Handbook>(
+                new PolymorpheusComponent(
+                    EditHandbookAttributesComponent,
+                    this.injector
+                ),
+                {
+                    overlay: true,
+                    rounded: true,
+                    offset: true
+                },
+                {handbook: this.handbook()}
+            )
+            .subscribe(updatedHandbook => this.handbook.set(updatedHandbook));
     }
 
     protected deleteHandbook() {
@@ -148,48 +191,6 @@ export class HanbookActionsButtonComponent {
 
                     return EMPTY;
                 })
-            )
-            .subscribe();
-    }
-
-    protected createAttribute(event: MouseEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.sidebarService
-            .open$<AddHandbookStringFormComponent, HandbookRow>(
-                new PolymorpheusComponent(
-                    AddHandbookStringFormComponent,
-                    this.injector
-                ),
-                {
-                    overlay: true,
-                    rounded: true,
-                    offset: true
-                },
-                {handbook: this.handbook()}
-            )
-            .subscribe();
-    }
-
-    protected openEditDesсriptionDialog() {
-        const handbook = this.handbook();
-
-        if (!handbook) {
-            return;
-        }
-
-        this.dialogs
-            .open<void>(
-                new PolymorpheusComponent(
-                    EditHanbdookDesccriptionDialogComponent,
-                    this.injector
-                ),
-                {
-                    label: 'Редактирование описания',
-                    size: 'm',
-                    data: handbook
-                }
             )
             .subscribe();
     }

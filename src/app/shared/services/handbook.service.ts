@@ -11,7 +11,8 @@ import {
     HandbookRow,
     UpdateHandbookRowsRequest,
     DeleteOrCloneHandbookRowsRequest,
-    EditHandbookDescriptionRequest
+    EditHandbookDescriptionRequest,
+    EditHandbookAttributesRequest
 } from '../interfaces';
 import {Observable} from 'rxjs';
 
@@ -45,6 +46,22 @@ export class HandbookService {
         return this.http.get<Handbook>(`${this.astushaBookApiUrl}/${id}`, {
             withCredentials: true
         });
+    }
+
+    editHandbookAttributes(
+        id: string,
+        payload: EditHandbookAttributesRequest
+    ): Observable<Handbook> {
+        return (
+            this,
+            this.http.patch<Handbook>(
+                `${this.astushaBookApiUrl}/${id}/columns`,
+                payload,
+                {
+                    withCredentials: true
+                }
+            )
+        );
     }
 
     deleteHandbook(id: string) {

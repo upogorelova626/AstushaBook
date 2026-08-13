@@ -1,0 +1,75 @@
+<div class="page">
+    <header class="header">
+        <div>
+            <div class="title">Атрибуты справочника</div>
+            <div class="description"
+                >Добавляйте и настраивайте колонки таблицы</div
+            >
+        </div>
+        <div>
+            <button
+                type="button"
+                tuiButton
+                iconStart="@tui.plus"
+                appearance="outline"
+                class="add-attribute__button"
+                (click)="createAttribute($event)"
+                >Добавить атрибут</button
+            >
+        </div>
+    </header>
+
+    <div class="form">
+        @for (attribute of draftHandbookAttributes(); track $index) {
+            <div class="item">
+                <div class="attribute">
+                    <button
+                        tuiButton
+                        appearance="flat-grayscale"
+                        iconStart="@tui.grip-vertical"
+                    ></button>
+                    <div class="name">{{ attribute.name }}</div>
+                    <div class="bages">
+                        <div tuiBadge appearance="info">{{
+                            attribute.type | attributeType
+                        }}</div>
+                        @if (attribute.required) {
+                            <div tuiBadge appearance="primary"
+                                >Обязательный</div
+                            >
+                        }
+                    </div>
+                    <div class="buttons">
+                        <button
+                            type="button"
+                            tuiButton
+                            appearance="flat-grayscale"
+                            iconStart="@tui.pen"
+                            (click)="editAttribute($index, $event)"
+                        ></button>
+
+                        <button
+                            type="button"
+                            tuiButton
+                            appearance="flat-grayscale"
+                            iconStart="@tui.trash-2"
+                            (click)="deleteAttribute($index)"
+                        ></button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <footer class="footer">
+        <button tuiButton appearance="flat" (click)="context.complete()"
+            >Отмена</button
+        >
+        <button
+            tuiButton
+            [disabled]="draftHandbookAttributes().length === 0"
+            (click)="save()"
+            >Сохранить</button
+        >
+    </footer>
+</div>

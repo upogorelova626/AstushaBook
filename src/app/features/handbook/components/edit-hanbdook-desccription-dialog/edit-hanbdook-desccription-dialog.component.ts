@@ -41,7 +41,7 @@ export class EditHanbdookDesccriptionDialogComponent {
     private readonly alerts = inject(TuiNotificationService);
 
     protected readonly context =
-        injectContext<TuiDialogContext<void, Handbook>>();
+        injectContext<TuiDialogContext<Handbook, Handbook>>();
     protected handbook = this.context.data;
 
     protected readonly control = new FormControl(
@@ -61,7 +61,7 @@ export class EditHanbdookDesccriptionDialogComponent {
         const initialDescription = this.handbook.description.trim();
 
         if (initialDescription === this.control.getRawValue().trim()) {
-            this.context.completeWith();
+            this.context.completeWith(this.handbook);
             return;
         }
 
@@ -89,8 +89,8 @@ export class EditHanbdookDesccriptionDialogComponent {
                     return EMPTY;
                 })
             )
-            .subscribe(() => {
-                this.context.completeWith();
+            .subscribe(handbook => {
+                this.context.completeWith(handbook);
             });
     }
 }

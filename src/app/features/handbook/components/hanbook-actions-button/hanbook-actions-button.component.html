@@ -29,16 +29,25 @@
 
             <hr />
 
-            @for (action of anotherActions; track action.title) {
+            <tui-opt-group>
                 <button
                     tuiOption
                     type="button"
-                    (click)="action.action()"
-                    [iconStart]="action.icon"
+                    (click)="createAttribute($event)"
+                    iconStart="@tui.plus"
                 >
-                    {{ action.title }}
+                    Добавить строку
                 </button>
-            }
+
+                <button
+                    tuiOption
+                    type="button"
+                    (click)="deleteHandbook()"
+                    iconStart="@tui.lock-keyhole"
+                >
+                    Удалить справочник
+                </button>
+            </tui-opt-group>
         </tui-data-list>
     </ng-template>
 </button>

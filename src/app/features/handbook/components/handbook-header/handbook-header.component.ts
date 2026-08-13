@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, model} from '@angular/core';
 import {TuiButton} from '@taiga-ui/core';
 import {Handbook} from '../../../../shared/interfaces';
 import {RouterLink} from '@angular/router';
@@ -18,5 +18,5 @@ import {EditCellsButtonsComponent} from '../edit-cells-buttons/edit-cells-button
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HandbookHeaderComponent {
-    readonly handbook = input<Handbook | null>(null);
+    readonly handbook = model<Handbook | null>(null);
 }

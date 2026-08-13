@@ -18,6 +18,7 @@ import {
 import {injectContext} from '@taiga-ui/polymorpheus';
 import {
     HandbookAttribute,
+    HandbookColumnResponse,
     HandbookColumnType
 } from '../../../../../shared/interfaces';
 import {BarContext} from '../../host-drawer/base-bar.service';
@@ -30,7 +31,7 @@ import {
 import {ListColumnOptionsComponent} from '../../../../handbook/components/list-column-options/list-column-options.component';
 
 interface AttributeFormContext {
-    data?: HandbookAttribute;
+    data?: HandbookAttribute | HandbookColumnResponse;
 }
 
 @Component({
@@ -75,13 +76,19 @@ export class AttributeFormComponent {
 
     protected readonly HandbookColumnType = HandbookColumnType;
 
+    protected readonly isExistingAttribute =
+        !!this.context.data && 'id' in this.context.data;
+
     protected readonly form = new FormGroup({
         name: new FormControl(this.context.data?.name ?? '', {
             nonNullable: true,
             validators: [Validators.required, Validators.maxLength(100)]
         }),
-        type: new FormControl(
-            this.context.data?.type ?? HandbookColumnType.Text,
+        type: new FormControl<HandbookColumnType>(
+            {
+                value: this.context.data?.type ?? HandbookColumnType.Text,
+                disabled: this.isExistingAttribute
+            },
             {
                 nonNullable: true
             }

@@ -155,3 +155,7 @@ export interface DeleteOrCloneHandbookRowsRequest {
 export interface EditHandbookDescriptionRequest {
     description: string;
 }
+
+export interface EditHandbookAttributesRequest {
+    columns: (HandbookAttribute | HandbookColumnResponse)[];
+}

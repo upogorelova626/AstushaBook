@@ -1,4 +1,4 @@
-@for (item of items$ | async; track $index) {
+@for (item of items$ | async; track item) {
     <tui-drawer
         class="drawer"
         [class.drawer_offset]="!!item.options?.offset"
