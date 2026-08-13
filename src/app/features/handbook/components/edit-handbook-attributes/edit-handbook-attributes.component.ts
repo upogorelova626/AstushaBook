@@ -5,6 +5,13 @@ import {
     Injector,
     signal
 } from '@angular/core';
+import {
+    CdkDrag,
+    CdkDragDrop,
+    CdkDragHandle,
+    CdkDropList,
+    moveItemInArray
+} from '@angular/cdk/drag-drop';
 import {BarContext} from '../../../handbooks/components/host-drawer/base-bar.service';
 import {
     Handbook,
@@ -23,7 +30,14 @@ import {catchError, EMPTY, tap} from 'rxjs';
 
 @Component({
     selector: 'app-edit-handbook-attributes',
-    imports: [TuiButton, TuiBadge, AttributeTypePipe],
+    imports: [
+        TuiButton,
+        TuiBadge,
+        AttributeTypePipe,
+        CdkDropList,
+        CdkDrag,
+        CdkDragHandle
+    ],
     templateUrl: './edit-handbook-attributes.component.html',
     styleUrl: './edit-handbook-attributes.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -35,7 +49,7 @@ export class EditHandbookAttributesComponent {
     private readonly alerts = inject(TuiNotificationService);
 
     protected readonly context =
-        injectContext<BarContext<{handbook: Handbook}, Handbook>>();
+        injectContext<BarContext<{handbook: Handbook}, Handbook | null>>();
 
     protected readonly handbook = this.context.handbook;
 
@@ -101,6 +115,22 @@ export class EditHandbookAttributesComponent {
                     this.addNewAttribute(result);
                 }
             });
+    }
+
+    protected dropAttribute(
+        event: CdkDragDrop<(HandbookColumnResponse | HandbookAttribute)[]>
+    ): void {
+        this.draftHandbookAttributes.update(attributes => {
+            const reorderedAttributes = [...attributes];
+
+            moveItemInArray(
+                reorderedAttributes,
+                event.previousIndex,
+                event.currentIndex
+            );
+
+            return reorderedAttributes;
+        });
     }
 
     protected save() {

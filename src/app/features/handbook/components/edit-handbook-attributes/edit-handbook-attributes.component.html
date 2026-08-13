@@ -2,10 +2,12 @@
     <header class="header">
         <div>
             <div class="title">Атрибуты справочника</div>
-            <div class="description"
-                >Добавляйте и настраивайте колонки таблицы</div
-            >
+
+            <div class="description">
+                Добавляйте и настраивайте колонки таблицы
+            </div>
         </div>
+
         <div>
             <button
                 type="button"
@@ -14,37 +16,53 @@
                 appearance="outline"
                 class="add-attribute__button"
                 (click)="createAttribute($event)"
-                >Добавить атрибут</button
             >
+                Добавить атрибут
+            </button>
         </div>
     </header>
 
-    <div class="form">
-        @for (attribute of draftHandbookAttributes(); track $index) {
-            <div class="item">
+    <div
+        class="form"
+        cdkDropList
+        [cdkDropListData]="draftHandbookAttributes()"
+        (cdkDropListDropped)="dropAttribute($event)"
+    >
+        @for (attribute of draftHandbookAttributes(); track attribute) {
+            <div class="item" cdkDrag>
                 <div class="attribute">
                     <button
+                        type="button"
                         tuiButton
+                        cdkDragHandle
                         appearance="flat-grayscale"
                         iconStart="@tui.grip-vertical"
+                        aria-label="Изменить порядок атрибута"
                     ></button>
-                    <div class="name">{{ attribute.name }}</div>
+
+                    <div class="name">
+                        {{ attribute.name }}
+                    </div>
+
                     <div class="bages">
-                        <div tuiBadge appearance="info">{{
-                            attribute.type | attributeType
-                        }}</div>
+                        <div tuiBadge appearance="info">
+                            {{ attribute.type | attributeType }}
+                        </div>
+
                         @if (attribute.required) {
-                            <div tuiBadge appearance="primary"
-                                >Обязательный</div
-                            >
+                            <div tuiBadge appearance="primary">
+                                Обязательный
+                            </div>
                         }
                     </div>
+
                     <div class="buttons">
                         <button
                             type="button"
                             tuiButton
                             appearance="flat-grayscale"
                             iconStart="@tui.pen"
+                            aria-label="Редактировать атрибут"
                             (click)="editAttribute($index, $event)"
                         ></button>
 
@@ -53,6 +71,7 @@
                             tuiButton
                             appearance="flat-grayscale"
                             iconStart="@tui.trash-2"
+                            aria-label="Удалить атрибут"
                             (click)="deleteAttribute($index)"
                         ></button>
                     </div>
@@ -62,14 +81,22 @@
     </div>
 
     <footer class="footer">
-        <button tuiButton appearance="flat" (click)="context.complete()"
-            >Отмена</button
-        >
         <button
+            type="button"
+            tuiButton
+            appearance="flat"
+            (click)="context.complete(null)"
+        >
+            Отмена
+        </button>
+
+        <button
+            type="button"
             tuiButton
             [disabled]="draftHandbookAttributes().length === 0"
             (click)="save()"
-            >Сохранить</button
         >
+            Сохранить
+        </button>
     </footer>
 </div>

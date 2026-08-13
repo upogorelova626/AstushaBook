@@ -124,7 +124,7 @@ export class HanbookActionsButtonComponent {
             .subscribe(updatedHandbook => this.handbook.set(updatedHandbook));
     }
 
-    protected createAttribute(event: MouseEvent) {
+    protected createRow(event: MouseEvent) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -158,7 +158,11 @@ export class HanbookActionsButtonComponent {
                 },
                 {handbook: this.handbook()}
             )
-            .subscribe(updatedHandbook => this.handbook.set(updatedHandbook));
+            .subscribe(updatedHandbook => {
+                if (updatedHandbook) {
+                    this.handbook.set(updatedHandbook);
+                }
+            });
     }
 
     protected deleteHandbook() {
