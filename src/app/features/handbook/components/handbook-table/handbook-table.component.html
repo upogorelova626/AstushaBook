@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <table class="table" tuiTable [tuiSkeleton]="isLoading()">
+    <table class="table" tuiTable>
         <thead class="thead">
             <tr>
                 <th tuiTh class="fixed"> </th>
@@ -181,17 +181,14 @@
 
     <footer class="footer">
         <div class="footer-buttons">
-            <button
-                tuiButton
-                iconStart="@tui.plus"
-                appearance="flat"
-                (click)="createAttribute($event)"
-            >
-                Строка
-            </button>
+            @if (
+                canEditHandbook() || currentUser()?.id === handbook()?.ownerId
+            ) {
+                <app-add-handbook-row-button (newRow)="addRows($event)" />
+            }
         </div>
 
-        @if (draftRows().length === 0 && !isLoading()) {
+        @if (draftRows().length === 0) {
             <div class="empty-text">Нет строк</div>
         }
     </footer>

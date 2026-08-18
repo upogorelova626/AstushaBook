@@ -1,21 +1,33 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {
+    Handbook,
     HandbookRow,
     UpdateHandbookRowsRequest
 } from '../../../shared/interfaces';
 import {HandbookService} from '../../../shared/services/handbook.service';
-import {finalize} from 'rxjs';
+import {catchError, EMPTY, finalize} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Injectable()
-export class HandbookTableService {
+export class HandbookInfoService {
     private readonly handbookService = inject(HandbookService);
+    private readonly router = inject(Router);
+
+    private readonly isHandbookLoading = signal(false);
+    private readonly areRowsLoading = signal(false);
+
+    protected readonly nextOffset = signal<number | null>(0);
 
     payload = signal<UpdateHandbookRowsRequest | null>(null);
 
     readonly originalRows = signal<HandbookRow[]>([]);
     readonly draftRows = signal<HandbookRow[]>([]);
 
-    readonly isLoading = signal(false);
+    readonly handbook = signal<Handbook | null>(null);
+
+    readonly isLoading = computed(
+        () => this.isHandbookLoading() || this.areRowsLoading()
+    );
     readonly isEditing = signal(false);
 
     readonly editingCell = signal<{
@@ -25,13 +37,29 @@ export class HandbookTableService {
 
     readonly changedRowsId = signal<string[]>([]);
 
-    protected readonly nextOffset = signal<number | null>(0);
+    getHandbook(handbookId: string) {
+        this.isHandbookLoading.set(true);
+        this.handbookService
+            .getHandbook(handbookId)
+            .pipe(
+                catchError(() => {
+                    this.router.navigate(['/404']);
+                    return EMPTY;
+                }),
+                finalize(() => {
+                    this.isHandbookLoading.set(false);
+                })
+            )
+            .subscribe(handbook => {
+                this.handbook.set(handbook);
+            });
+    }
 
     getHandbookRows(handbookId: string) {
-        this.isLoading.set(true);
+        this.areRowsLoading.set(true);
         this.handbookService
             .getHandbookRows(handbookId, {offset: 0})
-            .pipe(finalize(() => this.isLoading.set(false)))
+            .pipe(finalize(() => this.areRowsLoading.set(false)))
             .subscribe(result => {
                 this.originalRows.set(result.items);
                 this.draftRows.set(result.items);
@@ -88,7 +116,10 @@ export class HandbookTableService {
             return;
         }
 
-        this.handbookService.editHandbookRows(handbookId, payload).subscribe();
+        this.handbookService
+            .editHandbookRows(handbookId, payload)
+            .pipe()
+            .subscribe();
     }
 
     getPayload() {

@@ -3,7 +3,6 @@ import {
     Component,
     inject,
     Injector,
-    model,
     signal
 } from '@angular/core';
 import {TuiActiveZone} from '@taiga-ui/cdk/directives/active-zone';
@@ -25,6 +24,7 @@ import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.
 import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
 import {EditHanbdookDesccriptionDialogComponent} from '../edit-hanbdook-desccription-dialog/edit-hanbdook-desccription-dialog.component';
 import {EditHandbookAttributesComponent} from '../edit-handbook-attributes/edit-handbook-attributes.component';
+import {HandbookInfoService} from '../../services/handbook-info.service';
 
 interface ExampleAction {
     readonly icon: string;
@@ -49,15 +49,17 @@ interface ExampleAction {
 export class HanbookActionsButtonComponent {
     private readonly handbooksService = inject(HandbookService);
     private readonly sidebarService = inject(SideBarService);
+    private readonly handbookInfoService = inject(HandbookInfoService);
+
     private readonly alerts = inject(TuiNotificationService);
     private readonly dialogs = inject(TuiDialogService);
     private readonly router = inject(Router);
+
     private readonly injector = inject(Injector);
 
     protected readonly open = signal(false);
-    protected readonly selected = signal<ExampleAction | null>(null);
 
-    readonly handbook = model<Handbook | null>(null);
+    protected readonly handbook = this.handbookInfoService.handbook;
 
     protected readonly editingActions: readonly ExampleAction[] = [
         {
@@ -95,13 +97,6 @@ export class HanbookActionsButtonComponent {
         }
     }
 
-    protected onSelect(action: ExampleAction, event: MouseEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.open.set(false);
-        action.action();
-    }
     protected openEditDescriptionDialog() {
         const handbook = this.handbook();
 

@@ -2,22 +2,22 @@ import {
     ChangeDetectionStrategy,
     Component,
     DestroyRef,
+    forwardRef,
     inject,
     Injector,
     input,
     OnInit,
     output,
-    signal,
-    forwardRef
+    signal
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
     ControlValueAccessor,
     FormControl,
+    NG_VALUE_ACCESSOR,
     NgControl,
     ReactiveFormsModule,
-    Validators,
-    NG_VALUE_ACCESSOR
+    Validators
 } from '@angular/forms';
 import {
     TUI_VALIDATION_ERRORS,
@@ -25,6 +25,7 @@ import {
     TuiLabel,
     TuiTextfield
 } from '@taiga-ui/core';
+import {TuiChevron, TuiComboBox, TuiDataListWrapper} from '@taiga-ui/kit';
 import {
     catchError,
     debounceTime,
@@ -36,9 +37,9 @@ import {
     Subject,
     switchMap
 } from 'rxjs';
+
 import {AstushaUserPreview} from '../../../../../shared/interfaces';
 import {UsersService} from '../../../../../shared/services/users.service';
-import {TuiChevron, TuiComboBox, TuiDataListWrapper} from '@taiga-ui/kit';
 import {UserPreviewComponent} from '../user-preview/user-preview.component';
 
 @Component({
@@ -83,13 +84,13 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
 
     private onChange: (value: AstushaUserPreview | null) => void = () =>
         undefined;
+
     private onTouched: () => void = () => undefined;
 
     protected readonly search$ = new Subject<string>();
     protected readonly isSearching = signal(false);
     protected readonly foundUsers = signal<AstushaUserPreview[] | null>([]);
 
-    protected parentNgControl: NgControl | null = null;
     protected readonly searchUserControl = new FormControl<
         AstushaUserPreview | string
     >('', {
@@ -105,13 +106,15 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
         return fullName || user.login || '';
     };
 
+    protected parentNgControl: NgControl | null = null;
+
     readonly selectedUsers = input<AstushaUserPreview[]>([]);
 
     readonly userSelected = output<AstushaUserPreview>();
 
     readonly isRowAddingOrEditing = input(false);
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.parentNgControl = this.injector.get(NgControl, null, {
             self: true
         });
@@ -161,25 +164,25 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
             });
     }
 
-    writeValue(user: AstushaUserPreview | null) {
+    writeValue(user: AstushaUserPreview | null): void {
         this.selectedUser.set(user);
 
-        this.searchUserControl.setValue(user ? user : '', {
+        this.searchUserControl.setValue(user ?? '', {
             emitEvent: false
         });
 
         this.foundUsers.set([]);
     }
 
-    registerOnChange(fn: (value: AstushaUserPreview | null) => void) {
+    registerOnChange(fn: (value: AstushaUserPreview | null) => void): void {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn: () => void) {
+    registerOnTouched(fn: () => void): void {
         this.onTouched = fn;
     }
 
-    setDisabledState(isDisabled: boolean) {
+    setDisabledState(isDisabled: boolean): void {
         if (isDisabled) {
             this.searchUserControl.disable({emitEvent: false});
 
@@ -210,7 +213,7 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
         this.search$.next(inputValue);
     }
 
-    protected lossFocus() {
+    protected lossFocus(): void {
         this.onTouched();
     }
 
@@ -220,7 +223,7 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
         return control?.invalid && control.touched ? true : null;
     }
 
-    protected addUser(user: AstushaUserPreview) {
+    protected addUser(user: AstushaUserPreview): void {
         const userAlreadySelected = this.selectedUsers().some(
             selectedUser => selectedUser.id === user.id
         );

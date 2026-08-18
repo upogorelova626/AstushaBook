@@ -2,40 +2,34 @@ import {
     ChangeDetectionStrategy,
     Component,
     inject,
-    OnInit,
-    signal
+    OnInit
 } from '@angular/core';
 import {HandbookHeaderComponent} from '../../components/handbook-header/handbook-header.component';
 import {HandbookTableComponent} from '../../components/handbook-table/handbook-table.component';
-import {HandbookService} from '../../../../shared/services/handbook.service';
-import {Handbook} from '../../../../shared/interfaces';
 import {ActivatedRoute} from '@angular/router';
-import {catchError, EMPTY, finalize} from 'rxjs';
 import {TuiSkeleton} from '@taiga-ui/kit';
 import {SidebarHostComponent} from '../../../handbooks/components/host-drawer/sidebar-host.component';
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
-import {HandbookTableService} from '../../services/handbook-table.service';
+import {HandbookInfoService} from '../../services/handbook-info.service';
 
 @Component({
     selector: 'app-handbook-page',
     imports: [
         HandbookHeaderComponent,
         HandbookTableComponent,
-        TuiSkeleton,
-        SidebarHostComponent
+        SidebarHostComponent,
+        TuiSkeleton
     ],
     templateUrl: './handbook-page.component.html',
     styleUrl: './handbook-page.component.less',
-    providers: [SideBarService, HandbookTableService],
+    providers: [SideBarService, HandbookInfoService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HandbookPageComponent implements OnInit {
-    private readonly handbookService = inject(HandbookService);
-    private readonly handbookTableService = inject(HandbookTableService);
+    private readonly handbookInfoService = inject(HandbookInfoService);
     private readonly route = inject(ActivatedRoute);
 
-    protected readonly isLoading = signal(false);
-    protected readonly handbook = signal<Handbook | null>(null);
+    protected readonly isLoading = this.handbookInfoService.isLoading;
 
     ngOnInit() {
         const handbookId = this.route.snapshot.paramMap.get('id');
@@ -44,22 +38,8 @@ export class HandbookPageComponent implements OnInit {
             return;
         }
 
-        this.isLoading.set(true);
+        this.handbookInfoService.getHandbookRows(handbookId);
 
-        this.handbookTableService.getHandbookRows(handbookId);
-
-        this.handbookService
-            .getHandbook(handbookId)
-            .pipe(
-                catchError(() => {
-                    return EMPTY;
-                }),
-                finalize(() => {
-                    this.isLoading.set(false);
-                })
-            )
-            .subscribe(handbook => {
-                this.handbook.set(handbook);
-            });
+        this.handbookInfoService.getHandbook(handbookId);
     }
 }

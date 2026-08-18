@@ -73,13 +73,13 @@ import {TuiEditor} from '@taiga-ui/editor';
     ]
 })
 export class AddHandbookStringFormComponent {
+    private readonly handbookService = inject(HandbookService);
+    private readonly alerts = inject(TuiNotificationService);
+
     protected readonly context =
         injectContext<
             BarContext<{handbook: Handbook; editRow?: HandbookRow}, HandbookRow>
         >();
-
-    private readonly handbookService = inject(HandbookService);
-    private readonly alerts = inject(TuiNotificationService);
 
     protected readonly handbook = this.context.handbook;
     protected readonly editRow = this.context.editRow;

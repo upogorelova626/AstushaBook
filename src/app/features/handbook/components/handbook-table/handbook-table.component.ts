@@ -3,38 +3,29 @@ import {
     AfterViewInit,
     ChangeDetectionStrategy,
     Component,
+    computed,
     DestroyRef,
     ElementRef,
     inject,
-    input,
     OnDestroy,
     signal,
     ViewChild
 } from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {TuiTable} from '@taiga-ui/addon-table';
-import {
-    TuiButton,
-    TuiCalendar,
-    TuiCheckbox,
-    TuiInput,
-    TuiTextfield
-} from '@taiga-ui/core';
+import {TuiCalendar, TuiCheckbox, TuiInput, TuiTextfield} from '@taiga-ui/core';
 import {TuiInputDate, TuiSkeleton} from '@taiga-ui/kit';
-import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
-
 import {
     AstushaUserPreview,
-    Handbook,
     HandbookColumnType,
     HandbookRow
 } from '../../../../shared/interfaces';
-import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
-import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-handbook-string-form.component';
 import {EditRowButtonComponent} from '../edit-row-button/edit-row-button.component';
-import {HandbookTableService} from '../../services/handbook-table.service';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {TuiEditorSocket} from '@taiga-ui/editor';
+import {AddHandbookRowButtonComponent} from '../add-handbook-row-button/add-handbook-row-button.component';
+import {UserService} from '../../../auth/services/user.service';
+import {HandbookInfoService} from '../../services/handbook-info.service';
 
 @Component({
     selector: 'app-handbook-table',
@@ -42,7 +33,6 @@ import {TuiEditorSocket} from '@taiga-ui/editor';
         DatePipe,
         ReactiveFormsModule,
         TuiTable,
-        TuiButton,
         TuiCheckbox,
         TuiSkeleton,
         TuiTextfield,
@@ -50,7 +40,8 @@ import {TuiEditorSocket} from '@taiga-ui/editor';
         TuiInputDate,
         TuiCalendar,
         TuiEditorSocket,
-        EditRowButtonComponent
+        EditRowButtonComponent,
+        AddHandbookRowButtonComponent
     ],
     templateUrl: './handbook-table.component.html',
     styleUrl: './handbook-table.component.less',
@@ -60,30 +51,43 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
     @ViewChild('loadMore')
     private loadMore!: ElementRef<HTMLElement>;
 
-    readonly handbook = input<Handbook | null>(null);
-
-    private readonly sidebarService = inject(SideBarService);
-    private readonly handbookTableService = inject(HandbookTableService);
+    private readonly userService = inject(UserService);
+    private readonly handbookInfoService = inject(HandbookInfoService);
 
     private readonly destroyRef = inject(DestroyRef);
 
     private observer!: IntersectionObserver;
 
-    protected readonly originalRows = this.handbookTableService.originalRows;
-    protected readonly draftRows = this.handbookTableService.draftRows;
+    protected readonly currentUser = toSignal(this.userService.currentUser$);
 
-    protected readonly isLoading = this.handbookTableService.isLoading;
-    protected readonly isEditing = this.handbookTableService.isEditing;
+    protected readonly originalRows = this.handbookInfoService.originalRows;
+    protected readonly draftRows = this.handbookInfoService.draftRows;
+
+    protected readonly isEditing = this.handbookInfoService.isEditing;
 
     protected readonly changedRowsId = signal<string[]>([]);
 
-    protected readonly editingCell = this.handbookTableService.editingCell;
+    protected readonly editingCell = this.handbookInfoService.editingCell;
 
     protected readonly editCellControl = new FormControl<
         string | number | boolean | null | AstushaUserPreview
     >(null);
 
     protected readonly HandbookColumnType = HandbookColumnType;
+
+    protected readonly canEditHandbook = computed(() => {
+        const currentUserId = this.currentUser()?.id;
+
+        if (
+            this.handbook()?.editors.find(item => item.userId === currentUserId)
+        ) {
+            return true;
+        }
+
+        return false;
+    });
+
+    readonly handbook = this.handbookInfoService.handbook;
 
     constructor() {
         this.editCellControl.valueChanges
@@ -126,7 +130,7 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
                 return;
             }
 
-            this.handbookTableService.getMoreRows(handbookId);
+            this.handbookInfoService.getMoreRows(handbookId);
         });
 
         this.observer.observe(this.loadMore.nativeElement);
@@ -183,36 +187,10 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
         );
     }
 
-    protected addRows(newRows: HandbookRow[]): void {
+    protected addRows(newRows: HandbookRow[]) {
         this.originalRows.update(rows => [...rows, ...newRows]);
 
         this.draftRows.update(rows => [...rows, ...newRows]);
-    }
-
-    protected createAttribute(event: MouseEvent) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        this.sidebarService
-            .open$<AddHandbookStringFormComponent, HandbookRow>(
-                new PolymorpheusComponent(AddHandbookStringFormComponent),
-                {
-                    overlay: true,
-                    rounded: true,
-                    offset: true
-                },
-                {
-                    handbook: this.handbook()
-                }
-            )
-            .subscribe(row => {
-                if (!row) {
-                    return;
-                }
-
-                this.originalRows.update(rows => [...rows, row]);
-                this.draftRows.update(rows => [...rows, row]);
-            });
     }
 
     protected getDateValue(

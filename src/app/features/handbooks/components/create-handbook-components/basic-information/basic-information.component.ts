@@ -63,17 +63,6 @@ export class BasicInformationComponent {
 
     protected readonly values = this.createHandbookFormService.values;
 
-    constructor() {
-        this.basicInfoForm.valueChanges
-            .pipe(takeUntilDestroyed(this.destroyRef))
-
-            .subscribe(() => {
-                this.createHandbookFormService.update(
-                    this.basicInfoForm.getRawValue()
-                );
-            });
-    }
-
     protected readonly basicInfoForm = new FormGroup({
         name: new FormControl(this.values().name ?? '', {
             nonNullable: true,
@@ -99,4 +88,15 @@ export class BasicInformationComponent {
             validators: []
         })
     });
+
+    constructor() {
+        this.basicInfoForm.valueChanges
+            .pipe(takeUntilDestroyed(this.destroyRef))
+
+            .subscribe(() => {
+                this.createHandbookFormService.update(
+                    this.basicInfoForm.getRawValue()
+                );
+            });
+    }
 }

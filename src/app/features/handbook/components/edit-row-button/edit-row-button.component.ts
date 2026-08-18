@@ -21,16 +21,16 @@ import {catchError, EMPTY, tap} from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditRowButtonComponent {
+    private readonly sidebarService = inject(SideBarService);
+    private readonly handbookService = inject(HandbookService);
+    private readonly alerts = inject(TuiNotificationService);
+
     readonly handbook = input<Handbook | null>(null);
     readonly row = input<HandbookRow>();
 
     readonly updatedRow = output<HandbookRow>();
     readonly deletedRowId = output<string>();
     readonly clonedRows = output<HandbookRow[]>();
-
-    private readonly sidebarService = inject(SideBarService);
-    private readonly handbookService = inject(HandbookService);
-    private readonly alerts = inject(TuiNotificationService);
 
     protected deleteRow() {
         const handbookId = this.handbook()?.id;

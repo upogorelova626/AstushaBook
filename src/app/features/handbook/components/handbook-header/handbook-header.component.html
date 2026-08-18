@@ -10,7 +10,14 @@
         <div class="name">{{ handbook()?.name }}</div>
     </div>
     <div class="right">
-        <app-edit-cells-buttons [handbook]="handbook()" />
-        <app-hanbook-actions-button [(handbook)]="handbook" />
+        @if (currentUser()?.id === handbook()?.ownerId) {
+            <app-edit-cells-buttons />
+            <app-hanbook-actions-button />
+        } @else {
+            @if (canEditHandbook()) {
+                <app-edit-cells-buttons />
+                <app-add-handbook-row-button />
+            }
+        }
     </div>
 </div>

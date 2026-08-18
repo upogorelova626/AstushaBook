@@ -67,7 +67,14 @@ export const routes: Routes = [
         ]
     },
     {
+        path: '404',
+        loadComponent: () =>
+            import('./shared/pages/error-page/error-page.component').then(
+                component => component.ErrorPageComponent
+            )
+    },
+    {
         path: '**',
-        redirectTo: 'astusha'
+        redirectTo: '404'
     }
 ];

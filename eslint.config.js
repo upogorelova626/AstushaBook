@@ -31,6 +31,24 @@ module.exports = defineConfig([
                     style: 'kebab-case'
                 }
             ]
+            // '@typescript-eslint/member-ordering': [
+            //     'error',
+            //     {
+            //         classes: {
+            //             memberTypes: [
+            //                 ['private-field', 'private-readonly-field'],
+            //                 ['protected-field', 'protected-readonly-field'],
+            //                 ['public-field', 'public-readonly-field'],
+
+            //                 'constructor',
+
+            //                 'public-method',
+            //                 'protected-method',
+            //                 'private-method'
+            //             ]
+            //         }
+            //     }
+            // ]
         }
     },
     {

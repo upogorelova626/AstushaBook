@@ -1,7 +1,6 @@
-import {Component, inject, input} from '@angular/core';
-import {HandbookTableService} from '../../services/handbook-table.service';
+import {Component, inject} from '@angular/core';
+import {HandbookInfoService} from '../../services/handbook-info.service';
 import {TuiButton} from '@taiga-ui/core';
-import {Handbook} from '../../../../shared/interfaces';
 
 @Component({
     selector: 'app-edit-cells-buttons',
@@ -10,14 +9,14 @@ import {Handbook} from '../../../../shared/interfaces';
     styleUrl: './edit-cells-buttons.component.less'
 })
 export class EditCellsButtonsComponent {
-    readonly handbook = input<Handbook | null>(null);
+    private readonly handbookInfoService = inject(HandbookInfoService);
 
-    private readonly handbookTableService = inject(HandbookTableService);
+    protected readonly handbook = this.handbookInfoService.handbook;
 
-    protected readonly isEditing = this.handbookTableService.isEditing;
+    protected readonly isEditing = this.handbookInfoService.isEditing;
 
     protected startEditing() {
-        this.handbookTableService.startEditing();
+        this.handbookInfoService.startEditing();
     }
 
     protected save() {
@@ -27,11 +26,10 @@ export class EditCellsButtonsComponent {
             return;
         }
 
-        this.handbookTableService.editHandbookRows(handbookId);
-        this.isEditing.set(false);
+        this.handbookInfoService.editHandbookRows(handbookId);
     }
 
     protected cancel() {
-        this.handbookTableService.cancelEditing();
+        this.handbookInfoService.cancelEditing();
     }
 }
