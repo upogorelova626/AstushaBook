@@ -4,7 +4,7 @@
     </header>
 
     <div class="filters">
-        @for (filter of filters; track filter.value) {
+        @for (filter of filters(); track filter.value) {
             <label class="filter">
                 <input
                     tuiRadio
@@ -24,7 +24,12 @@
                     {{ filter.label }}
                 </span>
 
-                <div class="filter-count" tuiBadge appearance="neutral">
+                <div
+                    class="filter-count"
+                    tuiBadge
+                    appearance="neutral"
+                    [tuiSkeleton]="isLoading()"
+                >
                     {{ filter.count }}
                 </div>
             </label>

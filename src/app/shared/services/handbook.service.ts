@@ -12,7 +12,8 @@ import {
     UpdateHandbookRowsRequest,
     DeleteOrCloneHandbookRowsRequest,
     EditHandbookDescriptionRequest,
-    EditHandbookAttributesRequest
+    EditHandbookAttributesRequest,
+    HandbookFiltersCounts
 } from '../interfaces';
 import {Observable} from 'rxjs';
 
@@ -36,6 +37,16 @@ export class HandbookService {
         return this.http.post<GetHandbooksResponse>(
             `${this.astushaBookApiUrl}/search`,
             payload,
+            {
+                withCredentials: true
+            }
+        );
+    }
+
+    getHandbooksCount(): Observable<HandbookFiltersCounts> {
+        return this.http.get<HandbookFiltersCounts>(
+            `${this.astushaBookApiUrl}/filter-counts`,
+
             {
                 withCredentials: true
             }

@@ -159,3 +159,10 @@ export interface EditHandbookDescriptionRequest {
 export interface EditHandbookAttributesRequest {
     columns: (HandbookAttribute | HandbookColumnResponse)[];
 }
+
+export interface HandbookFiltersCounts {
+    all: number;
+    mine: number;
+    available: number;
+    favorites: number;
+}
