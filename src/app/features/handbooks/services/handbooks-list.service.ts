@@ -72,4 +72,17 @@ export class HandbooksListService {
         }));
         this.load();
     }
+
+    updateHandbookFavouriteStatus(handbookId: string, isFavourite: boolean) {
+        this.handbooksPreviews.update(handbooks =>
+            handbooks.map(handbook =>
+                handbook.id === handbookId
+                    ? {
+                          ...handbook,
+                          isFavourite
+                      }
+                    : handbook
+            )
+        );
+    }
 }

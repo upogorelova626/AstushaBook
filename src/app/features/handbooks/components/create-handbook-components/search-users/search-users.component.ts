@@ -79,13 +79,14 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
     private readonly usersService = inject(UsersService);
     private readonly destroyRef = inject(DestroyRef);
     private readonly injector = inject(Injector);
-
     private readonly selectedUser = signal<AstushaUserPreview | null>(null);
 
     private onChange: (value: AstushaUserPreview | null) => void = () =>
         undefined;
 
     private onTouched: () => void = () => undefined;
+
+    protected parentNgControl: NgControl | null = null;
 
     protected readonly search$ = new Subject<string>();
     protected readonly isSearching = signal(false);
@@ -106,15 +107,11 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
         return fullName || user.login || '';
     };
 
-    protected parentNgControl: NgControl | null = null;
-
     readonly selectedUsers = input<AstushaUserPreview[]>([]);
-
     readonly userSelected = output<AstushaUserPreview>();
-
     readonly isRowAddingOrEditing = input(false);
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.parentNgControl = this.injector.get(NgControl, null, {
             self: true
         });

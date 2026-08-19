@@ -13,7 +13,8 @@ import {
     DeleteOrCloneHandbookRowsRequest,
     EditHandbookDescriptionRequest,
     EditHandbookAttributesRequest,
-    HandbookFiltersCounts
+    HandbookFiltersCounts,
+    HanbookFavoriteStatus
 } from '../interfaces';
 import {Observable} from 'rxjs';
 
@@ -153,6 +154,19 @@ export class HandbookService {
     ): Observable<HandbookRow[]> {
         return this.http.post<HandbookRow[]>(
             `${this.astushaBookApiUrl}/${handbookId}/rows/duplicate`,
+            payload,
+            {
+                withCredentials: true
+            }
+        );
+    }
+
+    editFavouriteStatus(
+        handbookId: string,
+        payload: HanbookFavoriteStatus
+    ): Observable<HanbookFavoriteStatus> {
+        return this.http.patch<HanbookFavoriteStatus>(
+            `${this.astushaBookApiUrl}/${handbookId}/favorite`,
             payload,
             {
                 withCredentials: true

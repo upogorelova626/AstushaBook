@@ -43,6 +43,10 @@
         <app-list-column-options [options]="form.controls.options" />
     }
 
+    @if (form.controls.type.value === HandbookColumnType.Reference) {
+        <app-reference-attribute-settings [form]="form.controls.reference" />
+    }
+
     <tui-error formControlName="type" />
 
     <div class="wrapper">

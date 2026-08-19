@@ -12,19 +12,36 @@
     gap: 10px;
 }
 
+.empty {
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    font: var(--tui-typography-body-m);
+}
+
 .item {
     width: 100%;
     min-width: 0;
-    padding: 20px 18px 20px 20px;
+    padding: 20px;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) max-content max-content;
+    grid-template-columns: minmax(0, 1fr) minmax(170px, max-content) max-content;
     align-items: center;
-    gap: 24px;
+    gap: 32px;
     box-sizing: border-box;
     border: 1px solid var(--color-card-border);
     border-radius: 8px;
     background: var(--color-card-background);
     box-shadow: var(--tui-shadow-small);
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.item:hover {
+    border-color: var(--tui-border-hover);
+    box-shadow: var(--tui-shadow-medium);
 }
 
 .info {
@@ -40,14 +57,27 @@
 
 .info-content {
     min-width: 0;
+    flex: 1;
+}
+
+.title-row {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .name {
+    min-width: 0;
     overflow: hidden;
     color: var(--color-text-primary);
     font: var(--tui-typography-heading-h6);
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.lock {
+    flex: 0 0 auto;
 }
 
 .description {
@@ -59,6 +89,8 @@
     font: var(--tui-typography-body-m);
     line-height: 1.45;
     -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
 }
 
 .tags {
@@ -68,63 +100,141 @@
     gap: 6px;
 }
 
-.meta {
-    min-width: 120px;
-    text-align: right;
+.owner {
+    min-width: 0;
 }
 
-.meta-label {
+.owner-label {
     color: var(--color-text-muted);
     font: var(--tui-typography-body-s);
 }
 
-.meta-value {
-    margin-top: 4px;
-    color: var(--color-text-secondary);
+.owner-value {
+    min-width: 0;
+    margin-top: 3px;
+}
+
+.owner-name {
+    max-width: 220px;
+    overflow: hidden;
+    color: var(--color-text-primary);
     font: var(--tui-typography-body-m);
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.action {
+.owner-email {
+    max-width: 220px;
+    margin-top: 2px;
+    overflow: hidden;
+    color: var(--color-text-muted);
+    font: var(--tui-typography-body-s);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.favourite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex: 0 0 auto;
 }
 
-@media (max-width: 900px) {
-    .item {
-        grid-template-columns: minmax(0, 1fr) max-content;
-        gap: 16px;
-    }
-
-    .meta {
-        grid-column: 1;
-        margin-left: 64px;
-        text-align: left;
-    }
-
-    .action {
-        grid-column: 2;
-        grid-row: 1 / span 2;
-    }
+.favorite {
+    color: #f5b700;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1000px) {
     .item {
-        padding: 16px;
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) max-content;
+        gap: 16px 24px;
     }
 
     .info {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .owner {
+        grid-column: 1;
+        grid-row: 2;
+        margin-left: 64px;
+    }
+
+    .actions {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        align-self: center;
+    }
+}
+
+@media (max-width: 700px) {
+    .item {
+        padding: 16px;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .info {
+        grid-column: 1;
+        grid-row: auto;
         gap: 12px;
     }
 
-    .meta {
-        grid-column: auto;
+    .owner {
+        grid-column: 1;
+        grid-row: auto;
         margin-left: 0;
+        padding-top: 14px;
+        border-top: 1px solid var(--color-card-border);
     }
 
-    .action {
-        grid-column: auto;
+    .owner-name,
+    .owner-email {
+        max-width: 100%;
+    }
+
+    .actions {
+        grid-column: 1;
         grid-row: auto;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .actions > button {
+        flex: 1;
+    }
+}
+
+@media (max-width: 450px) {
+    .item {
+        padding: 14px;
+    }
+
+    .name {
+        white-space: normal;
+    }
+
+    .description {
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+    }
+
+    .actions {
+        justify-content: space-between;
+    }
+
+    .favourite {
+        flex: 0 0 auto;
+    }
+
+    .actions > button {
         width: 100%;
     }
 }

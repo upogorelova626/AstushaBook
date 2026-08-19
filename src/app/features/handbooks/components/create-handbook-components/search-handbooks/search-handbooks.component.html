@@ -1,0 +1,28 @@
+<tui-textfield
+    iconStart="@tui.search"
+    tuiChevron
+    [stringify]="stringifyHandbook"
+>
+    <input
+        #inputRef
+        tuiComboBox
+        placeholder="Введите название справочника"
+        [formControl]="searchHandbookControl"
+        [invalid]="isParentInvalid()"
+        (input)="onSearchInput(inputRef.value)"
+        (blur)="lossFocus()"
+    />
+
+    <tui-data-list-wrapper
+        *tuiDropdown
+        [items]="foundedHandbooks()"
+        [emptyContent]="
+            inputRef.value.length < 3
+                ? 'Введите минимум 3 символа'
+                : 'Ничего не найдено'
+        "
+        class="dropdown"
+    />
+</tui-textfield>
+
+<tui-error [formControl]="searchHandbookControl" />

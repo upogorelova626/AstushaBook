@@ -1,51 +1,103 @@
 <div class="wrapper">
-    @for (handbook of handbookPreviews(); track handbook.id) {
-        <div class="item">
-            <div class="info">
-                <div
-                    class="avatar"
-                    tuiAvatar="@tui.pyramid"
-                    size="l"
-                    appearance="info"
-                ></div>
+    @if (handbookPreviews().length === 0) {
+        <div class="empty"> Ничего не найдено </div>
+    } @else {
+        @for (handbook of handbookPreviews(); track handbook.id) {
+            <div class="item">
+                <div class="info">
+                    <div
+                        class="avatar"
+                        tuiAvatar="@tui.sheet"
+                        size="l"
+                        appearance="info"
+                    ></div>
 
-                <div class="info-content">
-                    <div class="name">{{ handbook.name }}</div>
+                    <div class="info-content">
+                        <div class="title-row">
+                            <div class="name">
+                                {{ handbook.name }}
+                            </div>
 
-                    <div class="description">
-                        {{ handbook.description }}
-                    </div>
-
-                    @if (handbook.tags.length) {
-                        <div class="tags">
-                            @for (tag of handbook.tags; track tag) {
-                                <div tuiBadge size="m" appearance="info">
-                                    {{ tag }}
-                                </div>
+                            @if (!handbook.hasAccess) {
+                                <div
+                                    class="lock"
+                                    tuiAvatar="@tui.lock-keyhole"
+                                    size="s"
+                                    appearance="flat-grayscale"
+                                ></div>
                             }
                         </div>
-                    }
+
+                        @if (handbook.description) {
+                            <div class="description">
+                                {{ handbook.description }}
+                            </div>
+                        }
+
+                        @if (handbook.tags.length) {
+                            <div class="tags">
+                                @for (tag of handbook.tags; track tag) {
+                                    <div tuiBadge size="m" appearance="info">
+                                        {{ tag }}
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="owner">
+                    <div class="owner-label"> Автор </div>
+
+                    <div class="owner-value">
+                        @if (
+                            handbook.owner.firstName && handbook.owner.lastName
+                        ) {
+                            <div class="owner-name">
+                                {{ handbook.owner.firstName }}
+                                {{ handbook.owner.lastName }}
+                            </div>
+                        } @else {
+                            <div class="owner-name">
+                                {{ handbook.owner.login }}
+                            </div>
+                        }
+
+                        <div class="owner-email">
+                            {{ handbook.owner.email }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <div class="favourite">
+                        <button
+                            type="button"
+                            [class.favorite]="handbook.isFavourite"
+                            tuiIconButton
+                            appearance="flat"
+                            [iconStart]="
+                                handbook.isFavourite
+                                    ? '@tui.star-filled'
+                                    : '@tui.star'
+                            "
+                            [style.border-radius.%]="100"
+                            (click)="changeHandbookStatus(handbook)"
+                        ></button>
+                    </div>
+
+                    <button
+                        tuiButton
+                        type="button"
+                        appearance="flat"
+                        iconEnd="@tui.chevron-right"
+                        [disabled]="!handbook.hasAccess"
+                        (click)="openHandbook(handbook.id)"
+                    >
+                        Подробнее
+                    </button>
                 </div>
             </div>
-
-            <div class="meta">
-                <div class="meta-label">Обновлено</div>
-
-                <div class="meta-value">
-                    {{ handbook.updatedAt | date: 'd MMMM y' }}
-                </div>
-            </div>
-
-            <button
-                tuiButton
-                class="action"
-                type="button"
-                appearance="flat"
-                iconEnd="@tui.chevron-right"
-                (click)="openHandbook(handbook.id)"
-            >
-                Подробнее
-            </button>
-        </div>
+        }
     }
 </div>

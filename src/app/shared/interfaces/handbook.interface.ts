@@ -105,6 +105,9 @@ export interface HandbookPreview {
     description: string;
     tags: string[];
     updatedAt: string;
+    hasAccess: boolean;
+    owner: AstushaUserPreview;
+    isFavourite: boolean;
 }
 
 export interface GetHandbooksResponse {
@@ -165,4 +168,8 @@ export interface HandbookFiltersCounts {
     mine: number;
     available: number;
     favorites: number;
+}
+
+export interface HanbookFavoriteStatus {
+    isFavorite: boolean;
 }

@@ -1,0 +1,9 @@
+<div>
+    <app-search-handbooks [formControl]="form().controls.handbook" />
+    @if (form().controls.handbook.value; as handbook) {
+        <app-search-handbook-column
+            [formControl]="form().controls.columnId"
+            [handbookId]="handbook.id"
+        />
+    }
+</div>

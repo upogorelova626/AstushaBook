@@ -19,7 +19,8 @@ import {injectContext} from '@taiga-ui/polymorpheus';
 import {
     HandbookAttribute,
     HandbookColumnResponse,
-    HandbookColumnType
+    HandbookColumnType,
+    HandbookPreview
 } from '../../../../../shared/interfaces';
 import {BarContext} from '../../host-drawer/base-bar.service';
 import {
@@ -29,6 +30,7 @@ import {
     TuiStringifyContentPipe
 } from '@taiga-ui/kit';
 import {ListColumnOptionsComponent} from '../../../../handbook/components/list-column-options/list-column-options.component';
+import {ReferenceAttributeSettingsComponent} from '../reference-attribute-settings/reference-attribute-settings.component';
 
 interface AttributeFormContext {
     data?: HandbookAttribute | HandbookColumnResponse;
@@ -48,7 +50,8 @@ interface AttributeFormContext {
         TuiFilterByInputPipe,
         TuiStringifyContentPipe,
         ReactiveFormsModule,
-        ListColumnOptionsComponent
+        ListColumnOptionsComponent,
+        ReferenceAttributeSettingsComponent
     ],
     templateUrl: './attribute-form.component.html',
     styleUrl: './attribute-form.component.less',
@@ -108,7 +111,11 @@ export class AttributeFormComponent {
                         ]
                     })
             )
-        )
+        ),
+        reference: new FormGroup({
+            handbook: new FormControl<HandbookPreview | null>(null),
+            columnId: new FormControl<string | null>(null)
+        })
     });
 
     protected readonly items = [
