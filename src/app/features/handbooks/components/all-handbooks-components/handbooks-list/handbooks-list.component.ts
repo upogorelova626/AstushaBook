@@ -36,10 +36,7 @@ export class HandbooksListComponent {
     protected changeHandbookStatus(handbook: HandbookPreview) {
         const handbookId = handbook.id;
 
-        const isFavorite = !handbook.isFavourite;
-        const payload = {
-            isFavorite
-        };
+        const payload = {isFavorite: !handbook.isFavorite};
 
         this.handbookService
             .editFavouriteStatus(handbookId, payload)
@@ -47,7 +44,7 @@ export class HandbooksListComponent {
                 tap(() =>
                     this.alerts
                         .open(
-                            isFavorite
+                            !handbook.isFavorite
                                 ? 'Справочник успешно добавлен в избранное'
                                 : 'Справочник удалён из избранного',
                             {

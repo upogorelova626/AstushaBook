@@ -1,15 +1,48 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    OnInit,
+    signal
+} from '@angular/core';
 import {TuiButton} from '@taiga-ui/core';
-import {TuiAvatar} from '@taiga-ui/kit';
+import {TuiAvatar, TuiBadge} from '@taiga-ui/kit';
+import {HandbookService} from '../../../../shared/services/handbook.service';
+import {
+    GetHandbooksRequest,
+    HandbookListFilter,
+    HandbookPreview
+} from '../../../../shared/interfaces';
+import {RouterLink} from '@angular/router';
 
 @Component({
     selector: 'app-favourites-card',
-    imports: [TuiAvatar, TuiButton],
+    imports: [TuiAvatar, TuiButton, TuiBadge, RouterLink],
     templateUrl: './favourites-card.component.html',
     styleUrl: './favourites-card.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FavouritesCardComponent {
+export class FavouritesCardComponent implements OnInit {
+    private readonly handbooksService = inject(HandbookService);
+
+    protected readonly favoriteHandbooks = signal<HandbookPreview[]>([]);
+
+    readonly handbookRequest = signal<GetHandbooksRequest>({
+        name: '',
+        tags: [],
+        filter: HandbookListFilter.Favorites
+    });
+
+    ngOnInit() {
+        const payload = this.handbookRequest();
+
+        this.handbooksService
+            .getHandbooksPreviews(payload)
+            .subscribe(result => {
+                this.favoriteHandbooks.set(result.items);
+            });
+    }
+
     protected readonly articleItems = [
         {
             avatar: '@tui.file-text',

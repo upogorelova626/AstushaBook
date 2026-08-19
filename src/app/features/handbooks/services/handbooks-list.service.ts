@@ -73,13 +73,13 @@ export class HandbooksListService {
         this.load();
     }
 
-    updateHandbookFavouriteStatus(handbookId: string, isFavourite: boolean) {
+    updateHandbookFavouriteStatus(handbookId: string, isFavorite: boolean) {
         this.handbooksPreviews.update(handbooks =>
             handbooks.map(handbook =>
                 handbook.id === handbookId
                     ? {
                           ...handbook,
-                          isFavourite
+                          isFavorite
                       }
                     : handbook
             )

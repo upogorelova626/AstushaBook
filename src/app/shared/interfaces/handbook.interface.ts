@@ -107,7 +107,7 @@ export interface HandbookPreview {
     updatedAt: string;
     hasAccess: boolean;
     owner: AstushaUserPreview;
-    isFavourite: boolean;
+    isFavorite: boolean;
 }
 
 export interface GetHandbooksResponse {

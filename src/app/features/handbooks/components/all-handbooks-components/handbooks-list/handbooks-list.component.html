@@ -71,19 +71,25 @@
 
                 <div class="actions">
                     <div class="favourite">
-                        <button
-                            type="button"
-                            [class.favorite]="handbook.isFavourite"
-                            tuiIconButton
-                            appearance="flat"
-                            [iconStart]="
-                                handbook.isFavourite
-                                    ? '@tui.star-filled'
-                                    : '@tui.star'
-                            "
-                            [style.border-radius.%]="100"
-                            (click)="changeHandbookStatus(handbook)"
-                        ></button>
+                        @if (handbook.isFavorite) {
+                            <button
+                                type="button"
+                                tuiIconButton
+                                appearance="flat"
+                                iconStart="@tui.star-filled"
+                                [style.border-radius.%]="100"
+                                (click)="changeHandbookStatus(handbook)"
+                            ></button>
+                        } @else {
+                            <button
+                                type="button"
+                                tuiIconButton
+                                appearance="flat"
+                                iconStart="@tui.star"
+                                [style.border-radius.%]="100"
+                                (click)="changeHandbookStatus(handbook)"
+                            ></button>
+                        }
                     </div>
 
                     <button

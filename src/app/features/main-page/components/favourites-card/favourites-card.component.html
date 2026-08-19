@@ -11,37 +11,44 @@
     </header>
 
     <div class="list">
-        @for (item of articleItems; track item.title) {
-            <button
+        @for (handbook of favoriteHandbooks().slice(0, 4); track handbook.id) {
+            <a
                 class="item"
                 tuiButton
                 appearance="outline"
                 type="button"
-                [attr.aria-label]="'Открыть статью «' + item.title + '»'"
+                [routerLink]="['/astusha', 'handbooks', handbook.id]"
             >
-                <div
-                    [tuiAvatar]="item.avatar"
-                    appearance="warning"
-                    size="l"
-                ></div>
+                <div tuiAvatar="@tui.star" appearance="warning" size="l"></div>
 
                 <div class="content">
-                    <div class="title">{{ item.title }}</div>
+                    <div class="title">{{ handbook.name }}</div>
 
                     <div class="description">
-                        {{ item.description }}
+                        {{ handbook.description }}
                     </div>
                 </div>
 
                 <div class="tag" tuiBadge appearance="warning" size="m">
-                    {{ item.tag }}
+                    {{ handbook.tags }}
                 </div>
 
                 <div class="updated">
-                    <div class="updated-label">Обновлено</div>
+                    <div class="updated-label">Автор</div>
 
                     <div class="updated-value">
-                        {{ item.lastUpdate }}
+                        @if (
+                            !handbook.owner.firstName ||
+                            !handbook.owner.lastName
+                        ) {
+                            <div>{{ handbook.owner.login }}</div>
+                            <div>{{ handbook.owner.email }}</div>
+                        } @else {
+                            <div
+                                >{{ handbook.owner.firstName }}
+                                {{ handbook.owner.lastName }}</div
+                            >
+                        }
                     </div>
                 </div>
 
@@ -52,7 +59,7 @@
                     size="s"
                     iconStart="@tui.chevron-right"
                 ></div>
-            </button>
+            </a>
         }
     </div>
 
