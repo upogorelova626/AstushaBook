@@ -38,17 +38,21 @@
 
                     <div class="updated-value">
                         @if (
-                            !handbook.owner.firstName ||
-                            !handbook.owner.lastName
+                            handbook.owner.firstName && handbook.owner.lastName
                         ) {
-                            <div>{{ handbook.owner.login }}</div>
-                            <div>{{ handbook.owner.email }}</div>
+                            <div class="owner-name">
+                                {{ handbook.owner.firstName }}
+                                {{ handbook.owner.lastName }}
+                            </div>
                         } @else {
-                            <div
-                                >{{ handbook.owner.firstName }}
-                                {{ handbook.owner.lastName }}</div
-                            >
+                            <div class="owner-name">
+                                {{ handbook.owner.login }}
+                            </div>
                         }
+
+                        <div class="owner-email">
+                            {{ handbook.owner.email }}
+                        </div>
                     </div>
                 </div>
 

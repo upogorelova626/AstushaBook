@@ -1,6 +1,11 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {TuiButton, TuiNotificationService} from '@taiga-ui/core';
-import {TuiAvatar, TuiBadge, tuiLikeOptionsProvider} from '@taiga-ui/kit';
+import {
+    TuiAvatar,
+    TuiBadge,
+    tuiLikeOptionsProvider,
+    TuiSkeleton
+} from '@taiga-ui/kit';
 import {HandbooksListService} from '../../../services/handbooks-list.service';
 import {Router} from '@angular/router';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -10,7 +15,7 @@ import {catchError, EMPTY, tap} from 'rxjs';
 
 @Component({
     selector: 'app-handbooks-list',
-    imports: [TuiButton, TuiAvatar, TuiBadge, ReactiveFormsModule],
+    imports: [TuiButton, TuiAvatar, TuiBadge, TuiSkeleton, ReactiveFormsModule],
     templateUrl: './handbooks-list.component.html',
     styleUrl: './handbooks-list.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +30,8 @@ export class HandbooksListComponent {
     private readonly handbookService = inject(HandbookService);
     private readonly alerts = inject(TuiNotificationService);
     private readonly router = inject(Router);
+
+    protected readonly isLoading = this.handbooksListService.isLoading;
 
     protected readonly handbookPreviews =
         this.handbooksListService.handbooksPreviews;

@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {TuiButton, TuiExpand} from '@taiga-ui/core';
 import {TuiAvatar, TuiBadge, TuiChevron} from '@taiga-ui/kit';
+import {RecentlyViewedHandbooksService} from '../../../services/recently-viewed-handbooks.service';
 
 @Component({
     selector: 'app-recently-viewed-handbooks',
@@ -12,24 +13,10 @@ import {TuiAvatar, TuiBadge, TuiChevron} from '@taiga-ui/kit';
 export class RecentlyViewedHandbooksComponent {
     protected expanded = false;
 
-    protected readonly recentlyViewed = [
-        {
-            title: 'Основы REST API',
-            tag: 'API',
-            updatedAt: '2 дня назад',
-            icon: '@tui.pyramid'
-        },
-        {
-            title: 'Настройка CI/CD',
-            tag: 'DevOps',
-            updatedAt: '5 дней назад',
-            icon: '@tui.settings'
-        },
-        {
-            title: 'Работа с Docker Compose',
-            tag: 'Docker',
-            updatedAt: 'неделю назад',
-            icon: '@tui.box'
-        }
-    ];
+    private readonly recentlyViewedHandbooksService = inject(
+        RecentlyViewedHandbooksService
+    );
+
+    protected readonly recentlyViewedhandbooks =
+        this.recentlyViewedHandbooksService.recentlyViewedHandbooks;
 }

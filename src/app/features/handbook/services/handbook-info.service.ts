@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 @Injectable()
 export class HandbookInfoService {
     private readonly handbookService = inject(HandbookService);
+
     private readonly router = inject(Router);
 
     private readonly isHandbookLoading = signal(false);

@@ -18,11 +18,14 @@
 
     <tui-expand [expanded]="expanded">
         <main class="content">
-            @for (item of recentlyViewed; track item.title) {
+            @for (
+                handbook of recentlyViewedhandbooks().slice(0, 2);
+                track handbook.id
+            ) {
                 <div class="item">
                     <div
                         class="item-icon"
-                        [tuiAvatar]="item.icon"
+                        tuiAvatar="@tui.clock"
                         appearance="info"
                         size="l"
                     ></div>
@@ -30,27 +33,50 @@
                     <div class="item-info">
                         <div class="meta">
                             <div class="item-title">
-                                {{ item.title }}
+                                {{ handbook.name }}
                             </div>
 
-                            <div tuiBadge appearance="info">
-                                {{ item.tag }}
-                            </div>
+                            @for (
+                                tag of handbook.tags.slice(0, 2);
+                                track $index
+                            ) {
+                                <div tuiBadge appearance="info">
+                                    {{ tag }}
+                                </div>
+                            }
                         </div>
 
-                        <div class="updated">
-                            Обновлено {{ item.updatedAt }}
+                        <div class="autor">
+                            <div class="autor-label"> Автор </div>
+
+                            @if (
+                                handbook.owner.firstName &&
+                                handbook.owner.lastName
+                            ) {
+                                <div class="owner-name">
+                                    {{ handbook.owner.firstName }}
+                                    {{ handbook.owner.lastName }}
+                                </div>
+                            } @else {
+                                <div class="owner-name">
+                                    {{ handbook.owner.login }}
+                                </div>
+                            }
+
+                            <div class="owner-email">
+                                {{ handbook.owner.email }}
+                            </div>
                         </div>
                     </div>
 
-                    <button
+                    <a
                         tuiButton
                         class="open"
                         type="button"
                         appearance="flat"
                         iconStart="@tui.chevron-right"
                         aria-label="Открыть справочник"
-                    ></button>
+                    ></a>
                 </div>
             }
         </main>

@@ -101,8 +101,29 @@
     white-space: nowrap;
 }
 
-.updated {
-    margin-top: 4px;
+.autor {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.autor-label {
+    color: var(--color-text-muted);
+    font: var(--tui-typography-body-s);
+}
+
+.owner-name {
+    max-width: 220px;
+    overflow: hidden;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-body-m);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.owner-email {
+    max-width: 220px;
     overflow: hidden;
     color: var(--color-text-muted);
     font: var(--tui-typography-body-s);

@@ -11,6 +11,7 @@ import {TuiSkeleton} from '@taiga-ui/kit';
 import {SidebarHostComponent} from '../../../handbooks/components/host-drawer/sidebar-host.component';
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
 import {HandbookInfoService} from '../../services/handbook-info.service';
+import {RecentlyViewedHandbooksService} from '../../../handbooks/services/recently-viewed-handbooks.service';
 
 @Component({
     selector: 'app-handbook-page',
@@ -27,6 +28,11 @@ import {HandbookInfoService} from '../../services/handbook-info.service';
 })
 export class HandbookPageComponent implements OnInit {
     private readonly handbookInfoService = inject(HandbookInfoService);
+
+    private readonly recentlyViewedHandbooksService = inject(
+        RecentlyViewedHandbooksService
+    );
+
     private readonly route = inject(ActivatedRoute);
 
     protected readonly isLoading = this.handbookInfoService.isLoading;
@@ -41,5 +47,9 @@ export class HandbookPageComponent implements OnInit {
         this.handbookInfoService.getHandbookRows(handbookId);
 
         this.handbookInfoService.getHandbook(handbookId);
+
+        this.recentlyViewedHandbooksService.addHandbookIdToLocalStorage(
+            handbookId
+        );
     }
 }

@@ -2,6 +2,7 @@ import {
     AfterViewInit,
     ChangeDetectionStrategy,
     Component,
+    computed,
     ElementRef,
     inject,
     OnDestroy,
@@ -14,6 +15,7 @@ import {HandbooksGuideCardComponent} from '../../components/all-handbooks-compon
 import {HandbooksListComponent} from '../../components/all-handbooks-components/handbooks-list/handbooks-list.component';
 import {RecentlyViewedHandbooksComponent} from '../../components/all-handbooks-components/recently-viewed-handbooks/recently-viewed-handbooks.component';
 import {HandbooksListService} from '../../services/handbooks-list.service';
+import {RecentlyViewedHandbooksService} from '../../services/recently-viewed-handbooks.service';
 
 @Component({
     selector: 'app-all-handbooks-page',
@@ -37,8 +39,28 @@ export class AllHandbooksPageComponent
 
     private readonly handbooksListService = inject(HandbooksListService);
 
-    ngOnInit(): void {
+    private readonly recentlyViewedHandbooksService = inject(
+        RecentlyViewedHandbooksService
+    );
+
+    protected readonly isRecentlyViewedVisible = computed(() => {
+        const recentlyViewedItems =
+            this.recentlyViewedHandbooksService.recentlyViewedItemIds();
+
+        if (recentlyViewedItems.length === 0) {
+            return false;
+        }
+        return true;
+    });
+
+    protected readonly isLoading = this.handbooksListService.isLoading();
+
+    ngOnInit() {
         this.handbooksListService.load();
+
+        this.recentlyViewedHandbooksService.getValuesFromLocalStorage();
+
+        this.recentlyViewedHandbooksService.getRecentlyViewedHandbooks();
     }
 
     ngAfterViewInit() {

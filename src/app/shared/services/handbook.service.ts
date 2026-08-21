@@ -14,7 +14,9 @@ import {
     EditHandbookDescriptionRequest,
     EditHandbookAttributesRequest,
     HandbookFiltersCounts,
-    HanbookFavoriteStatus
+    HanbookFavoriteStatus,
+    HandbookPreview,
+    GetRecentlyViewedHandbooksRequest
 } from '../interfaces';
 import {Observable} from 'rxjs';
 
@@ -48,6 +50,18 @@ export class HandbookService {
         return this.http.get<HandbookFiltersCounts>(
             `${this.astushaBookApiUrl}/filter-counts`,
 
+            {
+                withCredentials: true
+            }
+        );
+    }
+
+    getRecentlyViewedHandbooks(
+        payload: GetRecentlyViewedHandbooksRequest
+    ): Observable<HandbookPreview[]> {
+        return this.http.post<HandbookPreview[]>(
+            `${this.astushaBookApiUrl}/previews`,
+            payload,
             {
                 withCredentials: true
             }

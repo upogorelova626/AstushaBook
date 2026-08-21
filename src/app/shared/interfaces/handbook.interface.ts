@@ -173,3 +173,7 @@ export interface HandbookFiltersCounts {
 export interface HanbookFavoriteStatus {
     isFavorite: boolean;
 }
+
+export interface GetRecentlyViewedHandbooksRequest {
+    ids: string[];
+}
