@@ -14,15 +14,14 @@
     min-height: 76px;
     padding: 18px 18px;
     gap: 20px;
-    border: 1px solid var(--color-card-border);
-    border-radius: 5px;
+    border-bottom: 1px solid var(--color-card-border);
     background: var(--color-card-background);
 }
 
 .header-left {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    gap: 15px;
     min-width: 0;
 }
 
@@ -43,40 +42,13 @@
     white-space: nowrap;
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    flex: 0 0 auto;
-    min-width: 0;
-}
-
-.notification {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    width: 42px;
-    min-width: 42px;
-    height: 42px;
-    color: var(--color-text-secondary);
-}
-
 .profile {
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 10px;
-    max-width: 260px;
-    min-width: 0;
-    min-height: 48px;
-    padding: 6px 10px 6px 6px;
-    border: 1px solid var(--color-card-border);
-    border-radius: 12px;
+    gap: 15px;
     color: var(--color-text-primary);
-    background: var(--color-card-background);
 }
 
 .avatar {
@@ -88,13 +60,6 @@
     height: 36px;
     overflow: hidden;
     border-radius: 50%;
-    color: var(--astusha-color-primary);
-    background: var(--color-primary-soft);
-}
-
-img.avatar {
-    display: block;
-    object-fit: cover;
 }
 
 .user-info {
@@ -115,7 +80,7 @@ img.avatar {
     white-space: nowrap;
 }
 
-.user-login {
+.user-email {
     max-width: 150px;
     margin-top: 2px;
     overflow: hidden;
@@ -128,8 +93,6 @@ img.avatar {
 @media (max-width: 768px) {
     .header {
         align-items: flex-start;
-        flex-direction: column;
-        width: calc(100% - 20px);
         min-height: auto;
         gap: 14px;
     }
@@ -138,35 +101,19 @@ img.avatar {
         width: 100%;
     }
 
-    .header-right {
-        width: 100%;
-        justify-content: space-between;
-    }
-
     .profile {
         flex: 1 1 auto;
         max-width: none;
     }
 
-    .user-name,
-    .user-login {
-        max-width: 220px;
+    .user-info {
+        display: none;
     }
 }
 
 @media (max-width: 480px) {
-    .header {
-        padding: 14px;
-    }
-
     .title {
         font: var(--tui-typography-heading-h5);
-    }
-
-    .notification {
-        width: 40px;
-        min-width: 40px;
-        height: 40px;
     }
 
     .profile {
@@ -181,9 +128,5 @@ img.avatar {
         flex-basis: 34px;
         width: 34px;
         height: 34px;
-    }
-
-    .user-info {
-        display: none;
     }
 }

@@ -1,0 +1,153 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
+.item {
+    width: 100%;
+    min-width: 0;
+    min-height: 76px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.info {
+    display: flex;
+    gap: 10px;
+}
+
+.ass {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.title {
+    overflow: hidden;
+    color: var(--color-text-primary);
+    font: var(--tui-typography-body-l);
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.description {
+    overflow: hidden;
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-m);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.author {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.author-label {
+    color: var(--color-text-muted);
+    font: var(--tui-typography-body-xs);
+}
+
+.author-value {
+    overflow: hidden;
+
+    color: var(--color-text-secondary);
+    font: var(--tui-typography-body-s);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.owner-name {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.owner-email {
+    overflow: hidden;
+
+    color: var(--color-text-muted);
+    font: var(--tui-typography-body-xs);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.action {
+    justify-self: end;
+    color: var(--color-text-secondary);
+}
+
+@media (max-width: 1100px) {
+    .item {
+        grid-template-columns:
+            44px
+            minmax(0, 1fr)
+            max-content
+            36px;
+    }
+
+    .author {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .item {
+        grid-template-columns:
+            44px
+            minmax(0, 1fr)
+            36px;
+
+        gap: 12px;
+    }
+
+    .tag {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .item {
+        min-height: 64px;
+
+        grid-template-columns:
+            40px
+            minmax(0, 1fr)
+            32px;
+
+        gap: 10px;
+    }
+
+    .title {
+        font: var(--tui-typography-body-m);
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 360px) {
+    .item {
+        grid-template-columns:
+            36px
+            minmax(0, 1fr)
+            32px;
+
+        gap: 8px;
+    }
+}

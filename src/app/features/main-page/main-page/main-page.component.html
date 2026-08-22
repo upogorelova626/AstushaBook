@@ -1,10 +1,15 @@
 <div class="main-page">
-    <div class="left-column">
+    <main class="content">
         <app-welcome-card />
-        <app-continue-reading-card />
-    </div>
-    <div class="right-column">
+
+        @if (isRecentlyViewedVisible()) {
+            <app-continue-reading-card />
+        }
+    </main>
+
+    <aside class="sidebar">
         <app-popular-directories-card />
+
         <app-favourites-card />
-    </div>
+    </aside>
 </div>

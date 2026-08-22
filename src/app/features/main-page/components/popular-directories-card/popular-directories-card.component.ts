@@ -1,10 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {RouterLink} from '@angular/router';
 import {TuiButton} from '@taiga-ui/core';
 import {TuiAvatar, TuiBadge} from '@taiga-ui/kit';
 
 @Component({
     selector: 'app-popular-directories-card',
-    imports: [TuiButton, TuiAvatar, TuiBadge],
+    imports: [TuiButton, TuiAvatar, TuiBadge, RouterLink],
     templateUrl: './popular-directories-card.component.html',
     styleUrl: './popular-directories-card.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush

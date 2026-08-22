@@ -1,5 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {catchError, EMPTY} from 'rxjs';
+import {catchError, EMPTY, finalize} from 'rxjs';
 import {HandbookPreview} from '../../../shared/interfaces';
 import {HandbookService} from '../../../shared/services/handbook.service';
 
@@ -12,6 +12,8 @@ export class RecentlyViewedHandbooksService {
     readonly recentlyViewedItemIds = signal<string[]>([]);
 
     readonly recentlyViewedHandbooks = signal<HandbookPreview[]>([]);
+
+    readonly isLoading = signal(false);
 
     getValuesFromLocalStorage() {
         const recentlyViewedHandbooks = localStorage.getItem('recently-viewed');
@@ -47,12 +49,16 @@ export class RecentlyViewedHandbooksService {
 
             return;
         }
+        this.isLoading.set(true);
 
         this.handbookService
             .getRecentlyViewedHandbooks({
                 ids
             })
             .pipe(
+                finalize(() => {
+                    this.isLoading.set(false);
+                }),
                 catchError(() => {
                     this.recentlyViewedHandbooks.set([]);
 

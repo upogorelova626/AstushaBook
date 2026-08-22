@@ -1,81 +1,42 @@
 <div class="card">
     <header class="header">
-        <div tuiAvatar="@tui.star" appearance="warning" size="l"></div>
+        <div tuiAvatar="@tui.star" appearance="info" size="l"></div>
 
         <div class="header-content">
             <h2 class="header-title">Избранное</h2>
             <p class="header-description">
-                Справочнии, которые вы добавили в избранное
+                Справочники, которые вы добавили в избранное
             </p>
         </div>
     </header>
 
-    <div class="list">
-        @for (handbook of favoriteHandbooks().slice(0, 4); track handbook.id) {
-            <a
-                class="item"
-                tuiButton
-                appearance="outline"
-                type="button"
-                [routerLink]="['/astusha', 'handbooks', handbook.id]"
+    @if (favoriteHandbooks().length === 0 && !isLoading()) {
+        <div class="empty">
+            <div tuiAvatar="@tui.star" appearance="info" size="xxl"></div>
+            <div class="empty-text">Пока нет избранных</div>
+            <div class="empty-description"
+                >Добавляйте справочники в избранное, чтобы быстро возвращаться к
+                ним</div
             >
-                <div tuiAvatar="@tui.star" appearance="warning" size="l"></div>
+        </div>
+    } @else {
+        <div class="list" [tuiSkeleton]="isLoading()">
+            @for (handbook of favoriteHandbooks(); track handbook.id) {
+                <app-handbook-preview-item [handbook]="handbook" />
+            }
+        </div>
+    }
 
-                <div class="content">
-                    <div class="title">{{ handbook.name }}</div>
-
-                    <div class="description">
-                        {{ handbook.description }}
-                    </div>
-                </div>
-
-                <div class="tag" tuiBadge appearance="warning" size="m">
-                    {{ handbook.tags }}
-                </div>
-
-                <div class="updated">
-                    <div class="updated-label">Автор</div>
-
-                    <div class="updated-value">
-                        @if (
-                            handbook.owner.firstName && handbook.owner.lastName
-                        ) {
-                            <div class="owner-name">
-                                {{ handbook.owner.firstName }}
-                                {{ handbook.owner.lastName }}
-                            </div>
-                        } @else {
-                            <div class="owner-name">
-                                {{ handbook.owner.login }}
-                            </div>
-                        }
-
-                        <div class="owner-email">
-                            {{ handbook.owner.email }}
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    tuiIconButton
-                    class="action"
-                    appearance="flat"
-                    size="s"
-                    iconStart="@tui.chevron-right"
-                ></div>
-            </a>
-        }
-    </div>
-
-    <footer class="footer">
-        <button
+    <footer>
+        <a
             tuiButton
             class="footer-button"
             type="button"
             iconEnd="@tui.chevron-right"
             appearance="outline"
+            [routerLink]="['/astusha', 'handbooks', 'all']"
         >
             Все справочники
-        </button>
+        </a>
     </footer>
 </div>

@@ -10,57 +10,22 @@
         </div>
     </header>
 
-    <div class="list">
-        @for (item of articleItems; track item.title) {
-            <button
-                class="item"
-                tuiButton
-                appearance="outline"
-                type="button"
-                [attr.aria-label]="'Открыть статью «' + item.title + '»'"
-            >
-                <div [tuiAvatar]="item.avatar" appearance="info" size="l"></div>
-
-                <div class="content">
-                    <div class="title">{{ item.title }}</div>
-
-                    <div class="description">
-                        {{ item.description }}
-                    </div>
-                </div>
-
-                <div class="tag" tuiBadge appearance="info" size="m">
-                    {{ item.tag }}
-                </div>
-
-                <div class="updated">
-                    <div class="updated-label">Обновлено</div>
-
-                    <div class="updated-value">
-                        {{ item.lastUpdate }}
-                    </div>
-                </div>
-
-                <div
-                    tuiIconButton
-                    class="action"
-                    appearance="flat"
-                    size="s"
-                    iconStart="@tui.chevron-right"
-                ></div>
-            </button>
+    <div class="list" [tuiSkeleton]="isLoading()">
+        @for (handbook of recentlyViewedhandbooks(); track handbook.id) {
+            <app-handbook-preview-item [handbook]="handbook" />
         }
     </div>
 
-    <footer class="footer">
-        <button
+    <footer>
+        <a
             tuiButton
             class="footer-button"
             type="button"
             iconEnd="@tui.chevron-right"
             appearance="outline"
+            [routerLink]="['/astusha', 'handbooks', 'all']"
         >
             Все справочники
-        </button>
+        </a>
     </footer>
 </div>

@@ -6,18 +6,26 @@ import {
     signal
 } from '@angular/core';
 import {TuiButton} from '@taiga-ui/core';
-import {TuiAvatar, TuiBadge} from '@taiga-ui/kit';
+import {TuiAvatar, TuiSkeleton} from '@taiga-ui/kit';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {
     GetHandbooksRequest,
     HandbookListFilter,
     HandbookPreview
 } from '../../../../shared/interfaces';
+import {HandbookPreviewItemComponent} from '../../../../shared/components/handbook-preview-item/handbook-preview-item.component';
 import {RouterLink} from '@angular/router';
+import {finalize} from 'rxjs';
 
 @Component({
     selector: 'app-favourites-card',
-    imports: [TuiAvatar, TuiButton, TuiBadge, RouterLink],
+    imports: [
+        TuiAvatar,
+        TuiButton,
+        HandbookPreviewItemComponent,
+        RouterLink,
+        TuiSkeleton
+    ],
     templateUrl: './favourites-card.component.html',
     styleUrl: './favourites-card.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -26,6 +34,8 @@ export class FavouritesCardComponent implements OnInit {
     private readonly handbooksService = inject(HandbookService);
 
     protected readonly favoriteHandbooks = signal<HandbookPreview[]>([]);
+
+    protected readonly isLoading = signal(false);
 
     readonly handbookRequest = signal<GetHandbooksRequest>({
         name: '',
@@ -36,45 +46,17 @@ export class FavouritesCardComponent implements OnInit {
     ngOnInit() {
         const payload = this.handbookRequest();
 
+        this.isLoading.set(true);
+
         this.handbooksService
             .getHandbooksPreviews(payload)
+            .pipe(
+                finalize(() => {
+                    this.isLoading.set(false);
+                })
+            )
             .subscribe(result => {
                 this.favoriteHandbooks.set(result.items);
             });
     }
-
-    protected readonly articleItems = [
-        {
-            avatar: '@tui.file-text',
-            title: 'Angular Signals на практике',
-            description:
-                'Разбираем основы и практические примеры использования сигналов в Angular.',
-            tag: 'Angular',
-            lastUpdate: '2 дня назад'
-        },
-        {
-            avatar: '@tui.settings',
-            title: 'Настройка CI/CD',
-            description:
-                'Пошаговая настройка конвейера сборки и деплоя с помощью GitHub Actions.',
-            tag: 'DevOps',
-            lastUpdate: '5 дней назад'
-        },
-        {
-            avatar: '@tui.container',
-            title: 'Работа с Docker Compose',
-            description:
-                'Запуск нескольких сервисов и настройка локального окружения через Docker Compose.',
-            tag: 'Docker',
-            lastUpdate: 'Неделю назад'
-        },
-        {
-            avatar: '@tui.code',
-            title: 'Основы REST API',
-            description:
-                'Разбираем базовые принципы REST, методы запросов и структуру ответов.',
-            tag: 'API',
-            lastUpdate: '3 дня назад'
-        }
-    ];
 }

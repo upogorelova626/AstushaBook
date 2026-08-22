@@ -1,33 +1,40 @@
 <header class="header">
     <div class="header-left">
-        <span class="header-eyebrow"> Aккаунт Astusha </span>
+        <a
+            tuiIconButton
+            appearance="outline"
+            iconStart="@tui.house"
+            [routerLink]="['main-page']"
+        ></a>
+        <div>
+            <div class="header-eyebrow"> Справочники </div>
 
-        <h1 class="title">Структурированные данные в одном месте</h1>
-    </div>
-
-    <div class="header-right">
-        @let user = currentUser$ | async;
-
-        <div class="profile">
-            @if (user?.avatarUrl) {
-                <img
-                    class="avatar"
-                    [src]="user?.avatarUrl"
-                    alt="Фото профиля"
-                />
-            } @else {
-                <div class="avatar" tuiAvatar="@tui.user"></div>
-            }
-
-            <div class="user-info">
-                <span class="user-name">
-                    {{ user?.firstName || user?.login }}
-                </span>
-
-                <span class="user-login">
-                    {{ user?.email }}
-                </span>
-            </div>
+            <div class="title">AstushaBook</div>
         </div>
     </div>
+
+    @let user = currentUser$ | async;
+
+    <button
+        tuiButton
+        class="profile"
+        appearance="outline"
+        (click)="goToAstushaId()"
+    >
+        @if (user?.avatarUrl) {
+            <img class="avatar" [src]="user?.avatarUrl" alt="Фото профиля" />
+        } @else {
+            <div tuiAvatar="@tui.user" appearance="info"></div>
+        }
+
+        <div class="user-info">
+            <span class="user-name">
+                {{ user?.firstName || user?.login }}
+            </span>
+
+            <span class="user-email">
+                {{ user?.email }}
+            </span>
+        </div>
+    </button>
 </header>

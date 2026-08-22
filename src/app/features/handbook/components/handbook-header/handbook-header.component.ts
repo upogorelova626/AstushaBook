@@ -5,19 +5,18 @@ import {
     inject
 } from '@angular/core';
 import {TuiButton} from '@taiga-ui/core';
-import {RouterLink} from '@angular/router';
 import {HanbookActionsButtonComponent} from '../hanbook-actions-button/hanbook-actions-button.component';
 import {EditCellsButtonsComponent} from '../edit-cells-buttons/edit-cells-buttons.component';
 import {UserService} from '../../../auth/services/user.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AddHandbookRowButtonComponent} from '../add-handbook-row-button/add-handbook-row-button.component';
 import {HandbookInfoService} from '../../services/handbook-info.service';
+import {Location} from '@angular/common';
 
 @Component({
     selector: 'app-handbook-header',
     imports: [
         TuiButton,
-        RouterLink,
         HanbookActionsButtonComponent,
         EditCellsButtonsComponent,
         AddHandbookRowButtonComponent
@@ -30,6 +29,8 @@ export class HandbookHeaderComponent {
     private readonly userService = inject(UserService);
     private readonly handbookInfoService = inject(HandbookInfoService);
 
+    private readonly location = inject(Location);
+
     protected readonly currentUser = toSignal(this.userService.currentUser$);
 
     protected readonly handbook = this.handbookInfoService.handbook;
@@ -41,4 +42,8 @@ export class HandbookHeaderComponent {
             editor => editor.userId === currentUserId
         );
     });
+
+    protected goBack() {
+        this.location.back();
+    }
 }
