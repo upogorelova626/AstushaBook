@@ -1,19 +1,11 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {TuiButton} from '@taiga-ui/core';
 import {TuiAvatar, TuiSkeleton} from '@taiga-ui/kit';
 import {RecentlyViewedHandbooksService} from '../../../handbooks/services/recently-viewed-handbooks.service';
-import {HandbookPreviewItemComponent} from '../../../../shared/components/handbook-preview-item/handbook-preview-item.component';
-import {RouterLink} from '@angular/router';
+import {HandbooksListItemComponent} from '../../../handbooks/components/all-handbooks-components/handbooks-list/handbooks-list-item/handbooks-list-item.component';
 
 @Component({
     selector: 'app-continue-reading-card',
-    imports: [
-        TuiButton,
-        TuiAvatar,
-        TuiSkeleton,
-        HandbookPreviewItemComponent,
-        RouterLink
-    ],
+    imports: [TuiAvatar, TuiSkeleton, HandbooksListItemComponent],
     templateUrl: './continue-reading-card.component.html',
     styleUrl: './continue-reading-card.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush

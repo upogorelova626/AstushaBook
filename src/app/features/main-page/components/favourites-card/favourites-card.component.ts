@@ -5,7 +5,6 @@ import {
     OnInit,
     signal
 } from '@angular/core';
-import {TuiButton} from '@taiga-ui/core';
 import {TuiAvatar, TuiSkeleton} from '@taiga-ui/kit';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {
@@ -13,19 +12,12 @@ import {
     HandbookListFilter,
     HandbookPreview
 } from '../../../../shared/interfaces';
-import {HandbookPreviewItemComponent} from '../../../../shared/components/handbook-preview-item/handbook-preview-item.component';
-import {RouterLink} from '@angular/router';
 import {finalize} from 'rxjs';
+import {HandbooksListItemComponent} from '../../../handbooks/components/all-handbooks-components/handbooks-list/handbooks-list-item/handbooks-list-item.component';
 
 @Component({
     selector: 'app-favourites-card',
-    imports: [
-        TuiAvatar,
-        TuiButton,
-        HandbookPreviewItemComponent,
-        RouterLink,
-        TuiSkeleton
-    ],
+    imports: [TuiAvatar, TuiSkeleton, HandbooksListItemComponent],
     templateUrl: './favourites-card.component.html',
     styleUrl: './favourites-card.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush

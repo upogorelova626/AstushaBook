@@ -30,7 +30,7 @@ export class HandbookToolbarComponent implements OnInit {
 
     protected readonly isSearchByName = signal(false);
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.searchControl.valueChanges
             .pipe(
                 map(value => value.trim()),
@@ -43,7 +43,7 @@ export class HandbookToolbarComponent implements OnInit {
             });
     }
 
-    private updateSearch(value: string): void {
+    private updateSearch(value: string) {
         if (this.isSearchByName()) {
             this.handbooksListService.updateRequest({
                 name: value,

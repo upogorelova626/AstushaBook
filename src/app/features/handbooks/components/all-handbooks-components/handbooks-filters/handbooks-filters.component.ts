@@ -4,20 +4,15 @@ import {
     computed,
     DestroyRef,
     inject,
-    OnInit,
-    signal
+    OnInit
 } from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {TuiAvatar, TuiBadge, TuiSkeleton} from '@taiga-ui/kit';
 import {TuiRadio} from '@taiga-ui/core';
 import {HandbooksListService} from '../../../services/handbooks-list.service';
-import {distinctUntilChanged, finalize} from 'rxjs';
-import {
-    HandbookFiltersCounts,
-    HandbookListFilter
-} from '../../../../../shared/interfaces';
+import {distinctUntilChanged} from 'rxjs';
+import {HandbookListFilter} from '../../../../../shared/interfaces';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {HandbookService} from '../../../../../shared/services/handbook.service';
 
 @Component({
     selector: 'app-handbooks-filters',
@@ -28,14 +23,13 @@ import {HandbookService} from '../../../../../shared/services/handbook.service';
 })
 export class HandbooksFiltersComponent implements OnInit {
     private readonly handbooksListService = inject(HandbooksListService);
-    private readonly HandbookService = inject(HandbookService);
-
-    private readonly handbookFilterCounts =
-        signal<HandbookFiltersCounts | null>(null);
-
     private readonly destroyRef = inject(DestroyRef);
 
-    protected readonly isLoading = signal(false);
+    private readonly handbookFilterCounts =
+        this.handbooksListService.handbookFilterCounts;
+
+    protected readonly isFiltersLoading =
+        this.handbooksListService.isFiltersLoading;
 
     protected readonly filters = computed(() => {
         const counts = this.handbookFilterCounts();
@@ -81,10 +75,6 @@ export class HandbooksFiltersComponent implements OnInit {
                 this.handbooksListService.updateRequest({filter: value});
             });
 
-        this.isLoading.set(true);
-
-        this.HandbookService.getHandbooksCount()
-            .pipe(finalize(() => this.isLoading.set(false)))
-            .subscribe(result => this.handbookFilterCounts.set(result));
+        this.handbooksListService.getHandbooksFiltersCount();
     }
 }

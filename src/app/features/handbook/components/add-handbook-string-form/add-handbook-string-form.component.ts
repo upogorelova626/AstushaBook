@@ -21,18 +21,21 @@ import {
     TUI_VALIDATION_ERRORS,
     TuiButton,
     TuiCalendar,
-    TuiCheckbox,
     TuiDropdown,
     TuiError,
+    TuiGroup,
+    TuiIcon,
     TuiInput,
     TuiNotificationService,
+    TuiRadio,
     TuiTextfield
 } from '@taiga-ui/core';
 import {
     TuiInputDate,
     TuiComboBox,
     TuiDataListWrapper,
-    TuiChevron
+    TuiChevron,
+    TuiBlock
 } from '@taiga-ui/kit';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, finalize, tap} from 'rxjs';
@@ -46,7 +49,7 @@ import {TuiEditor} from '@taiga-ui/editor';
         TuiTextfield,
         TuiInput,
         TuiButton,
-        TuiCheckbox,
+
         TuiCalendar,
         TuiInputDate,
         TuiDropdown,
@@ -55,7 +58,11 @@ import {TuiEditor} from '@taiga-ui/editor';
         TuiComboBox,
         TuiDataListWrapper,
         TuiChevron,
-        TuiEditor
+        TuiEditor,
+        TuiBlock,
+        TuiGroup,
+        TuiRadio,
+        TuiIcon
     ],
     templateUrl: './add-handbook-string-form.component.html',
     styleUrl: './add-handbook-string-form.component.less',

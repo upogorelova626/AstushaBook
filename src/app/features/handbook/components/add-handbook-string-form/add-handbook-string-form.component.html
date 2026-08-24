@@ -1,10 +1,16 @@
 <form class="form" [formGroup]="stringForm">
-    <header>
+    <header class="header">
         @if (isAdding()) {
-            <div class="header"> Добавление новой строки </div>
+            <div> Добавление новой строки </div>
         } @else {
-            <div class="header"> Редактирование строки </div>
+            <div> Редактирование строки </div>
         }
+
+        <button
+            tuiIconButton
+            iconStart="@tui.plus"
+            (click)="context.complete()"
+        ></button>
     </header>
 
     @for (column of handbook.columns; track column.id) {
@@ -45,12 +51,27 @@
                     <label class="label">
                         {{ column.name }}
 
-                        <input
-                            class="checkbox"
-                            type="checkbox"
-                            tuiCheckbox
-                            [formControlName]="column.id"
-                        />
+                        <form class="group" tuiGroup [collapsed]="true">
+                            <label tuiBlock>
+                                <input
+                                    tuiRadio
+                                    type="radio"
+                                    [value]="true"
+                                    [formControlName]="column.id"
+                                />
+                                <span>Дa</span>
+                            </label>
+
+                            <label tuiBlock>
+                                <input
+                                    tuiRadio
+                                    type="radio"
+                                    [value]="false"
+                                    [formControlName]="column.id"
+                                />
+                                <span>Нет</span>
+                            </label>
+                        </form>
                     </label>
 
                     <tui-error [formControlName]="column.id" />

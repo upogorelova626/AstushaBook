@@ -1,6 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {
     GetHandbooksRequest,
+    HandbookFiltersCounts,
     HandbookListFilter,
     HandbookPreview
 } from '../../../shared/interfaces';
@@ -11,7 +12,9 @@ import {finalize} from 'rxjs';
     providedIn: 'root'
 })
 export class HandbooksListService {
-    private readonly handbooksService = inject(HandbookService);
+    private readonly handbookService = inject(HandbookService);
+
+    readonly handbookFilterCounts = signal<HandbookFiltersCounts | null>(null);
 
     readonly handbookRequest = signal<GetHandbooksRequest>({
         name: '',
@@ -21,6 +24,7 @@ export class HandbooksListService {
 
     readonly handbooksPreviews = signal<HandbookPreview[]>([]);
     readonly isLoading = signal(false);
+    readonly isFiltersLoading = signal(false);
     readonly nextOffset = signal<number | null>(null);
 
     load() {
@@ -28,7 +32,7 @@ export class HandbooksListService {
 
         const request = this.handbookRequest();
 
-        this.handbooksService
+        this.handbookService
             .getHandbooksPreviews(request)
             .pipe(finalize(() => this.isLoading.set(false)))
             .subscribe(handbooksPreviews => {
@@ -53,7 +57,7 @@ export class HandbooksListService {
             offset: offset
         };
 
-        this.handbooksService
+        this.handbookService
             .getHandbooksPreviews(payload)
             .pipe(finalize(() => this.isLoading.set(false)))
             .subscribe(handbooksPreviews => {
@@ -84,5 +88,14 @@ export class HandbooksListService {
                     : handbook
             )
         );
+    }
+
+    getHandbooksFiltersCount() {
+        this.isFiltersLoading.set(true);
+
+        this.handbookService
+            .getHandbooksCount()
+            .pipe(finalize(() => this.isFiltersLoading.set(false)))
+            .subscribe(result => this.handbookFilterCounts.set(result));
     }
 }

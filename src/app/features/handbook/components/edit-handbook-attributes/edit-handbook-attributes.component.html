@@ -7,19 +7,6 @@
                 Добавляйте и настраивайте колонки таблицы
             </div>
         </div>
-
-        <div>
-            <button
-                type="button"
-                tuiButton
-                iconStart="@tui.plus"
-                appearance="outline"
-                class="add-attribute__button"
-                (click)="createAttribute($event)"
-            >
-                Добавить атрибут
-            </button>
-        </div>
     </header>
 
     <div
@@ -81,22 +68,37 @@
     </div>
 
     <footer class="footer">
-        <button
-            type="button"
-            tuiButton
-            appearance="flat"
-            (click)="context.complete(null)"
-        >
-            Отмена
-        </button>
+        <div>
+            <button
+                type="button"
+                tuiButton
+                iconStart="@tui.plus"
+                appearance="outline"
+                class="add-attribute__button"
+                (click)="createAttribute($event)"
+            >
+                Добавить атрибут
+            </button>
+        </div>
 
-        <button
-            type="button"
-            tuiButton
-            [disabled]="draftHandbookAttributes().length === 0"
-            (click)="save()"
-        >
-            Сохранить
-        </button>
+        <div class="buttons">
+            <button
+                type="button"
+                tuiButton
+                appearance="flat"
+                (click)="context.complete(null)"
+            >
+                Отмена
+            </button>
+
+            <button
+                type="button"
+                tuiButton
+                [disabled]="draftHandbookAttributes().length === 0"
+                (click)="save()"
+            >
+                Сохранить
+            </button>
+        </div>
     </footer>
 </div>

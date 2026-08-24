@@ -1,14 +1,14 @@
 <div class="main-page">
     <main class="content">
         <app-welcome-card />
-
-        @if (isRecentlyViewedVisible()) {
-            <app-continue-reading-card />
-        }
     </main>
 
     <aside class="sidebar">
         <app-popular-directories-card />
+
+        @if (isRecentlyViewedVisible()) {
+            <app-continue-reading-card />
+        }
 
         <app-favourites-card />
     </aside>

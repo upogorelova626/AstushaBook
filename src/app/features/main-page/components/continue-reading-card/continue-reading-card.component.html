@@ -12,20 +12,10 @@
 
     <div class="list" [tuiSkeleton]="isLoading()">
         @for (handbook of recentlyViewedhandbooks(); track handbook.id) {
-            <app-handbook-preview-item [handbook]="handbook" />
+            <app-handbooks-list-item
+                [handbook]="handbook"
+                [isHandbooksList]="false"
+            />
         }
     </div>
-
-    <footer>
-        <a
-            tuiButton
-            class="footer-button"
-            type="button"
-            iconEnd="@tui.chevron-right"
-            appearance="outline"
-            [routerLink]="['/astusha', 'handbooks', 'all']"
-        >
-            Все справочники
-        </a>
-    </footer>
 </div>
