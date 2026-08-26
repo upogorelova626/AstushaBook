@@ -5,6 +5,7 @@ import {
     forwardRef,
     inject,
     Injector,
+    input,
     OnInit,
     signal
 } from '@angular/core';
@@ -14,10 +15,9 @@ import {
     FormControl,
     NG_VALUE_ACCESSOR,
     NgControl,
-    ReactiveFormsModule,
-    Validators
+    ReactiveFormsModule
 } from '@angular/forms';
-import {TuiError, TuiInput, TuiTextfield} from '@taiga-ui/core';
+import {TUI_VALIDATION_ERRORS, TuiError, TuiTextfield} from '@taiga-ui/core';
 import {TuiChevron, TuiComboBox, TuiDataListWrapper} from '@taiga-ui/kit';
 import {
     catchError,
@@ -30,19 +30,18 @@ import {
     Subject,
     switchMap
 } from 'rxjs';
-
 import {
     HandbookListFilter,
     HandbookPreview
 } from '../../../../../shared/interfaces';
 import {HandbookService} from '../../../../../shared/services/handbook.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-search-handbooks',
     imports: [
         ReactiveFormsModule,
         TuiTextfield,
-        TuiInput,
         TuiComboBox,
         TuiChevron,
         TuiDataListWrapper,
@@ -52,6 +51,16 @@ import {HandbookService} from '../../../../../shared/services/handbook.service';
     styleUrl: './search-handbooks.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [
+        {
+            provide: TUI_VALIDATION_ERRORS,
+            useFactory: () => ({
+                minlength: ({requiredLength}: {requiredLength: number}) =>
+                    `Введите минимум ${requiredLength} символа`,
+
+                maxlength: ({requiredLength}: {requiredLength: number}) =>
+                    `Введите не более ${requiredLength} символов`
+            })
+        },
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => SearchHandbooksComponent),
@@ -63,6 +72,7 @@ export class SearchHandbooksComponent implements ControlValueAccessor, OnInit {
     private readonly injector = inject(Injector);
     private readonly destroyRef = inject(DestroyRef);
     private readonly handbookService = inject(HandbookService);
+    private readonly router = inject(Router);
 
     private readonly selectedHandbook = signal<HandbookPreview | null>(null);
 
@@ -79,18 +89,16 @@ export class SearchHandbooksComponent implements ControlValueAccessor, OnInit {
         HandbookPreview | string
     >('', {
         nonNullable: true,
-        validators: [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(100)
-        ]
+        validators: []
     });
 
     protected readonly stringifyHandbook = (
         handbook: HandbookPreview
     ): string => {
-        return handbook.name;
+        return handbook.name || '';
     };
+
+    readonly isMainPage = input(true);
 
     ngOnInit() {
         this.parentNgControl = this.injector.get(NgControl, null, {
@@ -100,7 +108,7 @@ export class SearchHandbooksComponent implements ControlValueAccessor, OnInit {
         this.search$
             .pipe(
                 map(value => {
-                    this.foundedHandbooks.set([]);
+                    this.foundedHandbooks.set(null);
 
                     return value;
                 }),
@@ -109,11 +117,10 @@ export class SearchHandbooksComponent implements ControlValueAccessor, OnInit {
                 switchMap(query => {
                     if (
                         this.searchHandbookControl.invalid ||
-                        query.length < 3
+                        query.length < 2
                     ) {
                         this.isSearching.set(false);
                         this.foundedHandbooks.set([]);
-
                         return of([]);
                     }
 
@@ -144,13 +151,11 @@ export class SearchHandbooksComponent implements ControlValueAccessor, OnInit {
             .pipe(
                 filter(
                     (value): value is HandbookPreview =>
-                        typeof value !== 'string'
+                        value !== null && typeof value !== 'string'
                 ),
                 takeUntilDestroyed(this.destroyRef)
             )
-            .subscribe(handbook => {
-                this.selectHandbook(handbook);
-            });
+            .subscribe(handbook => this.addHandbook(handbook));
     }
 
     writeValue(handbook: HandbookPreview | null) {
@@ -219,7 +224,7 @@ export class SearchHandbooksComponent implements ControlValueAccessor, OnInit {
         return control?.invalid && control.touched ? true : null;
     }
 
-    protected selectHandbook(handbook: HandbookPreview) {
+    protected addHandbook(handbook: HandbookPreview) {
         this.selectedHandbook.set(handbook);
 
         this.searchHandbookControl.setValue(handbook, {
@@ -230,5 +235,9 @@ export class SearchHandbooksComponent implements ControlValueAccessor, OnInit {
 
         this.onChange(handbook);
         this.onTouched();
+    }
+
+    protected goToHandbook(event: HandbookPreview) {
+        this.router.navigate(['astusha', 'handbooks', event.id]);
     }
 }

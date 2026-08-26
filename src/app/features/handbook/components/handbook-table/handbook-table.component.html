@@ -1,9 +1,7 @@
 <div class="wrapper">
     <table class="table" tuiTable>
-        <thead class="thead">
+        <thead>
             <tr>
-                <th tuiTh class="fixed"> </th>
-
                 @for (column of handbook()?.columns; track column.id) {
                     <th tuiTh>{{ column.name }}</th>
                 }
@@ -15,61 +13,30 @@
         <tbody tuiTbody>
             @for (row of draftRows(); track row.id) {
                 <tr>
-                    <td tuiTd class="fixed">
-                        <input type="checkbox" tuiCheckbox />
-                    </td>
-
                     @for (column of handbook()?.columns; track column.id) {
-                        @switch (column.type) {
-                            @case (HandbookColumnType.Date) {
-                                <td
-                                    tuiTd
-                                    (dblclick)="startEditing(row.id, column.id)"
-                                >
-                                    @if (!isCellEditing(row.id, column.id)) {
-                                        {{
-                                            getDateValue(row.values[column.id])
-                                                | date
-                                        }}
-                                    } @else {
+                        <td tuiTd (dblclick)="startEditing(row.id, column.id)">
+                            @if (isCellEditing(row.id, column.id)) {
+                                @switch (column.type) {
+                                    @case (HandbookColumnType.Date) {
                                         <tui-textfield>
                                             <input
                                                 tuiInputDate
                                                 [formControl]="editCellControl"
                                             />
+
                                             <tui-calendar *tuiDropdown />
                                         </tui-textfield>
                                     }
-                                </td>
-                            }
 
-                            @case (HandbookColumnType.Boolean) {
-                                <td
-                                    tuiTd
-                                    (dblclick)="startEditing(row.id, column.id)"
-                                >
-                                    @if (!isCellEditing(row.id, column.id)) {
-                                        {{
-                                            row.values[column.id] ? 'Да' : 'Нет'
-                                        }}
-                                    } @else {
+                                    @case (HandbookColumnType.Boolean) {
                                         <input
                                             tuiCheckbox
                                             type="checkbox"
                                             [formControl]="editCellControl"
                                         />
                                     }
-                                </td>
-                            }
 
-                            @case (HandbookColumnType.Text) {
-                                <td
-                                    tuiTd
-                                    (click)="startEditing(row.id, column.id)"
-                                >
-                                    @if (!isCellEditing(row.id, column.id)) {
-                                        {{ row.values[column.id] }}
-                                    } @else {
+                                    @case (HandbookColumnType.Text) {
                                         <tui-textfield>
                                             <input
                                                 type="text"
@@ -78,17 +45,8 @@
                                             />
                                         </tui-textfield>
                                     }
-                                </td>
-                            }
 
-                            @case (HandbookColumnType.Number) {
-                                <td
-                                    tuiTd
-                                    (click)="startEditing(row.id, column.id)"
-                                >
-                                    @if (!isCellEditing(row.id, column.id)) {
-                                        {{ row.values[column.id] }}
-                                    } @else {
+                                    @case (HandbookColumnType.Number) {
                                         <tui-textfield>
                                             <input
                                                 type="number"
@@ -97,17 +55,8 @@
                                             />
                                         </tui-textfield>
                                     }
-                                </td>
-                            }
 
-                            @case (HandbookColumnType.User) {
-                                <td
-                                    tuiTd
-                                    (click)="startEditing(row.id, column.id)"
-                                >
-                                    @if (!isCellEditing(row.id, column.id)) {
-                                        {{ getUser(row.values[column.id]) }}
-                                    } @else {
+                                    @case (HandbookColumnType.User) {
                                         <tui-textfield>
                                             <input
                                                 type="text"
@@ -116,51 +65,71 @@
                                             />
                                         </tui-textfield>
                                     }
-                                </td>
-                            }
 
-                            @case (HandbookColumnType.List) {
-                                <td
-                                    tuiTd
-                                    (click)="startEditing(row.id, column.id)"
-                                >
-                                    @if (!isCellEditing(row.id, column.id)) {
+                                    @case (HandbookColumnType.List) {
+                                        <tui-textfield>
+                                            <input
+                                                type="text"
+                                                tuiInput
+                                                [formControl]="editCellControl"
+                                            />
+                                        </tui-textfield>
+                                    }
+
+                                    @case (HandbookColumnType.FormattedString) {
+                                        <tui-textfield>
+                                            <input
+                                                type="text"
+                                                tuiInput
+                                                [formControl]="editCellControl"
+                                            />
+                                        </tui-textfield>
+                                    }
+                                }
+                            } @else {
+                                @switch (column.type) {
+                                    @case (HandbookColumnType.Date) {
+                                        {{
+                                            getDateValue(row.values[column.id])
+                                                | date
+                                        }}
+                                    }
+
+                                    @case (HandbookColumnType.Boolean) {
+                                        {{
+                                            row.values[column.id] ? 'Да' : 'Нет'
+                                        }}
+                                    }
+
+                                    @case (HandbookColumnType.Text) {
                                         {{ row.values[column.id] }}
-                                    } @else {
-                                        <tui-textfield>
-                                            <input
-                                                type="text"
-                                                tuiInput
-                                                [formControl]="editCellControl"
-                                            />
-                                        </tui-textfield>
                                     }
-                                </td>
-                            }
 
-                            @case (HandbookColumnType.FormattedString) {
-                                <td
-                                    tuiTd
-                                    (click)="startEditing(row.id, column.id)"
-                                >
-                                    @if (!isCellEditing(row.id, column.id)) {
+                                    @case (HandbookColumnType.Number) {
+                                        {{ row.values[column.id] }}
+                                    }
+
+                                    @case (HandbookColumnType.User) {
+                                        {{ getUser(row.values[column.id]) }}
+                                    }
+
+                                    @case (HandbookColumnType.List) {
+                                        {{ row.values[column.id] }}
+                                    }
+
+                                    @case (HandbookColumnType.FormattedString) {
                                         <tui-editor-socket
                                             [content]="
                                                 getValue(row.values[column.id])
                                             "
                                         />
-                                    } @else {
-                                        <tui-textfield>
-                                            <input
-                                                type="text"
-                                                tuiInput
-                                                [formControl]="editCellControl"
-                                            />
-                                        </tui-textfield>
                                     }
-                                </td>
+                                    @case (HandbookColumnType.Reference) {
+                                        {{ row.values[column.id] }}
+                                    }
+                                }
                             }
-                        }
+                        </td>
                     }
 
                     <td tuiTd class="fixed">
@@ -177,19 +146,19 @@
         </tbody>
     </table>
 
-    <div #loadMore class="loadMore"></div>
+    <div #loadMore class="load-more"></div>
 
     <footer class="footer">
         <div class="footer-buttons">
+            @if (draftRows().length === 0) {
+                <div class="empty-text">Нет строк</div>
+            }
+
             @if (
                 canEditHandbook() || currentUser()?.id === handbook()?.ownerId
             ) {
                 <app-add-handbook-row-button (newRow)="addRows($event)" />
             }
         </div>
-
-        @if (draftRows().length === 0) {
-            <div class="empty-text">Нет строк</div>
-        }
     </footer>
 </div>

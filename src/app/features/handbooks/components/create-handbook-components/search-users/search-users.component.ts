@@ -79,6 +79,7 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
     private readonly usersService = inject(UsersService);
     private readonly destroyRef = inject(DestroyRef);
     private readonly injector = inject(Injector);
+
     private readonly selectedUser = signal<AstushaUserPreview | null>(null);
 
     private onChange: (value: AstushaUserPreview | null) => void = () =>
@@ -161,7 +162,7 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
             });
     }
 
-    writeValue(user: AstushaUserPreview | null): void {
+    writeValue(user: AstushaUserPreview | null) {
         this.selectedUser.set(user);
 
         this.searchUserControl.setValue(user ?? '', {
@@ -171,15 +172,15 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
         this.foundUsers.set([]);
     }
 
-    registerOnChange(fn: (value: AstushaUserPreview | null) => void): void {
+    registerOnChange(fn: (value: AstushaUserPreview | null) => void) {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn: () => void): void {
+    registerOnTouched(fn: () => void) {
         this.onTouched = fn;
     }
 
-    setDisabledState(isDisabled: boolean): void {
+    setDisabledState(isDisabled: boolean) {
         if (isDisabled) {
             this.searchUserControl.disable({emitEvent: false});
 
@@ -189,7 +190,7 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
         this.searchUserControl.enable({emitEvent: false});
     }
 
-    protected onSearchInput(query: string): void {
+    protected onSearchInput(query: string) {
         const inputValue = query.trim();
         const selectedUser = this.selectedUser();
 
@@ -210,7 +211,7 @@ export class SearchUsersComponent implements OnInit, ControlValueAccessor {
         this.search$.next(inputValue);
     }
 
-    protected lossFocus(): void {
+    protected lossFocus() {
         this.onTouched();
     }
 

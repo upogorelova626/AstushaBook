@@ -14,7 +14,7 @@ import {
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {TuiTable} from '@taiga-ui/addon-table';
 import {TuiCalendar, TuiCheckbox, TuiInput, TuiTextfield} from '@taiga-ui/core';
-import {TuiInputDate, TuiSkeleton} from '@taiga-ui/kit';
+import {TuiInputDate} from '@taiga-ui/kit';
 import {
     AstushaUserPreview,
     HandbookColumnType,
@@ -34,7 +34,7 @@ import {HandbookInfoService} from '../../services/handbook-info.service';
         ReactiveFormsModule,
         TuiTable,
         TuiCheckbox,
-        TuiSkeleton,
+
         TuiTextfield,
         TuiInput,
         TuiInputDate,
@@ -78,13 +78,15 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
     protected readonly canEditHandbook = computed(() => {
         const currentUserId = this.currentUser()?.id;
 
-        if (
-            this.handbook()?.editors.find(item => item.userId === currentUserId)
-        ) {
-            return true;
+        if (!currentUserId) {
+            return false;
         }
 
-        return false;
+        return (
+            this.handbook()?.editors.some(
+                editor => editor.userId === currentUserId
+            ) ?? false
+        );
     });
 
     readonly handbook = this.handbookInfoService.handbook;

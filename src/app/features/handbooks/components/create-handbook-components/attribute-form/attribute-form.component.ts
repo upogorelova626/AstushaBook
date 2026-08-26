@@ -30,7 +30,8 @@ import {
     TuiStringifyContentPipe
 } from '@taiga-ui/kit';
 import {ListColumnOptionsComponent} from '../../../../handbook/components/list-column-options/list-column-options.component';
-import {ReferenceAttributeSettingsComponent} from '../reference-attribute-settings/reference-attribute-settings.component';
+import {SearchHandbooksComponent} from '../search-handbooks/search-handbooks.component';
+import {SearchHandbookColumnComponent} from '../search-handbook-column/search-handbook-column.component';
 
 interface AttributeFormContext {
     data?: HandbookAttribute | HandbookColumnResponse;
@@ -51,7 +52,8 @@ interface AttributeFormContext {
         TuiStringifyContentPipe,
         ReactiveFormsModule,
         ListColumnOptionsComponent,
-        ReferenceAttributeSettingsComponent
+        SearchHandbooksComponent,
+        SearchHandbookColumnComponent
     ],
     templateUrl: './attribute-form.component.html',
     styleUrl: './attribute-form.component.less',
@@ -113,8 +115,8 @@ export class AttributeFormComponent {
             )
         ),
         reference: new FormGroup({
-            handbook: new FormControl<HandbookPreview | null>(null),
-            columnId: new FormControl<string | null>(null)
+            handbook: new FormControl<HandbookPreview | null>(null, {}),
+            columnId: new FormControl<string | null>(null, {})
         })
     });
 
@@ -148,6 +150,7 @@ export class AttributeFormComponent {
             this.form.markAllAsTouched();
             return;
         }
+        console.log(this.form.getRawValue());
 
         this.context.complete(this.form.getRawValue());
     }

@@ -19,7 +19,7 @@ import {HandbooksListItemComponent} from '../handbooks-list/handbooks-list-item/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecentlyViewedHandbooksComponent {
-    protected expanded = false;
+    protected expanded = true;
 
     private readonly recentlyViewedHandbooksService = inject(
         RecentlyViewedHandbooksService

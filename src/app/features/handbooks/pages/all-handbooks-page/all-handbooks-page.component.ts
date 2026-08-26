@@ -58,8 +58,6 @@ export class AllHandbooksPageComponent
     ngOnInit() {
         this.handbooksListService.load();
 
-        this.recentlyViewedHandbooksService.getValuesFromLocalStorage();
-
         this.recentlyViewedHandbooksService.getRecentlyViewedHandbooks();
     }
 

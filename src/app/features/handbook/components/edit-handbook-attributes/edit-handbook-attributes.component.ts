@@ -143,7 +143,11 @@ export class EditHandbookAttributesComponent {
                 options:
                     attribute.type === HandbookColumnType.List
                         ? attribute.options.map(option => option.trim())
-                        : []
+                        : [],
+                reference: {
+                    handbook: attribute.reference.handbook ?? null,
+                    columnId: attribute.reference.columnId ?? null
+                }
             }))
         };
 
@@ -188,6 +192,7 @@ export class EditHandbookAttributesComponent {
             ...currentAttributes,
             newAttribute
         ]);
+        console.log(this.draftHandbookAttributes());
     }
 
     private updateAttribute(index: number, newAttribute: HandbookAttribute) {

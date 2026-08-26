@@ -5,14 +5,14 @@ import {
     UpdateHandbookRowsRequest
 } from '../../../shared/interfaces';
 import {HandbookService} from '../../../shared/services/handbook.service';
-import {catchError, EMPTY, finalize} from 'rxjs';
-import {Router} from '@angular/router';
+import {catchError, EMPTY, finalize, tap} from 'rxjs';
+
+import {TuiNotificationService} from '@taiga-ui/core';
 
 @Injectable()
 export class HandbookInfoService {
     private readonly handbookService = inject(HandbookService);
-
-    private readonly router = inject(Router);
+    private readonly alerts = inject(TuiNotificationService);
 
     private readonly isHandbookLoading = signal(false);
     private readonly areRowsLoading = signal(false);
@@ -44,7 +44,6 @@ export class HandbookInfoService {
             .getHandbook(handbookId)
             .pipe(
                 catchError(() => {
-                    this.router.navigate(['/404']);
                     return EMPTY;
                 }),
                 finalize(() => {
@@ -60,7 +59,11 @@ export class HandbookInfoService {
         this.areRowsLoading.set(true);
         this.handbookService
             .getHandbookRows(handbookId, {offset: 0})
-            .pipe(finalize(() => this.areRowsLoading.set(false)))
+            .pipe(
+                finalize(() => {
+                    this.areRowsLoading.set(false);
+                })
+            )
             .subscribe(result => {
                 this.originalRows.set(result.items);
                 this.draftRows.set(result.items);
@@ -114,12 +117,32 @@ export class HandbookInfoService {
         const payload = this.payload();
 
         if (!payload) {
+            this.isEditing.set(false);
             return;
         }
 
         this.handbookService
             .editHandbookRows(handbookId, payload)
-            .pipe()
+            .pipe(
+                tap(() => {
+                    this.alerts
+                        .open('Изменения успешно сохранены', {
+                            label: 'Готово',
+                            appearance: 'positive'
+                        })
+                        .subscribe();
+                    this.isEditing.set(false);
+                }),
+                catchError(() => {
+                    this.alerts
+                        .open('Не удалось сохранить изменения', {
+                            label: 'Ошибка',
+                            appearance: 'negative'
+                        })
+                        .subscribe();
+                    return EMPTY;
+                })
+            )
             .subscribe();
     }
 

@@ -13,16 +13,28 @@
         (blur)="lossFocus()"
     />
 
-    <tui-data-list-wrapper
-        *tuiDropdown
-        [items]="foundedHandbooks()"
-        [emptyContent]="
-            inputRef.value.length < 3
-                ? 'Введите минимум 3 символа'
-                : 'Ничего не найдено'
-        "
-        class="dropdown"
-    />
+    @if (isMainPage()) {
+        <tui-data-list-wrapper
+            *tuiDropdown
+            [items]="foundedHandbooks()"
+            (itemClick)="goToHandbook($event)"
+            [emptyContent]="
+                inputRef.value.length < 3
+                    ? 'Введите минимум 2 символа'
+                    : 'Ничего не найдено'
+            "
+        />
+    } @else {
+        <tui-data-list-wrapper
+            *tuiDropdown
+            [items]="foundedHandbooks()"
+            [emptyContent]="
+                inputRef.value.length < 3
+                    ? 'Введите минимум 2 символа'
+                    : 'Ничего не найдено'
+            "
+        />
+    }
 </tui-textfield>
 
 <tui-error [formControl]="searchHandbookControl" />

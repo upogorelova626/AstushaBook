@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {HandbookInfoService} from '../../services/handbook-info.service';
 import {TuiButton} from '@taiga-ui/core';
 
@@ -6,13 +6,13 @@ import {TuiButton} from '@taiga-ui/core';
     selector: 'app-edit-cells-buttons',
     imports: [TuiButton],
     templateUrl: './edit-cells-buttons.component.html',
-    styleUrl: './edit-cells-buttons.component.less'
+    styleUrl: './edit-cells-buttons.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditCellsButtonsComponent {
     private readonly handbookInfoService = inject(HandbookInfoService);
 
     protected readonly handbook = this.handbookInfoService.handbook;
-
     protected readonly isEditing = this.handbookInfoService.isEditing;
 
     protected startEditing() {

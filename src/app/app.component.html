@@ -1,3 +1,7 @@
-<tui-root tuiTheme="light">
+<tui-root
+    [attr.tuiTheme]="tuiTheme()"
+    [class.app-theme_light]="tuiTheme() === 'light'"
+    [class.app-theme_dark]="tuiTheme() === 'dark'"
+>
     <router-outlet />
 </tui-root>

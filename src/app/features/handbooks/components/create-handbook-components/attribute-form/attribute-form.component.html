@@ -1,4 +1,15 @@
-<header class="header">Атрибут</header>
+<header class="header">
+    <div> Атрибут </div>
+
+    <button
+        type="button"
+        tuiIconButton
+        appearance="flat"
+        size="s"
+        iconStart="@tui.x"
+        (click)="context.complete()"
+    ></button>
+</header>
 
 <form class="form" [formGroup]="form">
     <label tuiLabel class="label">
@@ -44,7 +55,19 @@
     }
 
     @if (form.controls.type.value === HandbookColumnType.Reference) {
-        <app-reference-attribute-settings [form]="form.controls.reference" />
+        <form [formGroup]="form">
+            <app-search-handbooks
+                [isMainPage]="false"
+                [formControl]="form.controls.reference.controls.handbook"
+            />
+
+            @if (form.controls.reference.controls.handbook.value; as handbook) {
+                <app-search-handbook-column
+                    [formControl]="form.controls.reference.controls.columnId"
+                    [handbookId]="handbook.id"
+                />
+            }
+        </form>
     }
 
     <tui-error formControlName="type" />

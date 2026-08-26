@@ -18,14 +18,8 @@
     min-width: 100%;
 }
 
-.thead {
-    width: 100%;
-    background: var(--color-background-secondary);
-}
-
 .table th {
     height: 56px;
-    padding: 0 16px;
     box-sizing: border-box;
     color: var(--color-text-secondary);
     font: var(--tui-typography-body-m);
@@ -49,13 +43,11 @@
     padding: 0 16px;
     display: flex;
     align-items: center;
-    gap: 20px;
     box-sizing: border-box;
-    background: var(--color-card-background);
 }
 
 .empty-text {
-    margin: 0;
+    margin-left: 20px;
     color: var(--color-text-secondary);
     font: var(--tui-typography-body-m);
 }
@@ -68,10 +60,7 @@
     width: 100%;
     margin-top: 10px;
     display: flex;
-    justify-content: space-between;
-}
-
-.buttons {
-    display: flex;
-    gap: 10px;
+    gap: 5px;
+    flex-direction: column;
+    align-items: flex-start;
 }

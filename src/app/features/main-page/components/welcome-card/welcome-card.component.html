@@ -8,16 +8,7 @@
     </header>
 
     <main class="content">
-        <tui-textfield iconStart="@tui.search">
-            <label tuiLabel for="search">Поиск</label>
-
-            <input
-                id="search"
-                tuiInput
-                type="search"
-                placeholder="Найти справочник"
-            />
-        </tui-textfield>
+        <app-search-handbooks [isMainPage]="true" />
 
         <div class="buttons">
             <a

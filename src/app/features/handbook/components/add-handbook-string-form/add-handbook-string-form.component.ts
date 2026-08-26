@@ -24,7 +24,6 @@ import {
     TuiDropdown,
     TuiError,
     TuiGroup,
-    TuiIcon,
     TuiInput,
     TuiNotificationService,
     TuiRadio,
@@ -49,7 +48,6 @@ import {TuiEditor} from '@taiga-ui/editor';
         TuiTextfield,
         TuiInput,
         TuiButton,
-
         TuiCalendar,
         TuiInputDate,
         TuiDropdown,
@@ -61,8 +59,7 @@ import {TuiEditor} from '@taiga-ui/editor';
         TuiEditor,
         TuiBlock,
         TuiGroup,
-        TuiRadio,
-        TuiIcon
+        TuiRadio
     ],
     templateUrl: './add-handbook-string-form.component.html',
     styleUrl: './add-handbook-string-form.component.less',
@@ -224,8 +221,6 @@ export class AddHandbookStringFormComponent {
                 if (row) {
                     this.context.complete(row);
                 }
-
-                console.log(row);
             });
     }
 }

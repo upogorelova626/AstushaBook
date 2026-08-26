@@ -23,11 +23,17 @@ export enum HandbookColumnType {
     FormattedString = 'FORMATTED_STRING'
 }
 
+export interface Reference {
+    handbook: HandbookPreview | null;
+    columnId: string | null;
+}
+
 export interface HandbookAttribute {
     name: string;
     type: HandbookColumnType;
     required: boolean;
     options: string[];
+    reference: Reference;
 }
 
 export enum HandbookListFilter {

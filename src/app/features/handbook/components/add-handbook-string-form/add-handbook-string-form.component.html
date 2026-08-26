@@ -7,8 +7,11 @@
         }
 
         <button
+            type="button"
             tuiIconButton
-            iconStart="@tui.plus"
+            appearance="flat"
+            size="s"
+            iconStart="@tui.x"
             (click)="context.complete()"
         ></button>
     </header>
@@ -122,6 +125,14 @@
                 }
 
                 @case (HandbookColumnType.FormattedString) {
+                    <div class="label">
+                        <span>{{ column.name }}</span>
+
+                        <tui-editor [formControlName]="column.id" />
+                    </div>
+                }
+
+                @case (HandbookColumnType.Reference) {
                     <div class="label">
                         <span>{{ column.name }}</span>
 

@@ -28,7 +28,7 @@ export class HandbookToolbarComponent implements OnInit {
         nonNullable: true
     });
 
-    protected readonly isSearchByName = signal(false);
+    protected readonly isSearchByName = signal(true);
 
     ngOnInit() {
         this.searchControl.valueChanges

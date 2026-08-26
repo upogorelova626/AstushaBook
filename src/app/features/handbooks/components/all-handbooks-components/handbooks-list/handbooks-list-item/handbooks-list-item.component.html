@@ -82,7 +82,12 @@
                 <div class="owner-info">
                     <div class="owner-avatar">
                         @if (handbook().owner.avatarUrl) {
-                            <div [tuiAvatar]="handbook().owner.avatarUrl"></div>
+                            <div tuiAvatar="@tui.user" size="m">
+                                <img
+                                    [src]="handbook().owner.avatarUrl"
+                                    alt="Фото автора"
+                                />
+                            </div>
                         } @else {
                             <div
                                 tuiAvatar="@tui.user"

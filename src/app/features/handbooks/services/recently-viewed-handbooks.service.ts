@@ -15,6 +15,10 @@ export class RecentlyViewedHandbooksService {
 
     readonly isLoading = signal(false);
 
+    constructor() {
+        this.getValuesFromLocalStorage();
+    }
+
     getValuesFromLocalStorage() {
         const recentlyViewedHandbooks = localStorage.getItem('recently-viewed');
 

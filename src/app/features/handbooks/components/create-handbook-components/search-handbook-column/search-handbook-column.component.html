@@ -1,1 +1,11 @@
-<p>search-handbook-column works!</p>
+<tui-textfield tuiChevron [stringify]="stringifyColumn">
+    <input
+        tuiComboBox
+        placeholder="Выберите колонку"
+        [formControl]="columnControl"
+        [invalid]="isParentInvalid()"
+        (blur)="lossFocus()"
+    />
+
+    <tui-data-list-wrapper *tuiDropdown [items]="foundColumns()" />
+</tui-textfield>

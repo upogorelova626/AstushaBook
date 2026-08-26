@@ -40,8 +40,6 @@ export class MainPageComponent implements OnInit {
     });
 
     ngOnInit() {
-        this.recentlyViewedHandbooksService.getValuesFromLocalStorage();
-
         this.recentlyViewedHandbooksService.getRecentlyViewedHandbooks();
     }
 }
