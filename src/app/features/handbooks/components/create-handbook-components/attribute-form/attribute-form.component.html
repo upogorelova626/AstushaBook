@@ -55,7 +55,7 @@
     }
 
     @if (form.controls.type.value === HandbookColumnType.Reference) {
-        <form [formGroup]="form">
+        <form [formGroup]="form" class="reference-inputs">
             <app-search-handbooks
                 [isMainPage]="false"
                 [formControl]="form.controls.reference.controls.handbook"

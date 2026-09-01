@@ -7,6 +7,7 @@ import {
 import {BarContext} from '../../../handbooks/components/host-drawer/base-bar.service';
 import {injectContext} from '@taiga-ui/polymorpheus';
 import {
+    AstushaUserPreview,
     Handbook,
     HandbookColumnType,
     HandbookRow
@@ -40,6 +41,7 @@ import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, finalize, tap} from 'rxjs';
 import {SearchUsersComponent} from '../../../handbooks/components/create-handbook-components/search-users/search-users.component';
 import {TuiEditor} from '@taiga-ui/editor';
+import {TuiDay} from '@taiga-ui/cdk';
 
 @Component({
     selector: 'app-add-handbook-string-form',
@@ -113,7 +115,10 @@ export class AddHandbookStringFormComponent {
                     ? (this.editRow?.values[column.id] ?? false)
                     : column.type === HandbookColumnType.User
                       ? (this.editRow?.values[column.id] ?? null)
-                      : (this.editRow?.values[column.id] ?? '');
+                      : column.type === HandbookColumnType.Date
+                        ? (this.toTuiDay(this.editRow?.values[column.id]) ??
+                          TuiDay.currentLocal())
+                        : (this.editRow?.values[column.id] ?? '');
 
             this.stringForm.addControl(
                 column.id,
@@ -222,5 +227,17 @@ export class AddHandbookStringFormComponent {
                     this.context.complete(row);
                 }
             });
+    }
+
+    private toTuiDay(
+        date: string | number | boolean | null | AstushaUserPreview | undefined
+    ): TuiDay | null {
+        if (typeof date !== 'string') {
+            return null;
+        }
+
+        const nativeDate = new Date(date.trim());
+
+        return TuiDay.fromLocalNativeDate(nativeDate);
     }
 }

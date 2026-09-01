@@ -29,9 +29,7 @@ export class HandbookService {
     private readonly astushaBookApiUrl = 'http://localhost:3001/handbooks';
 
     createHandbook(payload: CreateHandbookRequest): Observable<Handbook> {
-        return this.http.post<Handbook>(`${this.astushaBookApiUrl}`, payload, {
-            withCredentials: true
-        });
+        return this.http.post<Handbook>(`${this.astushaBookApiUrl}`, payload);
     }
 
     getHandbooksPreviews(
@@ -39,20 +37,13 @@ export class HandbookService {
     ): Observable<GetHandbooksResponse> {
         return this.http.post<GetHandbooksResponse>(
             `${this.astushaBookApiUrl}/search`,
-            payload,
-            {
-                withCredentials: true
-            }
+            payload
         );
     }
 
     getHandbooksCount(): Observable<HandbookFiltersCounts> {
         return this.http.get<HandbookFiltersCounts>(
-            `${this.astushaBookApiUrl}/filter-counts`,
-
-            {
-                withCredentials: true
-            }
+            `${this.astushaBookApiUrl}/filter-counts`
         );
     }
 
@@ -61,17 +52,12 @@ export class HandbookService {
     ): Observable<HandbookPreview[]> {
         return this.http.post<HandbookPreview[]>(
             `${this.astushaBookApiUrl}/previews`,
-            payload,
-            {
-                withCredentials: true
-            }
+            payload
         );
     }
 
     getHandbook(id: string): Observable<Handbook> {
-        return this.http.get<Handbook>(`${this.astushaBookApiUrl}/${id}`, {
-            withCredentials: true
-        });
+        return this.http.get<Handbook>(`${this.astushaBookApiUrl}/${id}`);
     }
 
     editHandbookAttributes(
@@ -82,18 +68,13 @@ export class HandbookService {
             this,
             this.http.patch<Handbook>(
                 `${this.astushaBookApiUrl}/${id}/columns`,
-                payload,
-                {
-                    withCredentials: true
-                }
+                payload
             )
         );
     }
 
     deleteHandbook(id: string) {
-        return this.http.delete(`${this.astushaBookApiUrl}/${id}`, {
-            withCredentials: true
-        });
+        return this.http.delete(`${this.astushaBookApiUrl}/${id}`);
     }
 
     editHandbookDescription(
@@ -102,10 +83,7 @@ export class HandbookService {
     ): Observable<Handbook> {
         return this.http.patch<Handbook>(
             `${this.astushaBookApiUrl}/${id}/description`,
-            payload,
-            {
-                withCredentials: true
-            }
+            payload
         );
     }
 
@@ -115,10 +93,7 @@ export class HandbookService {
     ): Observable<HandbookRow> {
         return this.http.post<HandbookRow>(
             `${this.astushaBookApiUrl}/${handbookId}/rows`,
-            payload,
-            {
-                withCredentials: true
-            }
+            payload
         );
     }
 
@@ -128,10 +103,7 @@ export class HandbookService {
     ): Observable<GetHandbookRowsResponse> {
         return this.http.post<GetHandbookRowsResponse>(
             `${this.astushaBookApiUrl}/${handbookId}/rows/search`,
-            payload,
-            {
-                withCredentials: true
-            }
+            payload
         );
     }
 
@@ -141,10 +113,7 @@ export class HandbookService {
     ): Observable<HandbookRow[]> {
         return this.http.put<HandbookRow[]>(
             `${this.astushaBookApiUrl}/${handbookId}/rows`,
-            payload,
-            {
-                withCredentials: true
-            }
+            payload
         );
     }
 
@@ -156,8 +125,7 @@ export class HandbookService {
             `${this.astushaBookApiUrl}/${handbookId}/rows`,
 
             {
-                body: payload,
-                withCredentials: true
+                body: payload
             }
         );
     }
@@ -168,10 +136,7 @@ export class HandbookService {
     ): Observable<HandbookRow[]> {
         return this.http.post<HandbookRow[]>(
             `${this.astushaBookApiUrl}/${handbookId}/rows/duplicate`,
-            payload,
-            {
-                withCredentials: true
-            }
+            payload
         );
     }
 
@@ -181,10 +146,7 @@ export class HandbookService {
     ): Observable<HanbookFavoriteStatus> {
         return this.http.patch<HanbookFavoriteStatus>(
             `${this.astushaBookApiUrl}/${handbookId}/favorite`,
-            payload,
-            {
-                withCredentials: true
-            }
+            payload
         );
     }
 }

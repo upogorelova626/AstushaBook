@@ -49,8 +49,6 @@ export class HandbookToolbarComponent implements OnInit {
                 name: value,
                 tags: []
             });
-
-            return;
         }
 
         this.handbooksListService.updateRequest({

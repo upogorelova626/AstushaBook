@@ -19,18 +19,6 @@ export class RecentlyViewedHandbooksService {
         this.getValuesFromLocalStorage();
     }
 
-    getValuesFromLocalStorage() {
-        const recentlyViewedHandbooks = localStorage.getItem('recently-viewed');
-
-        if (!recentlyViewedHandbooks) {
-            this.recentlyViewedItemIds.set([]);
-
-            return;
-        }
-
-        this.recentlyViewedItemIds.set(JSON.parse(recentlyViewedHandbooks));
-    }
-
     addHandbookIdToLocalStorage(handbookId: string) {
         this.recentlyViewedItemIds.update(currentItems =>
             [handbookId, ...currentItems.filter(id => id !== handbookId)].slice(
@@ -72,5 +60,17 @@ export class RecentlyViewedHandbooksService {
             .subscribe(handbooks => {
                 this.recentlyViewedHandbooks.set(handbooks);
             });
+    }
+
+    private getValuesFromLocalStorage() {
+        const recentlyViewedHandbooks = localStorage.getItem('recently-viewed');
+
+        if (!recentlyViewedHandbooks) {
+            this.recentlyViewedItemIds.set([]);
+
+            return;
+        }
+
+        this.recentlyViewedItemIds.set(JSON.parse(recentlyViewedHandbooks));
     }
 }

@@ -7,7 +7,7 @@ import {
 import {TuiButton} from '@taiga-ui/core';
 import {HanbookActionsButtonComponent} from '../hanbook-actions-button/hanbook-actions-button.component';
 import {EditCellsButtonsComponent} from '../edit-cells-buttons/edit-cells-buttons.component';
-import {UserService} from '../../../auth/services/user.service';
+import {UserService} from '../../../../shared/services/user.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {AddHandbookRowButtonComponent} from '../add-handbook-row-button/add-handbook-row-button.component';
 import {HandbookInfoService} from '../../services/handbook-info.service';

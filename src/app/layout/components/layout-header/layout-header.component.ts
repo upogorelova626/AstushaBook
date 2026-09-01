@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {TuiHint, TuiButton} from '@taiga-ui/core';
 import {TuiAvatar} from '@taiga-ui/kit';
 import {AsyncPipe} from '@angular/common';
-import {UserService} from '../../../features/auth/services/user.service';
+import {UserService} from '../../../shared/services/user.service';
 import {RouterLink} from '@angular/router';
 
 @Component({

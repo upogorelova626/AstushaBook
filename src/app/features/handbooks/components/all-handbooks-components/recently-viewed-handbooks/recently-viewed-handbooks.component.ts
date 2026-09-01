@@ -1,5 +1,10 @@
-import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {TuiButton, TuiExpand, TuiAppearance} from '@taiga-ui/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    inject
+} from '@angular/core';
+import {TuiButton, TuiExpand} from '@taiga-ui/core';
 import {TuiAvatar, TuiChevron} from '@taiga-ui/kit';
 import {RecentlyViewedHandbooksService} from '../../../services/recently-viewed-handbooks.service';
 import {HandbooksListItemComponent} from '../handbooks-list/handbooks-list-item/handbooks-list-item.component';
@@ -11,7 +16,6 @@ import {HandbooksListItemComponent} from '../handbooks-list/handbooks-list-item/
         TuiAvatar,
         TuiExpand,
         TuiChevron,
-        TuiAppearance,
         HandbooksListItemComponent
     ],
     templateUrl: './recently-viewed-handbooks.component.html',
@@ -19,12 +23,16 @@ import {HandbooksListItemComponent} from '../handbooks-list/handbooks-list-item/
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecentlyViewedHandbooksComponent {
-    protected expanded = true;
-
     private readonly recentlyViewedHandbooksService = inject(
         RecentlyViewedHandbooksService
     );
 
+    protected expanded = false;
+
     protected readonly recentlyViewedHandbooks =
         this.recentlyViewedHandbooksService.recentlyViewedHandbooks;
+
+    protected readonly displayedHandbooks = computed(() =>
+        this.recentlyViewedHandbooks().slice(0, 3)
+    );
 }

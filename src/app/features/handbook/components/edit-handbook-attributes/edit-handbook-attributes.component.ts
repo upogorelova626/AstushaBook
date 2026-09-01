@@ -145,8 +145,8 @@ export class EditHandbookAttributesComponent {
                         ? attribute.options.map(option => option.trim())
                         : [],
                 reference: {
-                    handbook: attribute.reference.handbook ?? null,
-                    columnId: attribute.reference.columnId ?? null
+                    handbook: attribute.reference?.handbook ?? null,
+                    columnId: attribute.reference?.columnId ?? null
                 }
             }))
         };

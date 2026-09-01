@@ -24,7 +24,7 @@ import {EditRowButtonComponent} from '../edit-row-button/edit-row-button.compone
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {TuiEditorSocket} from '@taiga-ui/editor';
 import {AddHandbookRowButtonComponent} from '../add-handbook-row-button/add-handbook-row-button.component';
-import {UserService} from '../../../auth/services/user.service';
+import {UserService} from '../../../../shared/services/user.service';
 import {HandbookInfoService} from '../../services/handbook-info.service';
 
 @Component({

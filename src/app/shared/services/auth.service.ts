@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {AstushaUser} from '../../../shared/interfaces';
+import {AstushaUser} from '../interfaces';
 import {Observable, tap} from 'rxjs';
 import {UserService} from './user.service';
 
@@ -14,14 +14,10 @@ export class AuthService {
     private readonly astushaIdApiUrl = 'http://localhost:3002/auth/refresh';
 
     refresh(): Observable<AstushaUser> {
-        return this.http
-            .post<AstushaUser>(this.astushaIdApiUrl, null, {
-                withCredentials: true
+        return this.http.post<AstushaUser>(this.astushaIdApiUrl, null).pipe(
+            tap(user => {
+                this.userService.setCurrentUser(user);
             })
-            .pipe(
-                tap(user => {
-                    this.userService.setCurrentUser(user);
-                })
-            );
+        );
     }
 }

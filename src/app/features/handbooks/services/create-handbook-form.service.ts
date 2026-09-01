@@ -10,9 +10,7 @@ import {TuiNotificationService} from '@taiga-ui/core';
 import {Router} from '@angular/router';
 import {catchError, EMPTY, tap} from 'rxjs';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class CreateHandbookFormService {
     private readonly handbookService = inject(HandbookService);
 
@@ -25,10 +23,10 @@ export class CreateHandbookFormService {
 
     readonly values = signal<Partial<CreateHandbookFormValues>>({});
 
-    update(newWalues: Partial<CreateHandbookFormValues>) {
+    update(newValues: Partial<CreateHandbookFormValues>) {
         this.values.update(currentValues => ({
             ...currentValues,
-            ...newWalues
+            ...newValues
         }));
     }
 

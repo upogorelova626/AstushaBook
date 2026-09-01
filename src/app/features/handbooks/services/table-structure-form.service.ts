@@ -1,9 +1,7 @@
 import {Injectable, signal} from '@angular/core';
 import {HandbookAttribute} from '../../../shared/interfaces';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class TableStructureFormService {
     tableStuctureValues = signal<HandbookAttribute[]>([]);
 

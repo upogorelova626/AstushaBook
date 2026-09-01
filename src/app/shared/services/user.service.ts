@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
-import {AstushaUser} from '../../../shared/interfaces';
+import {AstushaUser} from '../interfaces';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
 
 @Injectable({
@@ -17,22 +17,18 @@ export class UserService {
     readonly currentUser$ = this.currentUserSubject.asObservable();
 
     getMe(): Observable<AstushaUser> {
-        return this.http
-            .get<AstushaUser>(`${this.astushaIdApiUrl}`, {
-                withCredentials: true
+        return this.http.get<AstushaUser>(`${this.astushaIdApiUrl}`).pipe(
+            tap(user => {
+                this.setCurrentUser(user);
             })
-            .pipe(
-                tap(user => {
-                    this.setCurrentUser(user);
-                })
-            );
+        );
     }
 
     setCurrentUser(user: AstushaUser) {
         this.currentUserSubject.next(user);
     }
 
-    clearCurrentUser(): void {
+    clearCurrentUser() {
         this.currentUserSubject.next(null);
     }
 }

@@ -17,16 +17,13 @@
     </header>
 
     <tui-expand [expanded]="expanded">
-        <main class="content">
-            @for (
-                handbook of recentlyViewedHandbooks().slice(0, 3);
-                track handbook.id
-            ) {
+        <div class="content">
+            @for (handbook of displayedHandbooks(); track handbook.id) {
                 <app-handbooks-list-item
                     [handbook]="handbook"
                     [isHandbooksList]="false"
                 />
             }
-        </main>
+        </div>
     </tui-expand>
 </div>

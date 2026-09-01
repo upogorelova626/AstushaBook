@@ -1,38 +1,36 @@
-<div class="item">
+<a class="item" [routerLink]="['/astusha', 'handbooks', handbook().id]">
     <div class="info">
-        <div class="left">
-            <div class="info-content">
-                <div class="title-row">
-                    <div class="name">
-                        {{ handbook().name }}
-                    </div>
-
-                    @if (!handbook().hasAccess) {
-                        <div
-                            class="lock"
-                            tuiAvatar="@tui.lock-keyhole"
-                            size="m"
-                            appearance="flat-grayscale"
-                        ></div>
-                    }
+        <div class="info-content">
+            <div class="title-row">
+                <div class="name">
+                    {{ handbook().name }}
                 </div>
 
-                @if (handbook().description) {
-                    <div class="description">
-                        {{ handbook().description }}
-                    </div>
-                }
-
-                @if (handbook().tags.length) {
-                    <div class="tags">
-                        @for (tag of handbook().tags; track tag) {
-                            <div tuiBadge size="m" appearance="info">
-                                {{ tag }}
-                            </div>
-                        }
-                    </div>
+                @if (!handbook().hasAccess) {
+                    <div
+                        class="lock"
+                        tuiAvatar="@tui.lock-keyhole"
+                        size="m"
+                        appearance="flat-grayscale"
+                    ></div>
                 }
             </div>
+
+            @if (handbook().description) {
+                <div class="description">
+                    {{ handbook().description }}
+                </div>
+            }
+
+            @if (handbook().tags.length) {
+                <div class="tags">
+                    @for (tag of handbook().tags; track tag) {
+                        <div tuiBadge size="m" appearance="info">
+                            {{ tag }}
+                        </div>
+                    }
+                </div>
+            }
         </div>
 
         <div class="favourite">
@@ -43,7 +41,7 @@
                     appearance="flat"
                     iconStart="@tui.star-filled"
                     [style.border-radius.%]="100"
-                    (click)="changeHandbookStatus(handbook())"
+                    (click)="changeHandbookStatus($event, handbook())"
                 ></button>
             } @else {
                 <button
@@ -52,7 +50,7 @@
                     appearance="flat"
                     iconStart="@tui.star"
                     [style.border-radius.%]="100"
-                    (click)="changeHandbookStatus(handbook())"
+                    (click)="changeHandbookStatus($event, handbook())"
                 ></button>
             }
         </div>
@@ -67,7 +65,7 @@
                 tuiChevron
                 type="button"
                 appearance="flat"
-                (click)="expanded = !expanded"
+                (click)="toggleExpanded($event)"
             >
                 Подробнее
             </button>
@@ -127,4 +125,4 @@
             </div>
         </div>
     </tui-expand>
-</div>
+</a>

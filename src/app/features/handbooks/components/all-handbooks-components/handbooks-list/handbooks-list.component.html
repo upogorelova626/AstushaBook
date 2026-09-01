@@ -1,5 +1,5 @@
 <div class="wrapper" [tuiSkeleton]="isLoading()">
-    @if (handbookPreviews().length === 0 && !isLoading()) {
+    @if (!isLoading() && handbookPreviews().length === 0) {
         <div class="empty"> Ничего не найдено </div>
     } @else {
         @for (handbook of handbookPreviews(); track handbook.id) {

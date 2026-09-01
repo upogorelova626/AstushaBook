@@ -5,26 +5,22 @@
 }
 
 .item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
     min-width: 0;
     min-height: 100%;
     padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
     box-sizing: border-box;
     border: 1px solid var(--color-card-border);
     border-radius: 8px;
     background: var(--color-card-background);
     box-shadow: var(--tui-shadow-small);
+    text-decoration: none;
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
-}
-
-.left {
-    display: flex;
-    gap: 10px;
 }
 
 .item:hover {
@@ -33,26 +29,22 @@
 }
 
 .info {
-    min-width: 0;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-}
-
-.avatar {
-    flex: 0 0 auto;
+    min-width: 0;
 }
 
 .info-content {
-    min-width: 0;
     flex: 1;
+    min-width: 0;
 }
 
 .title-row {
-    min-width: 0;
     display: flex;
     align-items: center;
     gap: 8px;
+    min-width: 0;
 }
 
 .name {
@@ -69,9 +61,9 @@
 }
 
 .description {
+    display: -webkit-box;
     max-width: 720px;
     margin-top: 4px;
-    display: -webkit-box;
     overflow: hidden;
     color: var(--color-text-muted);
     font: var(--tui-typography-body-m);
@@ -82,25 +74,40 @@
 }
 
 .tags {
-    margin-top: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    margin-top: 10px;
 }
 
-.owner {
-    min-width: 0;
+.favourite {
     display: flex;
-    flex-direction: column;
-    padding-top: 14px;
-    border-top: 1px solid var(--color-card-border);
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+}
+
+.more-button {
+    padding: 0;
 }
 
 .expand {
     display: flex;
     flex-direction: column;
-    justify-content: start;
     gap: 10px;
+}
+
+.owner {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-card-border);
 }
 
 .label {
@@ -110,8 +117,8 @@
 
 .owner-info {
     display: flex;
-    gap: 10px;
     align-items: center;
+    gap: 10px;
 }
 
 .owner-value {
@@ -139,56 +146,14 @@
     white-space: nowrap;
 }
 
-.favourite {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-}
-
-.more-button {
-    padding: 0;
-}
-
-@media (max-width: 1000px) {
-    .item {
-        grid-template-columns: minmax(0, 1fr) max-content;
-        gap: 16px 24px;
-    }
-
-    .info {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .owner {
-        grid-column: 1;
-        grid-row: 2;
-    }
-
-    .actions {
-        grid-column: 2;
-        grid-row: 1 / span 2;
-    }
-}
-
 @media (max-width: 700px) {
     .item {
-        padding: 16px;
-        grid-template-columns: minmax(0, 1fr);
         gap: 16px;
+        padding: 16px;
     }
 
     .info {
-        grid-column: 1;
-        grid-row: auto;
         gap: 12px;
-    }
-
-    .owner {
-        grid-column: 1;
-        grid-row: auto;
-        margin-left: 0;
     }
 
     .owner-name,
@@ -197,14 +162,7 @@
     }
 
     .actions {
-        grid-column: 1;
-        grid-row: auto;
         width: 100%;
-        justify-content: flex-end;
-    }
-
-    .actions > button {
-        flex: 1;
     }
 }
 
@@ -220,14 +178,6 @@
     .description {
         -webkit-line-clamp: 3;
         line-clamp: 3;
-    }
-
-    .actions {
-        justify-content: space-between;
-    }
-
-    .favourite {
-        flex: 0 0 auto;
     }
 
     .actions > button {

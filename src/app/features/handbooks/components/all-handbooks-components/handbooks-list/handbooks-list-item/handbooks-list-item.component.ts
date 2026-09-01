@@ -4,14 +4,22 @@ import {catchError, EMPTY, tap} from 'rxjs';
 import {HandbooksListService} from '../../../../services/handbooks-list.service';
 import {HandbookService} from '../../../../../../shared/services/handbook.service';
 import {TuiButton, TuiExpand, TuiNotificationService} from '@taiga-ui/core';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {TuiAvatar, TuiBadge, TuiChevron} from '@taiga-ui/kit';
 import {DatePipe} from '@angular/common';
 import {RecentlyViewedHandbooksService} from '../../../../services/recently-viewed-handbooks.service';
 
 @Component({
     selector: 'app-handbooks-list-item',
-    imports: [TuiButton, TuiAvatar, TuiBadge, TuiExpand, TuiChevron, DatePipe],
+    imports: [
+        TuiButton,
+        TuiAvatar,
+        TuiBadge,
+        TuiExpand,
+        TuiChevron,
+        DatePipe,
+        RouterLink
+    ],
     templateUrl: './handbooks-list-item.component.html',
     styleUrl: './handbooks-list-item.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -30,7 +38,13 @@ export class HandbooksListItemComponent {
     readonly handbook = input.required<HandbookPreview>();
     readonly isHandbooksList = input.required();
 
-    protected changeHandbookStatus(handbook: HandbookPreview) {
+    protected changeHandbookStatus(
+        event: MouseEvent,
+        handbook: HandbookPreview
+    ) {
+        event.preventDefault();
+        event.stopPropagation();
+
         const handbookId = handbook.id;
 
         const payload = {isFavorite: !handbook.isFavorite};
@@ -74,5 +88,12 @@ export class HandbooksListItemComponent {
 
     protected openHandbook(id: string) {
         this.router.navigate(['astusha', 'handbooks', id]);
+    }
+
+    protected toggleExpanded(event: MouseEvent) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.expanded = !this.expanded;
     }
 }

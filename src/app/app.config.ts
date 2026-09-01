@@ -3,8 +3,9 @@ import {provideRouter} from '@angular/router';
 import {provideEventPlugins} from '@taiga-ui/event-plugins';
 import {provideTaiga} from '@taiga-ui/core';
 import {routes} from './app.routes';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {provideTuiEditor} from '@taiga-ui/editor';
+import {credentialsIntercepror} from './shared/interceptors/credentials.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -12,7 +13,7 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideEventPlugins(),
         provideTaiga(),
-        provideHttpClient(),
+        provideHttpClient(withInterceptors([credentialsIntercepror])),
         provideTuiEditor()
     ]
 };

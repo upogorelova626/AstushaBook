@@ -12,6 +12,7 @@ import {SettingsComponent} from '../../components/create-handbook-components/set
 import {SidebarHostComponent} from '../../components/host-drawer/sidebar-host.component';
 import {SideBarService} from '../../components/host-drawer/sidebar.service';
 import {CreateHandbookFormService} from '../../services/create-handbook-form.service';
+import {TableStructureFormService} from '../../services/table-structure-form.service';
 
 @Component({
     selector: 'app-create-handbook-page',
@@ -26,7 +27,11 @@ import {CreateHandbookFormService} from '../../services/create-handbook-form.ser
     templateUrl: './create-handbook-page.component.html',
     styleUrl: './create-handbook-page.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [SideBarService]
+    providers: [
+        SideBarService,
+        CreateHandbookFormService,
+        TableStructureFormService
+    ]
 })
 export class CreateHandbookPageComponent {
     private readonly createHandbookFormService = inject(

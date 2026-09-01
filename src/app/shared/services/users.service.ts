@@ -14,8 +14,7 @@ export class UsersService {
     searchUsers(payload: UsersSearchRequest): Observable<AstushaUserPreview[]> {
         return this.http.post<AstushaUserPreview[]>(
             `${this.astushaBookApiUrl}`,
-            payload,
-            {withCredentials: true}
+            payload
         );
     }
 }

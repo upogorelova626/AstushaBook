@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {tuiLikeOptionsProvider, TuiSkeleton} from '@taiga-ui/kit';
+import {TuiSkeleton} from '@taiga-ui/kit';
 import {HandbooksListService} from '../../../services/handbooks-list.service';
 import {HandbooksListItemComponent} from './handbooks-list-item/handbooks-list-item.component';
 
@@ -8,12 +8,7 @@ import {HandbooksListItemComponent} from './handbooks-list-item/handbooks-list-i
     imports: [HandbooksListItemComponent, TuiSkeleton],
     templateUrl: './handbooks-list.component.html',
     styleUrl: './handbooks-list.component.less',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [
-        tuiLikeOptionsProvider({
-            icons: {unchecked: '@tui.star', checked: '@tui.star-filled'}
-        })
-    ]
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HandbooksListComponent {
     private readonly handbooksListService = inject(HandbooksListService);

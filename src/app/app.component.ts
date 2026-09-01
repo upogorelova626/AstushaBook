@@ -1,7 +1,7 @@
 import {Component, computed, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {TuiRoot} from '@taiga-ui/core';
-import {UserService} from './features/auth/services/user.service';
+import {UserService} from './shared/services/user.service';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
