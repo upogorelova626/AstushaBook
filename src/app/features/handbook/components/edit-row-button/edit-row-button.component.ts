@@ -1,10 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    inject,
-    input,
-    output
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, input} from '@angular/core';
 import {TuiButton, TuiHint, TuiNotificationService} from '@taiga-ui/core';
 import {Handbook, HandbookRow} from '../../../../shared/interfaces';
 import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.service';
@@ -12,6 +6,7 @@ import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-ha
 import {PolymorpheusComponent} from '@taiga-ui/polymorpheus';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, tap} from 'rxjs';
+import {HandbookInfoService} from '../../services/handbook-info.service';
 
 @Component({
     selector: 'app-edit-row-button',
@@ -24,13 +19,10 @@ export class EditRowButtonComponent {
     private readonly sidebarService = inject(SideBarService);
     private readonly handbookService = inject(HandbookService);
     private readonly alerts = inject(TuiNotificationService);
+    private readonly handbookInfoService = inject(HandbookInfoService);
 
     readonly handbook = input<Handbook | null>(null);
     readonly row = input<HandbookRow>();
-
-    readonly updatedRow = output<HandbookRow>();
-    readonly deletedRowId = output<string>();
-    readonly clonedRows = output<HandbookRow[]>();
 
     protected deleteRow() {
         const handbookId = this.handbook()?.id;
@@ -45,14 +37,15 @@ export class EditRowButtonComponent {
         this.handbookService
             .deleteHandbookRows(handbookId, payload)
             .pipe(
-                tap(() =>
+                tap(() => {
                     this.alerts
                         .open('Строка успешно удалена', {
                             label: 'Готово',
                             appearance: 'positive'
                         })
-                        .subscribe()
-                ),
+                        .subscribe();
+                    this.handbookInfoService.getHandbookRows(handbookId);
+                }),
                 catchError(() => {
                     this.alerts
                         .open('Не удалось удалить строку. Попробуйте еще раз', {
@@ -63,9 +56,7 @@ export class EditRowButtonComponent {
                     return EMPTY;
                 })
             )
-            .subscribe(() => {
-                this.deletedRowId.emit(rowId);
-            });
+            .subscribe();
     }
 
     protected cloneRow() {
@@ -81,14 +72,15 @@ export class EditRowButtonComponent {
         this.handbookService
             .cloneHandbookRows(handbookId, payload)
             .pipe(
-                tap(() =>
+                tap(() => {
                     this.alerts
                         .open('Строка успешно добавлена', {
                             label: 'Готово',
                             appearance: 'positive'
                         })
-                        .subscribe()
-                ),
+                        .subscribe();
+                    this.handbookInfoService.getHandbookRows(handbookId);
+                }),
                 catchError(() => {
                     this.alerts
                         .open(
@@ -102,9 +94,7 @@ export class EditRowButtonComponent {
                     return EMPTY;
                 })
             )
-            .subscribe(rows => {
-                this.clonedRows.emit(rows);
-            });
+            .subscribe();
     }
 
     protected openEditRowDialog(event: MouseEvent): void {
@@ -131,11 +121,6 @@ export class EditRowButtonComponent {
                     editRow: row
                 }
             )
-            .subscribe(updatedRow => {
-                if (updatedRow) {
-                    this.updatedRow.emit(updatedRow);
-                    console.log(updatedRow);
-                }
-            });
+            .subscribe();
     }
 }

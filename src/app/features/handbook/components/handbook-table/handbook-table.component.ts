@@ -8,7 +8,6 @@ import {
     ElementRef,
     inject,
     OnDestroy,
-    signal,
     ViewChild
 } from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
@@ -17,8 +16,8 @@ import {TuiCalendar, TuiCheckbox, TuiInput, TuiTextfield} from '@taiga-ui/core';
 import {TuiInputDate} from '@taiga-ui/kit';
 import {
     AstushaUserPreview,
-    HandbookColumnType,
-    HandbookRow
+    HandbookCellValue,
+    HandbookColumnType
 } from '../../../../shared/interfaces';
 import {EditRowButtonComponent} from '../edit-row-button/edit-row-button.component';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
@@ -34,7 +33,6 @@ import {HandbookInfoService} from '../../services/handbook-info.service';
         ReactiveFormsModule,
         TuiTable,
         TuiCheckbox,
-
         TuiTextfield,
         TuiInput,
         TuiInputDate,
@@ -60,18 +58,13 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
 
     protected readonly currentUser = toSignal(this.userService.currentUser$);
 
-    protected readonly originalRows = this.handbookInfoService.originalRows;
     protected readonly draftRows = this.handbookInfoService.draftRows;
-
     protected readonly isEditing = this.handbookInfoService.isEditing;
-
-    protected readonly changedRowsId = signal<string[]>([]);
-
     protected readonly editingCell = this.handbookInfoService.editingCell;
 
-    protected readonly editCellControl = new FormControl<
-        string | number | boolean | null | AstushaUserPreview
-    >(null);
+    protected readonly editCellControl = new FormControl<HandbookCellValue>(
+        null
+    );
 
     protected readonly HandbookColumnType = HandbookColumnType;
 
@@ -169,32 +162,6 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
         this.editCellControl.setValue(draftRow.values[columnId] ?? null);
     }
 
-    protected updateRows(updatedRow: HandbookRow) {
-        this.originalRows.update(rows =>
-            rows.map(row => (row.id === updatedRow.id ? updatedRow : row))
-        );
-
-        this.draftRows.update(rows =>
-            rows.map(row => (row.id === updatedRow.id ? updatedRow : row))
-        );
-    }
-
-    protected deleteRow(deletedRowId: string) {
-        this.originalRows.update(rows =>
-            rows.filter(row => row.id !== deletedRowId)
-        );
-
-        this.draftRows.update(rows =>
-            rows.filter(row => row.id !== deletedRowId)
-        );
-    }
-
-    protected addRows(newRows: HandbookRow[]) {
-        this.originalRows.update(rows => [...rows, ...newRows]);
-
-        this.draftRows.update(rows => [...rows, ...newRows]);
-    }
-
     protected getDateValue(
         value: string | number | boolean | null | AstushaUserPreview
     ): string | number | null {
@@ -217,9 +184,19 @@ export class HandbookTableComponent implements AfterViewInit, OnDestroy {
         return fullName || value.login;
     }
 
-    protected getValue(
-        value: string | number | boolean | null | AstushaUserPreview
-    ): string | null {
+    protected getValue(value: HandbookCellValue) {
         return typeof value === 'string' ? value : null;
+    }
+
+    protected getReferenceValue(value: HandbookCellValue): unknown {
+        if (
+            typeof value !== 'object' ||
+            value === null ||
+            !('value' in value)
+        ) {
+            return '';
+        }
+
+        return value.value;
     }
 }

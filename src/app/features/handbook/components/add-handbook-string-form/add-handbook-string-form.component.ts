@@ -4,20 +4,13 @@ import {
     inject,
     signal
 } from '@angular/core';
-import {BarContext} from '../../../handbooks/components/host-drawer/base-bar.service';
-import {injectContext} from '@taiga-ui/polymorpheus';
 import {
-    AstushaUserPreview,
-    Handbook,
-    HandbookColumnType,
-    HandbookRow
-} from '../../../../shared/interfaces';
-import {
-    ReactiveFormsModule,
-    FormGroup,
     FormControl,
+    FormGroup,
+    ReactiveFormsModule,
     Validators
 } from '@angular/forms';
+import {TuiDay} from '@taiga-ui/cdk';
 import {
     TUI_VALIDATION_ERRORS,
     TuiButton,
@@ -30,18 +23,28 @@ import {
     TuiRadio,
     TuiTextfield
 } from '@taiga-ui/core';
+import {TuiEditor} from '@taiga-ui/editor';
 import {
-    TuiInputDate,
+    TuiBlock,
+    TuiChevron,
     TuiComboBox,
     TuiDataListWrapper,
-    TuiChevron,
-    TuiBlock
+    TuiInputDate
 } from '@taiga-ui/kit';
-import {HandbookService} from '../../../../shared/services/handbook.service';
+import {injectContext} from '@taiga-ui/polymorpheus';
 import {catchError, EMPTY, finalize, tap} from 'rxjs';
+
+import {
+    Handbook,
+    HandbookCellValue,
+    HandbookColumnResponse,
+    HandbookColumnType,
+    HandbookRow
+} from '../../../../shared/interfaces';
+import {HandbookService} from '../../../../shared/services/handbook.service';
 import {SearchUsersComponent} from '../../../handbooks/components/create-handbook-components/search-users/search-users.component';
-import {TuiEditor} from '@taiga-ui/editor';
-import {TuiDay} from '@taiga-ui/cdk';
+import {BarContext} from '../../../handbooks/components/host-drawer/base-bar.service';
+import {HandbookInfoService} from '../../services/handbook-info.service';
 
 @Component({
     selector: 'app-add-handbook-string-form',
@@ -80,6 +83,7 @@ import {TuiDay} from '@taiga-ui/cdk';
 })
 export class AddHandbookStringFormComponent {
     private readonly handbookService = inject(HandbookService);
+    private readonly handbookInfoService = inject(HandbookInfoService);
     private readonly alerts = inject(TuiNotificationService);
 
     protected readonly context =
@@ -101,24 +105,25 @@ export class AddHandbookStringFormComponent {
     protected readonly stringForm = new FormGroup({});
 
     constructor() {
-        if (!this.editRow) {
-            this.isEditing.set(false);
-            this.isAdding.set(true);
-        } else {
+        if (this.editRow) {
             this.isEditing.set(true);
-            this.isAdding.set(false);
+        } else {
+            this.isAdding.set(true);
         }
 
         for (const column of this.handbook.columns) {
+            const editValue = this.editRow?.values[column.id];
+
             const value =
                 column.type === HandbookColumnType.Boolean
-                    ? (this.editRow?.values[column.id] ?? false)
+                    ? (editValue ?? false)
                     : column.type === HandbookColumnType.User
-                      ? (this.editRow?.values[column.id] ?? null)
+                      ? (editValue ?? null)
                       : column.type === HandbookColumnType.Date
-                        ? (this.toTuiDay(this.editRow?.values[column.id]) ??
-                          TuiDay.currentLocal())
-                        : (this.editRow?.values[column.id] ?? '');
+                        ? (this.toTuiDay(editValue) ?? TuiDay.currentLocal())
+                        : column.type === HandbookColumnType.Reference
+                          ? this.getReferenceRowId(editValue)
+                          : (editValue ?? '');
 
             this.stringForm.addControl(
                 column.id,
@@ -127,6 +132,7 @@ export class AddHandbookStringFormComponent {
                     column.type !== HandbookColumnType.Boolean
                         ? [Validators.required]
                         : []),
+
                     ...(column.type === HandbookColumnType.Text
                         ? [Validators.maxLength(1000)]
                         : [])
@@ -137,6 +143,7 @@ export class AddHandbookStringFormComponent {
 
     protected save() {
         this.stringForm.markAllAsTouched();
+
         if (this.stringForm.invalid) {
             return;
         }
@@ -144,42 +151,57 @@ export class AddHandbookStringFormComponent {
         this.isSaving.set(true);
 
         const handbookId = this.handbook.id;
-        const payload = {values: this.stringForm.getRawValue()};
+
+        const payload = {
+            values: this.stringForm.getRawValue()
+        };
 
         this.handbookService
             .addRow(handbookId, payload)
             .pipe(
-                tap(() =>
+                tap(() => {
+                    this.handbookInfoService.getHandbookRows(handbookId);
+
                     this.alerts
                         .open('Строка успешно добавлена', {
                             label: 'Готово',
                             appearance: 'positive'
                         })
-                        .subscribe()
-                ),
+                        .subscribe();
+                }),
+
                 catchError(() => {
                     this.alerts
                         .open(
                             'Не удалось добавить строку. Попробуйте еще раз',
-                            {label: 'Ошибка', appearance: 'negative'}
+                            {
+                                label: 'Ошибка',
+                                appearance: 'negative'
+                            }
                         )
                         .subscribe();
+
                     return EMPTY;
                 }),
+
                 finalize(() => {
                     this.isSaving.set(false);
                 })
             )
-            .subscribe(row => this.context.complete(row));
+            .subscribe(() => {
+                this.context.complete();
+            });
     }
 
     protected edit() {
         const rowId = this.editRow?.id;
+
         if (!rowId) {
             return;
         }
 
         this.stringForm.markAllAsTouched();
+
         if (this.stringForm.invalid) {
             return;
         }
@@ -201,42 +223,86 @@ export class AddHandbookStringFormComponent {
         this.handbookService
             .editHandbookRows(handbookId, payload)
             .pipe(
-                tap(() =>
+                tap(() => {
+                    this.handbookInfoService.getHandbookRows(handbookId);
+
                     this.alerts
                         .open('Строка успешно обновлена', {
                             label: 'Готово',
                             appearance: 'positive'
                         })
-                        .subscribe()
-                ),
+                        .subscribe();
+                }),
+
                 catchError(() => {
                     this.alerts
                         .open(
                             'Не удалось обновить строку. Попробуйте еще раз',
-                            {label: 'Ошибка', appearance: 'negative'}
+                            {
+                                label: 'Ошибка',
+                                appearance: 'negative'
+                            }
                         )
                         .subscribe();
+
                     return EMPTY;
                 }),
+
                 finalize(() => {
                     this.isSaving.set(false);
                 })
             )
-            .subscribe(([row]) => {
-                if (row) {
-                    this.context.complete(row);
-                }
+            .subscribe(() => {
+                this.context.complete();
             });
     }
 
-    private toTuiDay(
-        date: string | number | boolean | null | AstushaUserPreview | undefined
-    ): TuiDay | null {
-        if (typeof date !== 'string') {
+    protected getReferenceIds(column: HandbookColumnResponse): string[] {
+        return column.reference?.values.map(item => item.rowId) ?? [];
+    }
+
+    protected getReferenceValue(
+        column: HandbookColumnResponse,
+        rowId: string
+    ): string {
+        const item = column.reference?.values.find(
+            value => value.rowId === rowId
+        );
+
+        return item ? String(item.value) : '';
+    }
+
+    protected stringifyReference(
+        column: HandbookColumnResponse
+    ): (rowId: string) => string {
+        return (rowId: string) => this.getReferenceValue(column, rowId);
+    }
+
+    private getReferenceRowId(
+        value: HandbookCellValue | undefined
+    ): string | null {
+        if (typeof value === 'string') {
+            return value;
+        }
+
+        if (
+            typeof value !== 'object' ||
+            value === null ||
+            !('rowId' in value) ||
+            typeof value.rowId !== 'string'
+        ) {
             return null;
         }
 
-        const nativeDate = new Date(date.trim());
+        return value.rowId;
+    }
+
+    private toTuiDay(value: HandbookCellValue | undefined): TuiDay | null {
+        if (typeof value !== 'string') {
+            return null;
+        }
+
+        const nativeDate = new Date(value.trim());
 
         return TuiDay.fromLocalNativeDate(nativeDate);
     }

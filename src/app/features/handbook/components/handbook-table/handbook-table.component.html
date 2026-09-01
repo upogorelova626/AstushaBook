@@ -125,7 +125,11 @@
                                         />
                                     }
                                     @case (HandbookColumnType.Reference) {
-                                        {{ row.values[column.id] }}
+                                        {{
+                                            getReferenceValue(
+                                                row.values[column.id]
+                                            )
+                                        }}
                                     }
                                 }
                             }
@@ -136,9 +140,6 @@
                         <app-edit-row-button
                             [handbook]="handbook()"
                             [row]="row"
-                            (updatedRow)="updateRows($event)"
-                            (deletedRowId)="deleteRow($event)"
-                            (clonedRows)="addRows($event)"
                         />
                     </td>
                 </tr>
@@ -157,7 +158,7 @@
             @if (
                 canEditHandbook() || currentUser()?.id === handbook()?.ownerId
             ) {
-                <app-add-handbook-row-button (newRow)="addRows($event)" />
+                <app-add-handbook-row-button />
             }
         </div>
     </footer>

@@ -13,6 +13,7 @@ import {ReactiveFormsModule, FormControl, Validators} from '@angular/forms';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, tap} from 'rxjs';
 import {TuiTextarea} from '@taiga-ui/kit';
+import {HandbookInfoService} from '../../services/handbook-info.service';
 
 @Component({
     selector: 'app-edit-hanbdook-desccription-dialog',
@@ -38,10 +39,11 @@ import {TuiTextarea} from '@taiga-ui/kit';
 })
 export class EditHanbdookDesccriptionDialogComponent {
     private readonly handbookService = inject(HandbookService);
+    private readonly handbookInfoService = inject(HandbookInfoService);
     private readonly alerts = inject(TuiNotificationService);
 
     protected readonly context =
-        injectContext<TuiDialogContext<Handbook, Handbook>>();
+        injectContext<TuiDialogContext<void, Handbook>>();
     protected handbook = this.context.data;
 
     protected readonly control = new FormControl(
@@ -61,7 +63,7 @@ export class EditHanbdookDesccriptionDialogComponent {
         const initialDescription = this.handbook.description.trim();
 
         if (initialDescription === this.control.getRawValue().trim()) {
-            this.context.completeWith(this.handbook);
+            this.context.completeWith();
             return;
         }
 
@@ -78,6 +80,7 @@ export class EditHanbdookDesccriptionDialogComponent {
                             appearance: 'positive'
                         })
                         .subscribe();
+                    this.handbookInfoService.getHandbook(this.handbook.id);
                 }),
                 catchError(() => {
                     this.alerts
@@ -89,8 +92,8 @@ export class EditHanbdookDesccriptionDialogComponent {
                     return EMPTY;
                 })
             )
-            .subscribe(handbook => {
-                this.context.completeWith(handbook);
+            .subscribe(() => {
+                this.context.completeWith();
             });
     }
 }

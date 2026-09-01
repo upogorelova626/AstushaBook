@@ -16,7 +16,8 @@ import {
     HandbookFiltersCounts,
     HanbookFavoriteStatus,
     HandbookPreview,
-    GetRecentlyViewedHandbooksRequest
+    GetRecentlyViewedHandbooksRequest,
+    ReferenceValues
 } from '../interfaces';
 import {Observable} from 'rxjs';
 
@@ -73,10 +74,6 @@ export class HandbookService {
         );
     }
 
-    deleteHandbook(id: string) {
-        return this.http.delete(`${this.astushaBookApiUrl}/${id}`);
-    }
-
     editHandbookDescription(
         id: string,
         payload: EditHandbookDescriptionRequest
@@ -87,6 +84,10 @@ export class HandbookService {
         );
     }
 
+    deleteHandbook(id: string) {
+        return this.http.delete(`${this.astushaBookApiUrl}/${id}`);
+    }
+
     addRow(
         handbookId: string,
         payload: AddHandbookRowRequest
@@ -94,6 +95,12 @@ export class HandbookService {
         return this.http.post<HandbookRow>(
             `${this.astushaBookApiUrl}/${handbookId}/rows`,
             payload
+        );
+    }
+
+    getReferenceValues(columnId: string): Observable<ReferenceValues> {
+        return this.http.get<ReferenceValues>(
+            `${this.astushaBookApiUrl}/reference-columns/${columnId}/values`
         );
     }
 
@@ -123,7 +130,6 @@ export class HandbookService {
     ) {
         return this.http.delete(
             `${this.astushaBookApiUrl}/${handbookId}/rows`,
-
             {
                 body: payload
             }

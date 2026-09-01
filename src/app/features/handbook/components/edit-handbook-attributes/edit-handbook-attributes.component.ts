@@ -27,6 +27,7 @@ import {SideBarService} from '../../../handbooks/components/host-drawer/sidebar.
 import {AttributeFormComponent} from '../../../handbooks/components/create-handbook-components/attribute-form/attribute-form.component';
 import {HandbookService} from '../../../../shared/services/handbook.service';
 import {catchError, EMPTY, tap} from 'rxjs';
+import {HandbookInfoService} from '../../services/handbook-info.service';
 
 @Component({
     selector: 'app-edit-handbook-attributes',
@@ -47,6 +48,7 @@ export class EditHandbookAttributesComponent {
     private readonly handbookService = inject(HandbookService);
     private readonly injector = inject(Injector);
     private readonly alerts = inject(TuiNotificationService);
+    private readonly handbookInfoService = inject(HandbookInfoService);
 
     protected readonly context =
         injectContext<BarContext<{handbook: Handbook}, Handbook | null>>();
@@ -161,7 +163,9 @@ export class EditHandbookAttributesComponent {
                             appearance: 'positive'
                         })
                         .subscribe();
+                    this.handbookInfoService.getHandbook(this.handbook.id);
                 }),
+
                 catchError(() => {
                     this.alerts
                         .open(
@@ -176,8 +180,8 @@ export class EditHandbookAttributesComponent {
                     return EMPTY;
                 })
             )
-            .subscribe(updatedHandbook => {
-                this.context.complete(updatedHandbook);
+            .subscribe(() => {
+                this.context.complete();
             });
     }
 

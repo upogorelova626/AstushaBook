@@ -23,9 +23,32 @@ export enum HandbookColumnType {
     FormattedString = 'FORMATTED_STRING'
 }
 
+export enum HandbookListFilter {
+    All = 'ALL',
+    Mine = 'MINE',
+    Available = 'AVAILABLE',
+    Favorites = 'FAVORITES'
+}
+
+export type HandbookCellValue =
+    | string
+    | number
+    | boolean
+    | null
+    | AstushaUserPreview;
+
 export interface Reference {
     handbook: HandbookPreview | null;
     columnId: string | null;
+}
+
+export interface ReferenceValues {
+    rowId: string;
+    value: HandbookCellValue;
+}
+
+export interface ReferenceResponse extends Reference {
+    values: ReferenceValues[];
 }
 
 export interface HandbookAttribute {
@@ -33,14 +56,57 @@ export interface HandbookAttribute {
     type: HandbookColumnType;
     required: boolean;
     options: string[];
-    reference: Reference;
+    reference: Reference | null;
 }
 
-export enum HandbookListFilter {
-    All = 'ALL',
-    Mine = 'MINE',
-    Available = 'AVAILABLE',
-    Favorites = 'FAVORITES'
+export interface EditHandbookAttribute extends HandbookAttribute {
+    id?: string;
+}
+
+export interface HandbookColumnResponse extends Omit<
+    HandbookAttribute,
+    'reference'
+> {
+    id: string;
+    handbookId: string;
+    position: number;
+    createdAt: string;
+    updatedAt: string;
+    referenceColumnId: string | null;
+    reference: ReferenceResponse | null;
+}
+
+export interface Handbook {
+    id: string;
+    name: string;
+    description: string;
+    systemName: string;
+    tags: string[];
+    ownerId: string;
+    visibility: HandbookVisibility;
+    editingPermission: HandbookEditingAccess;
+    createdAt: string;
+    updatedAt: string;
+    columns: HandbookColumnResponse[];
+    editors: HandbookParticipant[];
+    viewers: HandbookParticipant[];
+}
+
+export interface HandbookParticipant {
+    handbookId: string;
+    userId: string;
+    addedAt: string;
+}
+
+export interface HandbookPreview {
+    id: string;
+    name: string;
+    description: string;
+    tags: string[];
+    updatedAt: string;
+    hasAccess: boolean;
+    owner: AstushaUserPreview;
+    isFavorite: boolean;
 }
 
 export interface CreateHandbookRequest {
@@ -67,37 +133,6 @@ export interface CreateHandbookFormValues {
     viewerUsers: AstushaUserPreview[];
 }
 
-export interface Handbook {
-    id: string;
-    name: string;
-    description: string;
-    systemName: string;
-    tags: string[];
-    ownerId: string;
-    visibility: HandbookVisibility;
-    editingPermission: HandbookEditingAccess;
-    createdAt: string;
-    updatedAt: string;
-    columns: HandbookColumnResponse[];
-    editors: HandbookParticipant[];
-    viewers: HandbookParticipant[];
-}
-
-export interface HandbookColumnResponse extends HandbookAttribute {
-    id: string;
-    handbookId: string;
-    position: number;
-    options: string[];
-    createdAt: string;
-    updatedAt: string;
-}
-
-export interface HandbookParticipant {
-    handbookId: string;
-    userId: string;
-    addedAt: string;
-}
-
 export interface GetHandbooksRequest {
     name: string;
     tags: string[];
@@ -105,39 +140,36 @@ export interface GetHandbooksRequest {
     offset?: number;
 }
 
-export interface HandbookPreview {
-    id: string;
-    name: string;
-    description: string;
-    tags: string[];
-    updatedAt: string;
-    hasAccess: boolean;
-    owner: AstushaUserPreview;
-    isFavorite: boolean;
-}
-
 export interface GetHandbooksResponse {
     items: HandbookPreview[];
     nextOffset: number | null;
 }
 
-export interface AddHandbookRowRequest {
-    values: Record<string, string | number | boolean | null>;
+export interface HandbookFiltersCounts {
+    all: number;
+    mine: number;
+    available: number;
+    favorites: number;
 }
 
-export interface GetHandbookRowsRequest {
-    offset: number | null;
+export interface GetRecentlyViewedHandbooksRequest {
+    ids: string[];
 }
 
 export interface HandbookRow {
     id: string;
-    values: Record<
-        string,
-        string | number | boolean | null | AstushaUserPreview
-    >;
+    values: Record<string, HandbookCellValue>;
     createdById: string;
     createdAt: string;
     updatedAt: string;
+}
+
+export interface AddHandbookRowRequest {
+    values: Record<string, HandbookCellValue>;
+}
+
+export interface GetHandbookRowsRequest {
+    offset: number | null;
 }
 
 export interface GetHandbookRowsResponse {
@@ -147,10 +179,7 @@ export interface GetHandbookRowsResponse {
 
 export interface UpdatedHandbookRow {
     id: string;
-    values: Record<
-        string,
-        string | number | boolean | null | AstushaUserPreview
-    >;
+    values: Record<string, HandbookCellValue>;
 }
 
 export interface UpdateHandbookRowsRequest {
@@ -166,20 +195,9 @@ export interface EditHandbookDescriptionRequest {
 }
 
 export interface EditHandbookAttributesRequest {
-    columns: (HandbookAttribute | HandbookColumnResponse)[];
-}
-
-export interface HandbookFiltersCounts {
-    all: number;
-    mine: number;
-    available: number;
-    favorites: number;
+    columns: EditHandbookAttribute[];
 }
 
 export interface HanbookFavoriteStatus {
     isFavorite: boolean;
-}
-
-export interface GetRecentlyViewedHandbooksRequest {
-    ids: string[];
 }

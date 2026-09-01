@@ -136,7 +136,28 @@
                     <div class="label">
                         <span>{{ column.name }}</span>
 
-                        <tui-editor [formControlName]="column.id" />
+                        <tui-textfield
+                            class="textfield"
+                            tuiChevron
+                            [stringify]="stringifyReference(column)"
+                            [tuiTextfieldCleaner]="false"
+                        >
+                            <input
+                                tuiComboBox
+                                placeholder="Выберите значение"
+                                [formControlName]="column.id"
+                            />
+
+                            <tui-data-list-wrapper
+                                *tuiDropdown
+                                [items]="getReferenceIds(column)"
+                                [itemContent]="referenceItem"
+                            />
+
+                            <ng-template #referenceItem let-rowId>
+                                {{ getReferenceValue(column, rowId) }}
+                            </ng-template>
+                        </tui-textfield>
                     </div>
                 }
             }

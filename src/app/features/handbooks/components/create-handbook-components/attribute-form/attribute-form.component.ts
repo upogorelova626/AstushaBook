@@ -150,7 +150,6 @@ export class AttributeFormComponent {
             this.form.markAllAsTouched();
             return;
         }
-        console.log(this.form.getRawValue());
 
         this.context.complete(this.form.getRawValue());
     }

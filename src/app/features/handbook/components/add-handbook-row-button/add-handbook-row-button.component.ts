@@ -1,4 +1,4 @@
-import {Component, inject, output} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {TuiButton} from '@taiga-ui/core';
 import {AddHandbookStringFormComponent} from '../add-handbook-string-form/add-handbook-string-form.component';
 import {HandbookRow} from '../../../../shared/interfaces';
@@ -18,8 +18,6 @@ export class AddHandbookRowButtonComponent {
 
     protected readonly handbook = this.handbookInfoService.handbook;
 
-    readonly newRow = output<HandbookRow[]>();
-
     protected createAttribute(event: MouseEvent) {
         event.preventDefault();
         event.stopPropagation();
@@ -36,12 +34,6 @@ export class AddHandbookRowButtonComponent {
                     handbook: this.handbook()
                 }
             )
-            .subscribe(row => {
-                if (!row) {
-                    return;
-                }
-
-                this.newRow.emit([row]);
-            });
+            .subscribe();
     }
 }
