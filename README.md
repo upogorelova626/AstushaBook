@@ -1,59 +1,59 @@
-# AstushaBook
+<div align="center">
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.25.
+# 📚 AstushaBook
 
-## Development server
+### Приложение для создания и управления пользовательскими справочниками
 
-To start a local development server, run:
+![Angular](https://img.shields.io/badge/Angular-19-DD0031?logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)
+![Taiga UI](https://img.shields.io/badge/Taiga_UI-5-526ED3)
+![RxJS](https://img.shields.io/badge/RxJS-7.8-B7178C?logo=reactivex&logoColor=white)
 
-```bash
-ng serve
-```
+</div>
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## О проекте
 
-## Code scaffolding
+**AstushaBook** — приложение для создания гибких справочников с настраиваемой структурой данных.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Пользователь может самостоятельно создавать таблицы, выбирать типы колонок, управлять строками, настраивать права доступа и связывать данные между разными справочниками.
 
-```bash
-ng generate component component-name
-```
+### Возможности
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- создание и редактирование справочников;
+- динамическая структура таблиц;
+- типы полей: текст, число, дата, boolean, список, пользователь и ссылка на другой справочник;
+- добавление, редактирование, дублирование и удаление строк;
+- связи между справочниками;
+- поиск, фильтрация и избранное;
+- настройка прав просмотра и редактирования;
+- авторизация через **Astusha ID**.
 
-```bash
-ng generate --help
-```
+## Стек
 
-## Building
+**Frontend:** Angular 19, TypeScript, Taiga UI, RxJS, Angular Signals, Reactive Forms, LESS.
 
-To build the project run:
+**Backend:** NestJS, Prisma, PostgreSQL, Swagger.
 
-```bash
-ng build
-```
+Backend проекта:  
+[AstushaBook-Backend](https://github.com/upogorelova626/AstushaBook-Backend)
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## Запуск
 
 ```bash
-ng e2e
+npm install
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Приложение будет доступно по адресу:
 
-## Additional Resources
+```text
+http://localhost:4201
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+<div align="center">
+
+**AstushaBook — гибкие справочники внутри экосистемы Astusha.**
+
+</div>
